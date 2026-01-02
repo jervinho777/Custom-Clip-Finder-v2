@@ -13,7 +13,8 @@ def build_discover_prompt(
     transcript_segments: List[Dict],
     similar_clips: Optional[List[Dict]] = None,
     principles: Optional[Dict] = None,
-    num_moments: int = 15
+    min_moments: int = 5,
+    max_moments: int = 25
 ) -> tuple[str, str]:
     """
     Build prompt for DISCOVER stage.
@@ -58,6 +59,10 @@ def build_discover_prompt(
     if len(transcript_text) > 15000:
         transcript_text = transcript_text[:15000] + "\n[...gekürzt...]"
     
+    # Estimate based on transcript length
+    duration_mins = len(transcript_segments) / 6  # ~6 segments per minute
+    suggested = max(min_moments, min(int(duration_mins / 2), max_moments))
+    
     user_prompt = f"""
 {context}
 
@@ -65,8 +70,16 @@ def build_discover_prompt(
 {transcript_text}
 
 [TASK]
-Analysiere dieses Transcript und identifiziere {num_moments}-20 Momente 
-die viral gehen könnten.
+Analysiere dieses Transcript und identifiziere ALLE viral-fähigen Momente.
+
+WICHTIG: So viele wie MÖGLICH, aber nur so viele wie NÖTIG.
+- Kurzes Video (5-10 min): {min_moments}-10 Momente
+- Mittleres Video (15-25 min): 8-15 Momente  
+- Langes Video (30+ min): 12-{max_moments} Momente
+
+Dieses Video ist ca. {duration_mins:.0f} Minuten → geschätzt {suggested} Momente, ABER:
+Wenn nur 3 echte Viral-Momente existieren, dann nur 3!
+Wenn 20 existieren, dann 20!
 
 Für jeden Moment:
 • Start/End Timestamp (in Sekunden)

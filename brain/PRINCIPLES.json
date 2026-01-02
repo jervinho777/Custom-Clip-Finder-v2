@@ -91,13 +91,66 @@
     "hook_extraction": {
       "when": "Natural hook is weak, payoff is strong",
       "how": "Move payoff statement to start, then provide context",
-      "example": "Dieter Lange - Lebenslinie hook moved from minute 10 to start",
+      "verified_examples": [
+        {
+          "source": "Dieter Lange (30 min Talk)",
+          "clip": "Arbeite niemals für Geld (59s)",
+          "original_position": "653s (near END of story)",
+          "viral_position": "0s (FRONT of clip)",
+          "notes": "Statement 'Arbeite niemals für Geld' war Payoff, wurde zum Hook"
+        }
+      ],
       "success_rate": "340% higher completion than clean extraction"
     },
     "clean_extraction": {
       "when": "Natural hook is already strong (8+/10)",
       "how": "Extract with minimal cuts, preserve natural flow",
-      "example": "Chris Surel - Story has natural strong opening"
+      "verified_examples": [
+        {
+          "source": "Dr. Stefan Frädrich (20 min Talk)",
+          "clip": "Lebenslinie (72s)",
+          "original_position": "1066s",
+          "notes": "Hook 'Dein Leben findet statt auf einer Lebenslinie' war schon stark"
+        }
+      ]
+    },
+    "metaphor_hook": {
+      "when": "Speaker uses strong comparison/analogy",
+      "how": "Extract the comparison as hook, then context",
+      "verified_examples": [
+        {
+          "source": "Chris Surel (18 min Talk)",
+          "clip": "Schlafen ist wie Fußball (42s)",
+          "hook": "Schlafen ist so wie Fußball spielen. Es ist ein Spiel, was 90 Minuten dauert.",
+          "notes": "Metapher erzeugt sofort Aufmerksamkeit + Neugier"
+        }
+      ],
+      "template": "[Komplexes Thema] ist wie [Alltägliches]"
+    },
+    "beliefbreaker": {
+      "when": "Speaker challenges common assumption",
+      "how": "Lead with the counter-intuitive claim",
+      "verified_examples": [
+        {
+          "source": "Chris Surel (18 min Talk)",
+          "clip": "Hört auf auszuschlafen (37s)",
+          "hook": "Hört bitte auf am Wochenende auszuschlafen",
+          "notes": "Widerspricht was 99% der Menschen glauben = instant Attention"
+        }
+      ],
+      "template": "Hört auf [GEWOHNHEIT die alle machen]"
+    },
+    "shock_story": {
+      "when": "Content has absurd/shocking details",
+      "how": "Lead with the most shocking moment",
+      "verified_examples": [
+        {
+          "source": "Robert Marc Lehmann (16 min Interview)",
+          "clip": "Mondfisch mit Kindersocken (38s)",
+          "hook": "Die Flossen sind ihm vergammelt. Meine Chefin fand die aberwitzige Idee ganz gut, ihm Socken, Kindersocken über die Flossen zu stülpen...",
+          "notes": "Absurdität + Empörung = emotionale Reaktion garantiert"
+        }
+      ]
     },
     "cross_moment_composition": {
       "when": "Best hook and best content are in different parts",
