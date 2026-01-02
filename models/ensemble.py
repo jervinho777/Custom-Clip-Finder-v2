@@ -36,12 +36,13 @@ class AIEnsemble:
     - DeepSeek (cost-efficient verification)
     """
     
+    # Verified working models from V1
     DEFAULT_MODELS = [
-        ("anthropic", "claude-sonnet-4-20250514"),
-        ("openai", "gpt-4o"),
-        ("google", "gemini-2.0-flash"),
-        ("xai", "grok-3"),
-        ("deepseek", "deepseek-chat"),
+        ("anthropic", "claude-opus-4-20250514"),  # Opus 4.5 💎
+        ("openai", "gpt-5.2"),  # GPT-5.2 🔥
+        ("google", "gemini-3.0-pro"),  # Gemini 3.0 Pro
+        ("xai", "grok-4-1-fast-reasoning"),  # Grok 4.1 🚀
+        ("deepseek", "deepseek-chat"),  # DeepSeek V3.2
     ]
     
     def __init__(self, models: Optional[List[tuple]] = None):

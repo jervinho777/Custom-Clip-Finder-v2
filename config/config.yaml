@@ -2,34 +2,35 @@
 # API Keys are loaded from .env file
 
 models:
-  # Stage 1: DISCOVER - 5 AI Ensemble
+  # Stage 1: DISCOVER - 5 AI Ensemble (verified working models from V1)
   discovery:
     - provider: anthropic
-      model: claude-sonnet-4-20250514
+      model: claude-opus-4-20250514  # Opus 4.5 💎
       role: synthesis
     - provider: openai
-      model: gpt-4o
+      model: gpt-5.2  # GPT-5.2 🔥
       role: pattern_recognition
     - provider: google
-      model: gemini-2.0-flash
+      model: gemini-3.0-pro  # Gemini 3.0 Pro
       role: context_analysis
     - provider: xai
-      model: grok-3
+      model: grok-4-1-fast-reasoning  # Grok 4.1 🚀
       role: edge_cases
     - provider: deepseek
-      model: deepseek-chat
+      model: deepseek-chat  # DeepSeek V3.2
       role: cost_efficient
 
   # Stage 2: COMPOSE - Debate
   compose:
-    primary: claude-sonnet-4-20250514
+    primary: claude-opus-4-20250514  # Opus for quality
+    fallback: claude-sonnet-4-5-20250929  # Sonnet as fallback
     rounds: 3
 
-  # Stage 3: VALIDATE - Final Decision
+  # Stage 3: VALIDATE - Final Decision  
   validate:
-    model: claude-sonnet-4-20250514
-    # Opus nur für finale Entscheidungen wenn Budget erlaubt
-    premium_model: claude-opus-4-20250514
+    model: claude-opus-4-20250514  # Opus for final decisions
+    # Sonnet für schnellere Validierung wenn Budget knapp
+    fast_model: claude-sonnet-4-5-20250929
 
 brain:
   vector_store_path: ./brain/vector_store

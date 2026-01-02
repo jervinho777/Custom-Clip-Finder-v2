@@ -1,13 +1,21 @@
 """
 Base AI Model Interface
 
-Unified interface for all AI providers (Claude, GPT, Gemini, Grok, DeepSeek).
+Unified interface for all AI providers.
+Based on V1 create_clips_v3_ensemble.py with verified working models.
+
+Team:
+- GPT-5.2 (OpenAI) - Reasoning, Speed, Quality
+- Opus 4.5 (Anthropic) - MAXIMUM QUALITY! 💎
+- Gemini 3.0 Pro (Google) - Multimodal, Long Context
+- DeepSeek V3.2 (DeepSeek) - Logic, Patterns, Cost-Efficient
+- Grok 4.1 (xAI) - Reasoning, Edge Cases
 """
 
 import os
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Optional, List, Dict, Any
+from typing import Optional, Any
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -48,17 +56,31 @@ class AIModel(ABC):
 
 
 class ClaudeModel(AIModel):
-    """Anthropic Claude models."""
+    """
+    Anthropic Claude models.
+    
+    Primary: Opus 4.5 - MAXIMUM QUALITY! 💎
+    Fallback: Sonnet 4.5
+    """
     
     provider = "anthropic"
     
-    # Pricing per 1M tokens (as of 2025)
+    # Pricing per 1M tokens (verified from V1)
     PRICING = {
-        "claude-opus-4-20250514": {"input": 15.0, "output": 75.0},
-        "claude-sonnet-4-20250514": {"input": 3.0, "output": 15.0},
+        "claude-opus-4-20250514": {"input": 15.0, "output": 75.0},  # Opus 4.5 💎
+        "claude-sonnet-4-5-20250929": {"input": 3.0, "output": 15.0},  # Sonnet 4.5
+        "claude-sonnet-4-20250514": {"input": 3.0, "output": 15.0},  # Alt name
     }
     
-    def __init__(self, model: str = "claude-sonnet-4-20250514"):
+    MODELS = {
+        "opus": "claude-opus-4-20250514",
+        "sonnet": "claude-sonnet-4-5-20250929",
+    }
+    
+    def __init__(self, model: str = "claude-opus-4-20250514"):
+        # Accept short names
+        if model in self.MODELS:
+            model = self.MODELS[model]
         self.model = model
         self.api_key = os.getenv("ANTHROPIC_API_KEY")
         if not self.api_key:
@@ -71,10 +93,10 @@ class ClaudeModel(AIModel):
         temperature: float = 0.7,
         max_tokens: int = 4096
     ) -> AIResponse:
-        import anthropic
+        from anthropic import AsyncAnthropic
         import time
         
-        client = anthropic.AsyncAnthropic(api_key=self.api_key)
+        client = AsyncAnthropic(api_key=self.api_key)
         
         start = time.time()
         response = await client.messages.create(
@@ -100,22 +122,28 @@ class ClaudeModel(AIModel):
         )
     
     def _calculate_cost(self, input_tokens: int, output_tokens: int) -> float:
-        pricing = self.PRICING.get(self.model, {"input": 3.0, "output": 15.0})
+        pricing = self.PRICING.get(self.model, {"input": 15.0, "output": 75.0})
         return (input_tokens * pricing["input"] + output_tokens * pricing["output"]) / 1_000_000
 
 
 class OpenAIModel(AIModel):
-    """OpenAI GPT models."""
+    """
+    OpenAI GPT models.
+    
+    Primary: GPT-5.2 🔥
+    Fallback: GPT-4o
+    """
     
     provider = "openai"
     
     PRICING = {
-        "gpt-4o": {"input": 2.5, "output": 10.0},
+        "gpt-5.2": {"input": 10.0, "output": 30.0},  # GPT-5.2 🔥
+        "gpt-4o": {"input": 2.5, "output": 10.0},  # Fallback
         "gpt-4o-mini": {"input": 0.15, "output": 0.6},
         "o1": {"input": 15.0, "output": 60.0},
     }
     
-    def __init__(self, model: str = "gpt-4o"):
+    def __init__(self, model: str = "gpt-5.2"):
         self.model = model
         self.api_key = os.getenv("OPENAI_API_KEY")
         if not self.api_key:
@@ -139,12 +167,27 @@ class OpenAIModel(AIModel):
         messages.append({"role": "user", "content": prompt})
         
         start = time.time()
-        response = await client.chat.completions.create(
-            model=self.model,
-            messages=messages,
-            temperature=temperature,
-            max_tokens=max_tokens
-        )
+        
+        try:
+            response = await client.chat.completions.create(
+                model=self.model,
+                messages=messages,
+                temperature=temperature,
+                max_tokens=max_tokens
+            )
+        except Exception as e:
+            # Fallback to GPT-4o if GPT-5.2 fails
+            if self.model == "gpt-5.2":
+                print(f"   ⚠️ GPT-5.2 failed, falling back to GPT-4o: {e}")
+                response = await client.chat.completions.create(
+                    model="gpt-4o",
+                    messages=messages,
+                    temperature=temperature,
+                    max_tokens=max_tokens
+                )
+            else:
+                raise
+        
         latency = int((time.time() - start) * 1000)
         
         usage = response.usage
@@ -153,7 +196,7 @@ class OpenAIModel(AIModel):
         
         return AIResponse(
             content=response.choices[0].message.content or "",
-            model=self.model,
+            model=response.model,
             provider=self.provider,
             tokens_used=input_tokens + output_tokens,
             cost=self._calculate_cost(input_tokens, output_tokens),
@@ -162,25 +205,32 @@ class OpenAIModel(AIModel):
         )
     
     def _calculate_cost(self, input_tokens: int, output_tokens: int) -> float:
-        pricing = self.PRICING.get(self.model, {"input": 2.5, "output": 10.0})
+        pricing = self.PRICING.get(self.model, {"input": 10.0, "output": 30.0})
         return (input_tokens * pricing["input"] + output_tokens * pricing["output"]) / 1_000_000
 
 
 class GeminiModel(AIModel):
-    """Google Gemini models."""
+    """
+    Google Gemini models.
+    
+    Primary: Gemini 3.0 Pro
+    Fallback: Gemini 2.0 Flash
+    """
     
     provider = "google"
     
     PRICING = {
-        "gemini-2.0-flash": {"input": 0.075, "output": 0.3},
-        "gemini-1.5-pro": {"input": 1.25, "output": 5.0},
+        "gemini-3.0-pro": {"input": 1.50, "output": 6.0},  # Gemini 3.0 Pro
+        "gemini-2.5-pro": {"input": 1.25, "output": 5.0},  # Gemini 2.5 Pro
+        "gemini-2.0-flash": {"input": 0.075, "output": 0.3},  # Flash fallback
+        "gemini-2.0-flash-exp": {"input": 0.075, "output": 0.3},
     }
     
-    def __init__(self, model: str = "gemini-2.0-flash"):
+    def __init__(self, model: str = "gemini-3.0-pro"):
         self.model = model
-        self.api_key = os.getenv("GOOGLE_API_KEY")
+        self.api_key = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
         if not self.api_key:
-            raise ValueError("GOOGLE_API_KEY not found")
+            raise ValueError("GOOGLE_API_KEY or GEMINI_API_KEY not found")
     
     async def generate(
         self,
@@ -189,29 +239,46 @@ class GeminiModel(AIModel):
         temperature: float = 0.7,
         max_tokens: int = 4096
     ) -> AIResponse:
-        import google.generativeai as genai
+        from google import genai
+        from google.genai import types
         import time
         
-        genai.configure(api_key=self.api_key)
-        model = genai.GenerativeModel(
-            self.model,
-            system_instruction=system
-        )
+        client = genai.Client(api_key=self.api_key)
         
         start = time.time()
-        response = await model.generate_content_async(
-            prompt,
-            generation_config=genai.GenerationConfig(
-                temperature=temperature,
-                max_output_tokens=max_tokens
+        
+        try:
+            response = await client.aio.models.generate_content(
+                model=self.model,
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    system_instruction=system,
+                    temperature=temperature,
+                    max_output_tokens=max_tokens
+                )
             )
-        )
+        except Exception as e:
+            # Fallback to 2.0 Flash if 3.0 fails
+            if "3.0" in self.model or "2.5" in self.model:
+                print(f"   ⚠️ {self.model} failed, falling back to gemini-2.0-flash: {e}")
+                response = await client.aio.models.generate_content(
+                    model="gemini-2.0-flash-exp",
+                    contents=prompt,
+                    config=types.GenerateContentConfig(
+                        system_instruction=system,
+                        temperature=temperature,
+                        max_output_tokens=max_tokens
+                    )
+                )
+            else:
+                raise
+        
         latency = int((time.time() - start) * 1000)
         
-        # Gemini doesn't always provide token counts
-        tokens = getattr(response, 'usage_metadata', None)
-        input_tokens = getattr(tokens, 'prompt_token_count', 0) if tokens else 0
-        output_tokens = getattr(tokens, 'candidates_token_count', 0) if tokens else 0
+        # Get token counts
+        usage = getattr(response, 'usage_metadata', None)
+        input_tokens = getattr(usage, 'prompt_token_count', 0) if usage else 0
+        output_tokens = getattr(usage, 'candidates_token_count', 0) if usage else 0
         
         return AIResponse(
             content=response.text,
@@ -224,21 +291,26 @@ class GeminiModel(AIModel):
         )
     
     def _calculate_cost(self, input_tokens: int, output_tokens: int) -> float:
-        pricing = self.PRICING.get(self.model, {"input": 0.075, "output": 0.3})
+        pricing = self.PRICING.get(self.model, {"input": 1.5, "output": 6.0})
         return (input_tokens * pricing["input"] + output_tokens * pricing["output"]) / 1_000_000
 
 
 class GrokModel(AIModel):
-    """xAI Grok models."""
+    """
+    xAI Grok models.
+    
+    Primary: Grok 4.1 Fast Reasoning 🚀
+    """
     
     provider = "xai"
     
     PRICING = {
+        "grok-4-1-fast-reasoning": {"input": 0.20, "output": 0.50},  # Best model
+        "grok-4-fast-reasoning": {"input": 0.20, "output": 0.50},  # Backup
         "grok-3": {"input": 3.0, "output": 15.0},
-        "grok-3-fast": {"input": 5.0, "output": 25.0},
     }
     
-    def __init__(self, model: str = "grok-3"):
+    def __init__(self, model: str = "grok-4-1-fast-reasoning"):
         self.model = model
         self.api_key = os.getenv("XAI_API_KEY")
         if not self.api_key:
@@ -266,12 +338,27 @@ class GrokModel(AIModel):
         messages.append({"role": "user", "content": prompt})
         
         start = time.time()
-        response = await client.chat.completions.create(
-            model=self.model,
-            messages=messages,
-            temperature=temperature,
-            max_tokens=max_tokens
-        )
+        
+        try:
+            response = await client.chat.completions.create(
+                model=self.model,
+                messages=messages,
+                temperature=temperature,
+                max_tokens=max_tokens
+            )
+        except Exception as e:
+            # Fallback
+            if self.model == "grok-4-1-fast-reasoning":
+                print(f"   ⚠️ Grok 4.1 failed, trying backup: {e}")
+                response = await client.chat.completions.create(
+                    model="grok-4-fast-reasoning",
+                    messages=messages,
+                    temperature=temperature,
+                    max_tokens=max_tokens
+                )
+            else:
+                raise
+        
         latency = int((time.time() - start) * 1000)
         
         usage = response.usage
@@ -280,7 +367,7 @@ class GrokModel(AIModel):
         
         return AIResponse(
             content=response.choices[0].message.content or "",
-            model=self.model,
+            model=response.model,
             provider=self.provider,
             tokens_used=input_tokens + output_tokens,
             cost=self._calculate_cost(input_tokens, output_tokens),
@@ -289,17 +376,22 @@ class GrokModel(AIModel):
         )
     
     def _calculate_cost(self, input_tokens: int, output_tokens: int) -> float:
-        pricing = self.PRICING.get(self.model, {"input": 3.0, "output": 15.0})
+        pricing = self.PRICING.get(self.model, {"input": 0.20, "output": 0.50})
         return (input_tokens * pricing["input"] + output_tokens * pricing["output"]) / 1_000_000
 
 
 class DeepSeekModel(AIModel):
-    """DeepSeek models."""
+    """
+    DeepSeek models.
+    
+    Primary: DeepSeek V3.2 (deepseek-chat)
+    Cost-efficient verification model.
+    """
     
     provider = "deepseek"
     
     PRICING = {
-        "deepseek-chat": {"input": 0.27, "output": 1.10},
+        "deepseek-chat": {"input": 0.27, "output": 1.10},  # V3.2
         "deepseek-reasoner": {"input": 0.55, "output": 2.19},
     }
     
@@ -358,8 +450,25 @@ class DeepSeekModel(AIModel):
         return (input_tokens * pricing["input"] + output_tokens * pricing["output"]) / 1_000_000
 
 
-def get_model(provider: str, model: str) -> AIModel:
-    """Factory function to get AI model by provider."""
+def get_model(provider: str, model: str = None) -> AIModel:
+    """
+    Factory function to get AI model by provider.
+    
+    Args:
+        provider: anthropic, openai, google, xai, deepseek
+        model: Optional model name (uses best default if not specified)
+    
+    Returns:
+        Configured AIModel instance
+    """
+    defaults = {
+        "anthropic": "claude-opus-4-20250514",  # Opus 4.5 💎
+        "openai": "gpt-5.2",  # GPT-5.2 🔥
+        "google": "gemini-3.0-pro",  # Gemini 3.0 Pro
+        "xai": "grok-4-1-fast-reasoning",  # Grok 4.1 🚀
+        "deepseek": "deepseek-chat",  # DeepSeek V3.2
+    }
+    
     models = {
         "anthropic": ClaudeModel,
         "openai": OpenAIModel,
@@ -369,7 +478,33 @@ def get_model(provider: str, model: str) -> AIModel:
     }
     
     if provider not in models:
-        raise ValueError(f"Unknown provider: {provider}")
+        raise ValueError(f"Unknown provider: {provider}. Available: {list(models.keys())}")
     
-    return models[provider](model)
+    model_name = model or defaults.get(provider)
+    return models[provider](model_name)
 
+
+# Convenient aliases
+def get_opus() -> ClaudeModel:
+    """Get Opus 4.5 (Maximum Quality)"""
+    return ClaudeModel("claude-opus-4-20250514")
+
+def get_sonnet() -> ClaudeModel:
+    """Get Sonnet 4.5 (Balanced)"""
+    return ClaudeModel("claude-sonnet-4-5-20250929")
+
+def get_gpt() -> OpenAIModel:
+    """Get GPT-5.2"""
+    return OpenAIModel("gpt-5.2")
+
+def get_gemini() -> GeminiModel:
+    """Get Gemini 3.0 Pro"""
+    return GeminiModel("gemini-3.0-pro")
+
+def get_grok() -> GrokModel:
+    """Get Grok 4.1 Fast Reasoning"""
+    return GrokModel("grok-4-1-fast-reasoning")
+
+def get_deepseek() -> DeepSeekModel:
+    """Get DeepSeek V3.2"""
+    return DeepSeekModel("deepseek-chat")
