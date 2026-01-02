@@ -31,6 +31,9 @@ class AIResponse:
     cost: float = 0.0
     latency_ms: int = 0
     raw_response: Optional[Any] = None
+    parsed: Optional[Any] = None  # Parsed Pydantic model if response_model was provided
+    cache_read_tokens: int = 0  # Tokens read from cache (90% cheaper!)
+    cache_write_tokens: int = 0  # Tokens written to cache
 
 
 class AIModel(ABC):
@@ -91,39 +94,99 @@ class ClaudeModel(AIModel):
         prompt: str,
         system: Optional[str] = None,
         temperature: float = 0.7,
-        max_tokens: int = 4096
+        max_tokens: int = 4096,
+        cache_system: bool = False,
+        response_model: Optional[type] = None
     ) -> AIResponse:
+        """
+        Generate response from Claude.
+        
+        Args:
+            prompt: User message
+            system: System prompt
+            temperature: Sampling temperature
+            max_tokens: Max output tokens
+            cache_system: Enable prompt caching for system prompt (90% cost savings!)
+            response_model: Optional Pydantic model for structured output
+        """
         from anthropic import AsyncAnthropic
         import time
         
         client = AsyncAnthropic(api_key=self.api_key)
         
+        # Build system message with optional caching
+        if cache_system and system:
+            system_content = [{
+                "type": "text",
+                "text": system,
+                "cache_control": {"type": "ephemeral"}  # Enable prompt caching
+            }]
+        else:
+            system_content = system or "You are a helpful assistant."
+        
         start = time.time()
-        response = await client.messages.create(
-            model=self.model,
-            max_tokens=max_tokens,
-            temperature=temperature,
-            system=system or "You are a helpful assistant.",
-            messages=[{"role": "user", "content": prompt}]
-        )
+        
+        # Build request kwargs
+        request_kwargs = {
+            "model": self.model,
+            "max_tokens": max_tokens,
+            "temperature": temperature,
+            "system": system_content,
+            "messages": [{"role": "user", "content": prompt}]
+        }
+        
+        response = await client.messages.create(**request_kwargs)
         latency = int((time.time() - start) * 1000)
         
         input_tokens = response.usage.input_tokens
         output_tokens = response.usage.output_tokens
         
+        # Check for cache usage
+        cache_read = getattr(response.usage, 'cache_read_input_tokens', 0)
+        cache_write = getattr(response.usage, 'cache_creation_input_tokens', 0)
+        
+        content = response.content[0].text
+        
+        # Parse structured output if model provided
+        parsed = None
+        if response_model:
+            import json
+            try:
+                data = json.loads(content)
+                parsed = response_model.model_validate(data)
+            except Exception:
+                pass
+        
         return AIResponse(
-            content=response.content[0].text,
+            content=content,
             model=self.model,
             provider=self.provider,
             tokens_used=input_tokens + output_tokens,
-            cost=self._calculate_cost(input_tokens, output_tokens),
+            cost=self._calculate_cost(input_tokens, output_tokens, cache_read),
             latency_ms=latency,
-            raw_response=response
+            raw_response=response,
+            parsed=parsed,
+            cache_read_tokens=cache_read,
+            cache_write_tokens=cache_write
         )
     
-    def _calculate_cost(self, input_tokens: int, output_tokens: int) -> float:
+    def _calculate_cost(self, input_tokens: int, output_tokens: int, cache_read_tokens: int = 0) -> float:
+        """
+        Calculate cost with prompt caching savings.
+        
+        Cache read tokens cost 90% less than normal input tokens!
+        """
         pricing = self.PRICING.get(self.model, {"input": 15.0, "output": 75.0})
-        return (input_tokens * pricing["input"] + output_tokens * pricing["output"]) / 1_000_000
+        
+        # Regular input tokens (excluding cached)
+        regular_input = input_tokens - cache_read_tokens
+        
+        # Cache read is 90% cheaper
+        cache_read_cost = cache_read_tokens * pricing["input"] * 0.10
+        regular_input_cost = regular_input * pricing["input"]
+        output_cost = output_tokens * pricing["output"]
+        
+        return (cache_read_cost + regular_input_cost + output_cost) / 1_000_000
 
 
 class OpenAIModel(AIModel):
