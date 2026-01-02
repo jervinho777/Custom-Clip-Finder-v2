@@ -212,13 +212,49 @@ async def _init_brain():
     """Initialize BRAIN."""
     from brain.vector_store import initialize_brain
     
-    console.print("[bold]Initializing BRAIN...[/bold]\n")
+    console.print("[bold]Initializing BRAIN Vector Store...[/bold]\n")
     
     try:
         count = await initialize_brain()
         console.print(f"[green]BRAIN initialized with {count} clips[/green]")
     except Exception as e:
         console.print(f"[red]Error: {e}[/red]")
+        raise typer.Exit(1)
+
+
+@app.command()
+def analyze_brain():
+    """
+    Run BRAIN analysis phase.
+    
+    Phase 1 des Systems:
+    - Code 1: Analysiert isolierte virale Clips
+    - Code 2: Analysiert Longform→Clip Paare
+    - Code 3: Synthetisiert zu PRINCIPLES.json
+    """
+    asyncio.run(_analyze_brain())
+
+
+async def _analyze_brain():
+    """Run BRAIN analysis."""
+    from brain.analyze import run_analysis
+    
+    console.print("[bold]Running BRAIN Analysis Phase...[/bold]\n")
+    console.print("Phase 1: Analyse")
+    console.print("  Code 1: Isolierte Clips → Patterns")
+    console.print("  Code 2: Paare → Composition Patterns")
+    console.print("  Code 3: Synthese → PRINCIPLES.json\n")
+    
+    try:
+        result = await run_analysis()
+        
+        console.print("\n[green]Analysis complete![/green]")
+        console.print(f"  Isolated patterns: {result['isolated_patterns'].get('clips_analyzed', 0)} clips")
+        console.print(f"  Composition patterns: {result['composition_patterns'].get('pairs_analyzed', 0)} pairs")
+    except Exception as e:
+        console.print(f"[red]Error: {e}[/red]")
+        import traceback
+        traceback.print_exc()
         raise typer.Exit(1)
 
 
