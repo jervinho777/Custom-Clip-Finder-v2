@@ -1,0 +1,121 @@
+{
+  "viral_patterns": [
+    {
+      "pattern_name": "Direkte Imperativ-Hooks",
+      "description": "Videos beginnen mit direkten Befehlen oder Aufforderungen an den Zuschauer, die sofort Aufmerksamkeit erzeugen",
+      "examples": [
+        "dann leben für den Stadt auf einer lebendlinie",
+        "Schlafen ist so wie Fußballspiel",
+        "wird bitte auf am Wochenende auszuschlafen",
+        "Kauft Lebensmittel, die keine Zutatenliste tragen"
+      ],
+      "frequency_in_viral": "75%",
+      "frequency_in_normal": "15%"
+    },
+    {
+      "pattern_name": "Unerwartete Vergleiche/Analogien",
+      "description": "Komplexe Themen werden durch überraschende, bildhafte Vergleiche erklärt",
+      "examples": [
+        "Schlafen ist so wie Fußballspiel",
+        "Social Jet-Leg ist wie Transatlantikflug",
+        "Kinder ergern wie Geschäftsstrategie"
+      ],
+      "frequency_in_viral": "65%",
+      "frequency_in_normal": "25%"
+    },
+    {
+      "pattern_name": "Konkrete Zahlen und Fakten als Schock-Element",
+      "description": "Präzise, oft überraschende Statistiken die den Zuschauer verblüffen",
+      "examples": [
+        "6,0 Stunden. 7,5 Stunden. 9,0 oder 4,5",
+        "3,2 Milliarden",
+        "35 Gramm Zucker",
+        "13 Kiluzucker"
+      ],
+      "frequency_in_viral": "80%",
+      "frequency_in_normal": "30%"
+    },
+    {
+      "pattern_name": "Paradoxe Aussagen/Umkehrung des Erwarteten",
+      "description": "Statements die das Gegenteil von dem behaupten, was man erwartet",
+      "examples": [
+        "Menschen, die immer einschlafen können, haben ein Problem",
+        "wird bitte auf am Wochenende auszuschlafen",
+        "Arbeitel niemals vergelft"
+      ],
+      "frequency_in_viral": "70%",
+      "frequency_in_normal": "20%"
+    },
+    {
+      "pattern_name": "Storytelling mit Cliffhanger-Elementen",
+      "description": "Geschichten werden angeteasert aber nicht sofort vollständig erzählt",
+      "examples": [
+        "Horde Kinder sitzt am Straßenrand",
+        "In U.S. vor Kurzem ein Mann vorgericht gestanden",
+        "Kommt ein Typ, am Derteidstunden zu spät"
+      ],
+      "frequency_in_viral": "60%",
+      "frequency_in_normal": "35%"
+    }
+  ],
+  "hook_analysis": {
+    "viral_hook_types": [
+      "Direkte Befehle/Imperative",
+      "Paradoxe Statements",
+      "Unerwartete Vergleiche",
+      "Schockierende Fakten"
+    ],
+    "viral_first_words": [
+      "dann",
+      "Schlafen",
+      "wird bitte",
+      "Menschen die",
+      "Arbeitel",
+      "Wir stellen",
+      "Kauft"
+    ],
+    "ineffective_hooks": [
+      "Der beste Verkäufer",
+      "Ich sehe Kinder",
+      "Viel Schlümmer ist es",
+      "Es gibt auch"
+    ]
+  },
+  "content_structure": {
+    "viral_structure": "Starker Hook → Überraschende Wendung/Fakt → Konkrete Beispiele/Zahlen → Implizierte größere Bedeutung",
+    "key_elements": [
+      "Sofortige Aufmerksamkeit durch Imperativ",
+      "Wissenschaftliche/konkrete Fakten als Autorität",
+      "Bildhafte Analogien für Verständlichkeit",
+      "Emotionale Relevanz für Alltag"
+    ]
+  },
+  "emotional_triggers": {
+    "primary_emotions": [
+      "Überraschung/Schock",
+      "Erkenntnis/Aha-Moment",
+      "Besorgnis/Angst",
+      "Neugier",
+      "Validation/Bestätigung"
+    ],
+    "trigger_words": [
+      "niemals",
+      "Problem",
+      "Scheiße",
+      "Hammer",
+      "Katastrophe",
+      "bitte",
+      "müssen",
+      "vergessen"
+    ]
+  },
+  "actionable_recommendations": [
+    "Beginne Videos mit direkten Imperativen oder paradoxen Statements statt einleitenden Erklärungen",
+    "Verwende konkrete, präzise Zahlen und Zeitangaben statt vager Begriffe",
+    "Baue unerwartete Vergleiche ein, die komplexe Themen in alltägliche Bilder übersetzen",
+    "Strukturiere Content als: Schockierender Hook → Konkrete Fakten → Bildhafte Analogie → Praktische Relevanz",
+    "Nutze Cliffhanger-Elemente und erzähle Geschichten nicht linear",
+    "Verwende emotionally aufgeladene Wörter, die Dringlichkeit oder Überraschung vermitteln",
+    "Stelle etablierte Annahmen in Frage und biete kontraintuitive Perspektiven"
+  ]
+}

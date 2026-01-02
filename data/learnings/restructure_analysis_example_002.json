@@ -1,0 +1,72 @@
+{
+  "segment_selection_rules": [
+    "Select segments that start mid-crisis with a vivid, concrete image (e.g., body degradation + improvised fix: 'Flossen vergammelt' + 'Kindersocken' + 'Kabelbinder') rather than setup/introduction.",
+    "Prioritize first-person culpability + moral reversal language (e.g., 'was haben wir denn da eigentlich gemacht? Seid ihr irre?') because it creates conflict and self-judgment without needing context.",
+    "Keep segments containing hard contrast metrics (natural lifespan vs captive lifespan; daily visitors) to compress explanation into numbers: '100 Jahre' vs '6 Monate', '10\u201312 Leute t\u00e4glich'.",
+    "Choose segments where the audience\u2019s expected 'education/awareness' outcome is explicitly disproven (people watch \u2192 no behavior change). This creates a contrarian takeaway and a clear thesis in <40s.",
+    "End on an irreversible outcome stated plainly ('war er tot') to provide a definitive payoff and prevent the clip from feeling like a teaser.",
+    "Remove host framing, biography, and credential-building (e.g., childhood fish hobby, job titles, 'herzlich willkommen') unless it directly increases stakes within the first 2\u20133 seconds.",
+    "Remove abstract ethical generalizations (e.g., 'Tiere einsperren ist nicht zeitgem\u00e4\u00df') when a visceral anecdote can embody the same point faster.",
+    "Avoid segments requiring external visuals or long context (e.g., whale shark description, pricing, global aquarium counts) unless they are essential to the punchline; prefer self-contained micro-story beats."
+  ],
+  "timing_patterns": {
+    "clip_length_optimal": "30-45 seconds",
+    "hook_position": "first 1-2 seconds",
+    "payoff_position": "last 5-10 seconds",
+    "pacing_rules": [
+      "Open with the most graphic/surprising noun-verb pairing before any context (degradation + absurd solution).",
+      "Maintain a beat structure of ~10-15s per escalation: (1) grotesque detail, (2) moral realization + numbers, (3) audience-illusion reversal + death.",
+      "Insert a rhetorical question/accusation at ~10-20s ('Seid ihr irre?') to reset attention and justify the next fact block.",
+      "Use numeric contrasts as pacing accelerators: deliver them in one breath, then immediately interpret them emotionally.",
+      "Finish with a short, unambiguous terminal sentence (death/ending) to create completion and reduce drop-off."
+    ]
+  },
+  "content_patterns": {
+    "kept_characteristics": [
+      "Visceral sensory detail (rotting fins) + specific improvised treatment (kids\u2019 socks, cable ties).",
+      "High-stakes ethical conflict framed as personal responsibility ('wir').",
+      "Absurdity/indignation tone that invites sharing ('Seid ihr irre?').",
+      "Concrete quantified contrast (100 years vs 6 months; 10\u201312 visitors daily).",
+      "Clear critique of performative consumption (seeing animal \u2260 protecting ocean).",
+      "Closed-loop micro-narrative with a definitive ending (animal dies)."
+    ],
+    "removed_characteristics": [
+      "Introductions, guest bio, and timeline scaffolding (childhood, career path).",
+      "Slow explanatory context and broad claims without a story container.",
+      "Third-party descriptions and encyclopedic facts (species size, cost, number of aquariums) not required for the core moral punch.",
+      "Host prompts and dialogue that dilute urgency or delay the first shocking detail."
+    ],
+    "transition_points": [
+      "Cut occurs after longform ethical setup into a later anecdote that already contains conflict and imagery (jumping past introductions and general reasoning).",
+      "Within the clip, transitions follow micro-beats: (detail of suffering) \u2192 (self-reflection + outrage) \u2192 (lifespan contrast + audience behavior) \u2192 (death as payoff)."
+    ]
+  },
+  "quality_indicators": {
+    "what_makes_good_cut": [
+      "Hook is an immediate, concrete, unusual image that does not require context (rotting fins + socks).",
+      "Clip contains self-contained narrative arc with a terminal payoff (problem \u2192 attempted fix/absurdity \u2192 realization \u2192 consequence/death).",
+      "Includes at least one sharp numeric contrast that compresses meaning and increases credibility.",
+      "Moral/insight is demonstrated through story, not asserted abstractly.",
+      "Ends on a definitive line that completes the thought and invites reaction/shares."
+    ],
+    "what_makes_bad_cut": [
+      "Starts with greetings, credentials, or timeline instead of the most emotionally charged moment.",
+      "Relies on abstract ethics without a concrete scene or sensory anchor.",
+      "No clear payoff/ending; feels like a mid-conversation excerpt.",
+      "Too many proper nouns/facts that require external context, reducing retention.",
+      "Lacks a perspective shift or accusation/contrarian statement that triggers comment debate."
+    ]
+  },
+  "example_id": "example_002",
+  "selection_info": {
+    "selected_indices": [
+      36,
+      37
+    ],
+    "matched_count": 3,
+    "coverage": 1.0
+  },
+  "compression_ratio": 0.039768781404469135,
+  "views": null,
+  "confidence": 0.6133733837091966
+}

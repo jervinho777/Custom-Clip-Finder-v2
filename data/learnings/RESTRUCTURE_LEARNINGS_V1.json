@@ -1,0 +1,620 @@
+{
+  "metadata": {
+    "created_at": "2025-12-21T17:42:05.666504",
+    "examples_analyzed": 9,
+    "version": "v1.0"
+  },
+  "segment_selection": {
+    "rules": [
+      "Remove medical/relationship backstory detail (injury, depression, breakup, clinics) when the viral clip goal is a broad, non-niche life lesson rather than empathy narrative.",
+      "Remove host framing, biography, and credential-building (e.g., childhood fish hobby, job titles, 'herzlich willkommen') unless it directly increases stakes within the first 2\u20133 seconds.",
+      "Remove segments that are host intros, credentials, or mission statements (speaker bio, applause, 'in den n\u00e4chsten 18 Minuten', brand positioning) because they delay value delivery.",
+      "Select segments that contain implicit consumer relevance ('in the supermarket', '19 or 29 cents') to anchor the claim in the viewer\u2019s daily life.",
+      "Remove segments that require prior narrative context (e.g., earlier life-meaning framing, seminar setup, audience exercises) to understand why it matters.",
+      "Select a self-contained moral claim that is understandable without prior context (e.g., 'Menschenaffen sch\u00e4men sich' + explanation).",
+      "Select contiguous segments that already form a mini-arc (model \u2192 problem \u2192 consequence \u2192 advice) to minimize the need for editorial bridging.",
+      "Start on an imperative contrarian command that challenges a common habit (e.g., 'H\u00f6rt bitte auf \u2026'). Prioritize segments where the first sentence is actionable and slightly provocative.",
+      "Remove segments that require domain backstory (fish supply chain, whale shark pricing) unless the clip\u2019s core claim depends on it.",
+      "Keep segments that open with an immediately relatable conflict framed as a funny/true observation (e.g., 'Wir sprechen verschiedene Sprachen') rather than a philosophical setup.",
+      "Remove segments that require biographical setup (e.g., personal history, origin story, childhood, 'how it started') unless they directly support the framework in <10 seconds.",
+      "End on a strong evaluative button line ('Das ist brutal.') or equivalent moral verdict; if none exists, select the nearest high-emotion judgment sentence as the final segment.",
+      "Select segments that create an 'enemy/target + contrast' structure within 1 sentence (e.g., 'supplement industry vs tobacco/alcohol/pharma').",
+      "Prefer segments that introduce concrete characters + setting in the first 3\u20135s (e.g., 'Kinder\u2026 alter Mann\u2026 Stra\u00dfe') to reduce context load and increase comprehension without prior longform context.",
+      "Remove intro/credential/build-up segments (host introduction, speaker bio, mission statements, event context). If a segment contains names, accolades, or stage logistics, exclude it.",
+      "Select segments that contain an explicit implication cue ('mal dr\u00fcber nachdenken', 'aber...') that invites the viewer to form a conclusion (curiosity + controversy).",
+      "Prefer segments with direct speech/quoted dialogue (Q/A lines) because they create instant scene + characters without context.",
+      "Remove atmospheric B-roll / scene-setting (river, paddling, 'watch the atmosphere') because it slows pacing and reduces idea-per-second in short-form.",
+      "Remove segments that rely on long philosophical framing, citations (e.g., Goethe), or multi-step conceptual buildup that requires >10s before the viewer understands the point.",
+      "Select segments that start mid-crisis with a vivid, concrete image (e.g., body degradation + improvised fix: 'Flossen vergammelt' + 'Kindersocken' + 'Kabelbinder') rather than setup/introduction.",
+      "Select segments that explain a single causal mechanism in one chain: action \u2192 trigger \u2192 consequence (e.g., 'Wecker rei\u00dft\u2026 mitten im Zyklus' \u2192 'Schlaftrunkenheit').",
+      "End on a strong normative verdict ('v\u00f6llig absurd', 'nicht mehr zeitgem\u00e4\u00df') to provide closure and shareability.",
+      "Keep segments that contain direct speech/quoted dialogue; dialogue provides natural cut points and increases perceived immediacy.",
+      "Keep segments with an explicit, contrarian or prescriptive opener (imperative/negation), e.g., 'Arbeite niemals\u2026' to function as an immediate thesis.",
+      "Keep the first segment that contains a contrarian or alarming reframe (e.g., 'bei vielen Menschen f\u00e4ngt direkt danach der Anfang vom Ende an') because it converts recognition into tension.",
+      "Select segments that start with a universal model/framework (e.g., 'Lebenslinie' timeline) that can be understood with zero context from the longform.",
+      "Remove segments that set up broad context (societal problem framing, 'Massenph\u00e4nomen') unless they contain a surprising statistic or direct rule.",
+      "Avoid segments with long emotional buildup before the first clear point; short-form selection favors immediate thesis over gradual reveal.",
+      "Keep segments that can be understood with zero prior context (no references to earlier definitions like TH-cells, gut surface area, etc.).",
+      "Choose segments with a clear escalating beat: question \u2192 wrong literal answer \u2192 time passes \u2192 internal frustration \u2192 explicit 'translation' reveal.",
+      "Select segments that end with an immediate, easy-to-execute solution statement (e.g., 'Wir k\u00f6nnen es vermeiden\u2026 wenn\u2026') to deliver payoff before drop-off.",
+      "Select segments that contain sensory/visualizable nouns and locations (Holland/Spain, Supermarkt, Boden/Erdreich, Wattebausch, Zuckerbad, Gew\u00e4chshaus, Etagen) because they generate imagery without needing visuals.",
+      "Prefer segments that contain a 'soft hedge' ('Vermutung') which reduces perceived risk while still delivering a provocative claim.",
+      "Select segments that immediately answer 'why/ how' with a vivid mechanism explanation (e.g., 'never saw soil' \u2192 'grown on cotton in sugar bath' \u2192 'stacked greenhouses'). Keep the causal chain intact.",
+      "Avoid segments where the 'why it matters' is delayed beyond ~45s; if the explanation cannot land by the final 5\u20138s, do not select.",
+      "Select segments that include a clear 'don\u2019t do X' contrast immediately after the rule (e.g., 'nicht 7,0 oder 8,0'), creating a binary decision for the viewer.",
+      "Remove interviewer questions, topic pivots, and hedging phrases; keep uninterrupted monologue blocks for retention.",
+      "Keep segments containing hard contrast metrics (natural lifespan vs captive lifespan; daily visitors) to compress explanation into numbers: '100 Jahre' vs '6 Monate', '10\u201312 Leute t\u00e4glich'.",
+      "Keep segments that introduce a concrete, relatable 'stuckness' metaphor anchored in everyday routine (job route, projects, same pizzeria order) to make the abstract thesis visceral.",
+      "Select segments that immediately justify the command with a concrete analogy/metaphor that compresses complexity into a vivid image (e.g., 'Transatlantikflug Richtung New York' to explain circadian shift).",
+      "Choose segments where the audience\u2019s expected 'education/awareness' outcome is explicitly disproven (people watch \u2192 no behavior change). This creates a contrarian takeaway and a clear thesis in <40s.",
+      "Prefer segments that stack multiple data points in rapid succession (list escalation) to create momentum and perceived evidence density.",
+      "Include segments where numbers/amounts/countdowns change; numeric steps act as natural 'beat markers' and make the progression easy to follow.",
+      "Keep segments that enumerate multiple emotions/needs in quick succession (e.g., 'Einsamkeit, Scham, Liebe') because lists create perceived authority and speed.",
+      "Remove segments that require long setup, analogies, or multi-step explanations (e.g., immune system as city, training of T-helper cells).",
+      "Select segments that contain explicit, numeric prescriptions that can be screenshot/remembered (e.g., 'Vielfachen von 90 Minuten', '6,0 / 7,5 / 9,0 / 4,5 Stunden').",
+      "Select segments that rapidly enumerate familiar life milestones (high recognition density: birth\u2192school\u2192job\u2192partner\u2192kids\u2192retirement) to create instant viewer alignment and momentum.",
+      "Prefer segments that contain repeated time-markers or seasonal markers (e.g., 'schon wieder Weihnachten') because they compress time and intensify the 'life is slipping' feeling.",
+      "Select segments that open with a concrete, counterintuitive numeric comparison (e.g., 'Vitamin C in 1 lettuce leaf \u2248 1 sheet of A4 paper')\u2014start clip on the first shocking claim, not on setup questions.",
+      "Avoid segments requiring external visuals or long context (e.g., whale shark description, pricing, global aquarium counts) unless they are essential to the punchline; prefer self-contained micro-story beats.",
+      "End on a named principle/lesson stated in one sentence ('Freude am Tun\u2026 ersetzt\u2026'); ensure the final line generalizes the story into a transferable takeaway.",
+      "Keep segments where both perspectives are represented (she interprets, he responds; then he explains her subtext). This creates 'two-sided reveal' and prevents the clip from feeling like a rant.",
+      "Prefer segments with punchy recurring nouns and concrete objects (pizzeria, pizza numbers, waitress) that are easy to visualize and caption.",
+      "Select segments that open with a surprising, concrete number tied to a widely-known brand/category (e.g., 'McDonald 3.2B') rather than abstract science framing.",
+      "Prioritize first-person culpability + moral reversal language (e.g., 'was haben wir denn da eigentlich gemacht? Seid ihr irre?') because it creates conflict and self-judgment without needing context.",
+      "End on a prescriptive list with multiple actionable verbs (take different route, read X, meet new people, go new places) to deliver clear takeaway + shareability.",
+      "Remove abstract ethical generalizations (e.g., 'Tiere einsperren ist nicht zeitgem\u00e4\u00df') when a visceral anecdote can embody the same point faster.",
+      "Prefer segments that define the concept in one sentence and tie it to a commonly known anchor term (e.g., 'Junk Food kennt jeder' \u2192 'Junk Sleep'), enabling instant comprehension.",
+      "End on an irreversible outcome stated plainly ('war er tot') to provide a definitive payoff and prevent the clip from feeling like a teaser.",
+      "Keep segments that include a concrete time/urgency marker ('n\u00e4chste halbe Stunde', 'in 15 Minuten') to add stakes and pacing.",
+      "Remove slow reflective passages, gratitude/values statements, or long descriptive storytelling that doesn't resolve within ~30-40 seconds.",
+      "Select segments that form a complete micro-story arc (setup \u2192 escalation \u2192 twist \u2192 explanation) within <60s; prioritize self-contained anecdotes over abstract argumentation.",
+      "Remove segments that require multi-step prerequisites or extended frameworks (e.g., explaining 'Tiefschlafverdichtung' at length) when the clip goal is a single actionable takeaway.",
+      "Remove segments that broaden scope into policy/authority references (e.g., DGE guidelines, international comparisons, definitions like 'Molekularmediziner') when the viral angle is a single concrete product myth-bust.",
+      "Prefer segments that contain at least one of: (a) direct instruction, (b) causal mechanism, (c) consequence stated in plain language, all within the same 10\u201320 second window.",
+      "Avoid segments with multiple subordinate clauses or long preambles before the point; prioritize sentences that deliver a claim within the first 3\u20135 seconds of the segment.",
+      "Keep segments that introduce a named concept (label) within 10\u201315 seconds (e.g., 'Social Jetlag') because labels increase memorability and make the clip feel 'scientific' without needing full context.",
+      "Remove segments that are primarily conversational scaffolding (questions like 'Was sch\u00e4tzt du?', audience interaction, hedges) unless they add conflict; here the clip drops the estimate-question and jumps to the punchline.",
+      "Select segments that open with a concrete analogy/metaphor mapping the topic to a universally understood domain (e.g., 'Schlafen ist wie Fu\u00dfball spielen') within the first sentence.",
+      "Avoid segments where the punchline depends on previous definitions or multi-minute buildup; prioritize clips whose humor is contained in the selected lines.",
+      "Avoid segments with heavy jargon density unless the jargon is the point of controversy; prioritize everyday language ('Umsatz', 'Dauerkonsument', 'Basisern\u00e4hrung').",
+      "Start on a high-emotion, high-contrast statement (animals = like us) rather than biography, credentials, or setup from the host.",
+      "Prefer segments where the speaker uses direct second-person address ('wie wir', 'wie sie alle hier sitzen') to force viewer self-involvement.",
+      "Keep segments that include a clear injustice/constraint metric (e.g., '150 Quadratmeter', 'Gruppe ... nicht selbst gesucht') to make the argument falsifiable and sticky.",
+      "Remove segments with stage context or meta-intro/outro (applause, 'Danke', 'wer mich kennt', 'dar\u00fcber m\u00f6chte ich sprechen') because they spend seconds without informational payoff.",
+      "Keep segments that shift from facts \u2192 mechanism \u2192 thesis in a single breath (facts: revenues; mechanism: meds treat symptoms; thesis: nutrition/supplements address causes).",
+      "End on a universal pain statement that mirrors audience experience (e.g., 'Wir schlafen genug und sind trotzdem nie ausgeruht') to create emotional closure and shareability.",
+      "Choose segments containing a vivid, concrete scene the viewer can picture instantly (kids knocking on glass; ape turning away).",
+      "Avoid segments where the core point depends on earlier definitions; prefer self-contained micro-lessons that stand alone without context.",
+      "Choose segments with repeated pattern escalation (same action repeated with variation: \u20ac1 \u2192 50 Cent \u2192 10 Cent \u2192 nothing) because repetition creates rhythm and retention checkpoints.",
+      "Prefer a 1-topic micro-story over multi-topic nutrition context: keep only the 'iceberg lettuce nutrient emptiness + industrial growing method' storyline; cut adjacent vitamin C-in-apple and RDA debate.",
+      "Select segments that include a vivid sensory/emotional description of the downside (e.g., 'wie von einem LKW \u00fcberfahren') to spike attention and relatability.",
+      "Avoid segments dominated by numbers/credentials unless they directly intensify the ethical punch (here, only '150 Quadratmeter' is kept because it dramatizes confinement).",
+      "Remove segments with references to earlier talk context ('wie wir hier auf der B\u00fchne\u2026', seminar lists, personal backstory) unless they are essential to understand the clip in isolation.",
+      "Select segments that end on a forward-driving promise or method (e.g., 'S\u00e4tze \u00fcbersetzen') so the last line functions as a cliffhanger/solution teaser.",
+      "Remove framework/setup segments that require prior context (e.g., explaining the whole 'Tiefschlafverdichtung' system) unless they can be expressed as a single label + one-sentence definition.",
+      "Select moments that contain a self-contained micro-skit: (1) premise, (2) dialogue example, (3) misunderstanding consequence, (4) interpretation/explanation.",
+      "Select segments that name the phenomenon with a label (e.g., 'Schlaftrunkenheit') to increase perceived authority and memorability.",
+      "Select consecutive segments that form a micro-arc: Command \u2192 Mechanism/term \u2192 Consequence, with no need for external references."
+    ],
+    "count": 89
+  },
+  "timing_optimization": {
+    "patterns": [
+      {
+        "clip_length_optimal": "35-55 seconds",
+        "hook_position": "first 1-3 seconds (open on the strongest, most controversial thesis + relatable subject)",
+        "payoff_position": "last 6-12 seconds (concrete example \u2192 rhetorical question \u2192 moral judgment)",
+        "pacing_rules": [
+          "No intro: begin mid-thought with a declarative claim; treat context as optional.",
+          "Use a 3-beat structure within ~40s: (1) claim, (2) evidence/constraints, (3) everyday example + verdict.",
+          "Maintain sentence density: average idea change every 3-6 seconds (emotion list, needs list, constraint list, example).",
+          "Place the most visual moment around the middle-to-late section (~25-35s) to re-hook attention (kids at glass).",
+          "Finish with an absolute-sounding conclusion (no open loop) to maximize comments/shares (people argue/agree)."
+        ]
+      },
+      {
+        "clip_length_optimal": "30-45 seconds",
+        "hook_position": "first 1-2 seconds",
+        "payoff_position": "last 5-10 seconds",
+        "pacing_rules": [
+          "Open with the most graphic/surprising noun-verb pairing before any context (degradation + absurd solution).",
+          "Maintain a beat structure of ~10-15s per escalation: (1) grotesque detail, (2) moral realization + numbers, (3) audience-illusion reversal + death.",
+          "Insert a rhetorical question/accusation at ~10-20s ('Seid ihr irre?') to reset attention and justify the next fact block.",
+          "Use numeric contrasts as pacing accelerators: deliver them in one breath, then immediately interpret them emotionally.",
+          "Finish with a short, unambiguous terminal sentence (death/ending) to create completion and reduce drop-off."
+        ]
+      },
+      {
+        "clip_length_optimal": "35-55 seconds",
+        "hook_position": "first 0-2 seconds (must contain a surprising fact/number + recognizable entity)",
+        "payoff_position": "last 8-15 seconds (deliver the thesis/solution claim after building pressure)",
+        "pacing_rules": [
+          "Maintain high information density: introduce a new concrete data point or claim every ~2-4 seconds (revenue stacking at 0-16s).",
+          "Use escalation pacing: start with one shocking number, then stack bigger categories (McD \u2192 supplements \u2192 tobacco \u2192 alcohol \u2192 pharma).",
+          "Insert a brief reflective beat (~0.5-1.5s) after the escalation to let the implication land ('mal dr\u00fcber nachdenken'), then immediately move to mechanism.",
+          "Transition from 'numbers' to 'why it matters' around the mid-point (~15-20s) to avoid list fatigue.",
+          "End with a forward-looking actionable thesis in one sentence; avoid adding extra qualifiers after the final claim."
+        ]
+      },
+      {
+        "clip_length_optimal": "35-55 seconds (example: 42s)",
+        "hook_position": "0-2 seconds (analogy + topic stated immediately)",
+        "payoff_position": "last 8-12 seconds (named problem + how to avoid it)",
+        "pacing_rules": [
+          "Deliver the main rule by ~5-8s (here: 'Vielfachen von 90 Minuten').",
+          "Introduce contrast ('but not\u2026') by ~10-18s to prevent monotony and create stakes.",
+          "Explain mechanism in one sentence spanning ~10-15s (avoid branching explanations).",
+          "Place the strongest emotional/visual phrase around ~25-35s to re-capture attention mid-clip (here: 'LKW \u00fcberfahren').",
+          "End on an actionable conditional ('wenn\u2026') rather than a story beat; keep the last line as a memory cue ('ganz einfach zu merken').",
+          "Maintain one idea per clip; if a second idea appears, cut before it starts and use it as the hook for the next clip."
+        ]
+      },
+      {
+        "clip_length_optimal": "45-65 seconds",
+        "hook_position": "0-2 seconds (thesis line) + 2-5 seconds (immediate scene/characters)",
+        "payoff_position": "last 5-8 seconds (explicit question \u2192 principle/answer)",
+        "pacing_rules": [
+          "Use a 4-beat structure: Beat 1 setup (0-15s), Beat 2 repeat with reward (15-30s), Beat 3 diminishing reward + resistance (30-45s), Beat 4 stop + explanation (45-59s).",
+          "Insert a 'friction moment' around 25-35s (e.g., 'Moment\u2026 Betrug') to reset attention mid-clip.",
+          "Maintain forward motion by cutting out pauses and keeping each beat <15s; each beat must add new information (usually a changed reward/decision).",
+          "Place a rhetorical question at ~45-55s ('Was ist hier passiert?') to force cognitive closure and keep viewers through the final line."
+        ]
+      },
+      {
+        "clip_length_optimal": "30-45 seconds",
+        "hook_position": "first 0-2 seconds (imperative + contrarian framing)",
+        "payoff_position": "last 8-12 seconds (definition + consequence + relatable pain line)",
+        "pacing_rules": [
+          "Deliver the core claim by <=2s; do not spend time on greetings or context.",
+          "Introduce the explanatory analogy by <=12s to maintain retention after the hook.",
+          "Introduce a named concept by <=15s (e.g., 'Social Jetlag') to create a 'learning reward' early.",
+          "Use 2-3 idea beats max across the clip (here: stop sleeping in \u2192 social jetlag \u2192 junk sleep/deep sleep loss).",
+          "Keep sentence lengths short; if a sentence runs >6-8 seconds, cut or split.",
+          "End with a high-generalization line that summarizes the problem in 1 sentence (audience self-identification)."
+        ]
+      },
+      {
+        "clip_length_optimal": "35-50 seconds (example: 41s) for a single shocking claim + mechanism explanation + judgment",
+        "hook_position": "0-3 seconds (start directly on the strongest comparison/claim; no preamble)",
+        "payoff_position": "last 3-8 seconds (price anchor + broader implication + emotional verdict)",
+        "pacing_rules": [
+          "Use a 'claim \u2192 implication \u2192 mechanism' cadence with no detours: (1) shocking comparison, (2) consumer action implication ('you don\u2019t even need to wash it'), (3) explanation of industrial process.",
+          "Keep sentence density high: avoid pauses, definitions, and external references; the selected 3 segments are consecutive and maintain momentum.",
+          "Maintain escalating specificity every ~8-12 seconds: comparison (paper) \u2192 hygiene implication (no washing) \u2192 soil absence \u2192 cotton/sugar bath \u2192 multi-level greenhouses \u2192 nutrient solution \u2192 cheap price.",
+          "Cut at topic boundaries, not mid-argument: include only contiguous segments until the argument resolves; stop immediately after the strongest concluding judgment."
+        ]
+      },
+      {
+        "clip_length_optimal": "30-45 seconds (example: 37s)",
+        "hook_position": "first 0-2 seconds (immediate 'different languages' premise)",
+        "payoff_position": "last 5-8 seconds (explicit translation insight + method setup)",
+        "pacing_rules": [
+          "Start on the thesis line (no greetings, no framing, no 'today we will talk about').",
+          "Introduce the example dialogue within the first 3-6 seconds to convert premise into a scene fast.",
+          "Escalate every ~8-12 seconds: add a new beat (time passes \u2192 frustration \u2192 male decoding \u2192 general principle).",
+          "Use compression by skipping connective phrases; keep only lines that change the situation (question, answer, consequence, explanation).",
+          "End on an actionable reframe or tool statement, not on a soft conclusion (keeps comments/saves high)."
+        ]
+      },
+      {
+        "clip_length_optimal": "60-80 seconds",
+        "hook_position": "first 1-3 seconds (open on the framework noun: 'Lebenslinie' + birth/end)",
+        "payoff_position": "last 15-25 seconds (actionable advice list + escalation to 'verr\u00fcckte Dinge')",
+        "pacing_rules": [
+          "Target high 'concept density' in the first 10 seconds: at least 8-12 short beats (life milestones) with minimal pauses.",
+          "Insert the main tension statement by ~12-18s (contrarian reframe) to prevent the list from feeling like filler.",
+          "Use a mid-clip concreteness pivot at ~25-35s: move from abstract timeline to specific routine examples (job route, pizzeria order).",
+          "Use time-compression refrain around ~35-50s ('schon wieder Weihnachten') to spike urgency and retention.",
+          "Finish with rapid-fire imperatives (\u22656 distinct actions in \u226420s) to create 'save/share' utility.",
+          "Allow one comedic/edgy tag in the final 5-10s (unexpected twist) to trigger rewatch and comments, but keep it after the core advice so it doesn't derail meaning."
+        ]
+      }
+    ],
+    "count": 9
+  },
+  "content_characteristics": {
+    "patterns": [
+      {
+        "kept_characteristics": [
+          "Universal empathy framing (animals experience human-like emotions).",
+          "Clear villain mechanism without naming a villain (captivity + gawking + forced social group).",
+          "Concrete sensory imagery (ape turns away; kids knocking; glass barrier).",
+          "Compression-friendly rhetoric: lists, parallel phrasing, and short clauses.",
+          "Built-in audience indictment ('angegafft werden') prompting self-reflection and debate."
+        ],
+        "removed_characteristics": [
+          "Biographical backstory (childhood aquariums, job history).",
+          "Institutional/industry logistics (how animals are sourced, transported, priced).",
+          "Long explanatory scaffolding and interviewer-led framing.",
+          "Niche specifics that slow comprehension (species details, global aquarium counts) unless directly tied to outrage."
+        ],
+        "transition_points": [
+          "Cut into the monologue at the moment of strongest generalizable claim (no host lead-in).",
+          "Maintain continuous argument flow across segments 42\u219243\u219244 (claim \u2192 needs/constraints \u2192 public behavior example \u2192 verdict).",
+          "Cut out immediately after the final normative sentence to avoid dilution or topic drift."
+        ]
+      },
+      {
+        "kept_characteristics": [
+          "Visceral sensory detail (rotting fins) + specific improvised treatment (kids\u2019 socks, cable ties).",
+          "High-stakes ethical conflict framed as personal responsibility ('wir').",
+          "Absurdity/indignation tone that invites sharing ('Seid ihr irre?').",
+          "Concrete quantified contrast (100 years vs 6 months; 10\u201312 visitors daily).",
+          "Clear critique of performative consumption (seeing animal \u2260 protecting ocean).",
+          "Closed-loop micro-narrative with a definitive ending (animal dies)."
+        ],
+        "removed_characteristics": [
+          "Introductions, guest bio, and timeline scaffolding (childhood, career path).",
+          "Slow explanatory context and broad claims without a story container.",
+          "Third-party descriptions and encyclopedic facts (species size, cost, number of aquariums) not required for the core moral punch.",
+          "Host prompts and dialogue that dilute urgency or delay the first shocking detail."
+        ],
+        "transition_points": [
+          "Cut occurs after longform ethical setup into a later anecdote that already contains conflict and imagery (jumping past introductions and general reasoning).",
+          "Within the clip, transitions follow micro-beats: (detail of suffering) \u2192 (self-reflection + outrage) \u2192 (lifespan contrast + audience behavior) \u2192 (death as payoff)."
+        ]
+      },
+      {
+        "kept_characteristics": [
+          "Contrarian framing that challenges a common narrative ('supplements get attacked' vs larger industries).",
+          "Socially legible entities (McDonald, tobacco, alcohol, pharma) that trigger instant recognition and emotion.",
+          "Evidence compression via numeric stacking (multiple industries + revenues) to simulate strong proof quickly.",
+          "Causal narrative: incentives (industry money) \u2192 behavior (symptom treatment) \u2192 outcome (chronic consumption) \u2192 alternative (nutrition/supplements).",
+          "Provocation with plausible deniability: 'Ich habe eine Vermutung' softens but preserves the punch.",
+          "Clear villain/beneficiary model: meds create 'Dauerkonsument' vs nutrition addresses 'Ursache'."
+        ],
+        "removed_characteristics": [
+          "Long educational scaffolding (immune system analogies, cell counts, gut surface area) that delays the point.",
+          "Complex technical immunology (TH cells, intracellular pathogens) that increases cognitive load and reduces shareability.",
+          "Speaker credibility/introduction segments and audience interaction (applause/thanks) that reduce retention in short-form.",
+          "Neutral/nuanced scientific tone; replaced by debate-ready claims and incentive-based framing."
+        ],
+        "transition_points": [
+          "Cut begins directly on a hook statement (no lead-in): immediate 'Wusstet ihr...?'",
+          "Internal pivot at ~15.9s: from revenue list \u2192 implication/critique ('bevor es mit der Impferei losging...').",
+          "Second pivot at ~31.0s: from mechanism ('Symptome lindern' \u2192 'Dauerkonsument') \u2192 thesis/solution (nutrition + targeted supplements address causes).",
+          "End cut immediately after the thesis sentence to preserve a strong closing and avoid dilution."
+        ]
+      },
+      {
+        "kept_characteristics": [
+          "Single, compact heuristic that viewers can apply tonight (sleep in 90-minute multiples).",
+          "High-clarity structure: analogy \u2192 rule \u2192 what not to do \u2192 why it matters \u2192 fix.",
+          "Concrete numbers and examples (specific hour options) that reduce ambiguity.",
+          "Causal explanation tied to a familiar trigger (alarm clock) rather than abstract biology.",
+          "Authority marker via terminology ('Schlaftrunkenheit') without lengthy credentialing.",
+          "Relatable pain description that matches common experience (waking groggy despite enough sleep)."
+        ],
+        "removed_characteristics": [
+          "Speaker introduction, social proof, and event framing (applause, 'internationaler Speaker', '18 Minuten').",
+          "Broad motivational framing and mission statements not tied to an immediate action.",
+          "Longform educational setup (societal context, extended frameworks like 'Tiefschlafverdichtung' unless distilled).",
+          "Audience interaction segments ('Wer hat das schon mal erlebt?') that slow delivery in short-form."
+        ],
+        "transition_points": [
+          "Cut starts at the moment a self-contained micro-lesson begins (no preface, no context needed).",
+          "Cut preserves the full causal loop (rule + consequence + avoidance) without jumping across unrelated subtopics.",
+          "Cut ends right after the actionable resolution cue ('Wir k\u00f6nnen es vermeiden\u2026') and before any expansion ('Und es ist ganz einfach zu merken,' suggests a natural endpoint or a setup for a follow-up clip)."
+        ]
+      },
+      {
+        "kept_characteristics": [
+          "Contrarian, memorable thesis that is easy to quote ('Arbeite niemals f\u00fcr Geld').",
+          "Concrete parable with clear protagonists and a simple, visualizable setting.",
+          "Escalation via repeated actions with changing stakes (reward reduction) creating a predictable-but-evolving loop.",
+          "Dialogue-driven narration (characters speak), enabling fast comprehension and clean edits.",
+          "Single-sentence moral that maps directly to the thesis (intrinsic motivation vs external reward)."
+        ],
+        "removed_characteristics": [
+          "Long introspective framing about gratitude/birth odds that requires emotional buy-in and time.",
+          "Poetic/literary detours (Goethe quote) and abstract leadership-trait lists (Gravitas, Presence, etc.).",
+          "Multi-minute conceptual scaffolding (education process, philosophy) that doesn\u2019t resolve quickly.",
+          "Any content that depends on visuals from the stage (photos, slides) for meaning."
+        ],
+        "transition_points": [
+          "Hard cut into a thesis statement rather than easing in from prior context (start at a new topic boundary).",
+          "Cuts aligned to beat changes: after each reward change (\u20ac1 \u2192 50 Cent \u2192 10 Cent \u2192 nothing).",
+          "Final transition: story ends \u2192 rhetorical question \u2192 immediate explanation (no extra commentary between question and answer)."
+        ]
+      },
+      {
+        "kept_characteristics": [
+          "Contrarian behavioral advice (anti-common habit) stated as a direct command.",
+          "Fast causal explanation using a travel/jetlag analogy (converts abstract circadian disruption into a concrete scenario).",
+          "Scientific-sounding label ('Social Jetlag') + plain-language definition immediately after.",
+          "Relatable framing via familiar comparison ('Junk Food' \u2192 'Junk Sleep') to reduce cognitive load.",
+          "Clear consequence tied to a measurable sleep outcome (reduced deep sleep) and a felt outcome (not rested).",
+          "Second-person/collective language ('wir', 'bitte') that feels like coaching and creates intimacy."
+        ],
+        "removed_characteristics": [
+          "Host/speaker introductions, credentials, event hype, and mission statements.",
+          "Longform agenda-setting ('in den n\u00e4chsten 18 Minuten\u2026') and meta-commentary about what will be covered.",
+          "Broad societal framing without immediate actionable takeaway.",
+          "Complex method exposition (e.g., full 'Tiefschlafverdichtung' framework) that needs multiple steps or prior definitions."
+        ],
+        "transition_points": [
+          "Cut begins mid-talk on a standalone directive ('H\u00f6rt bitte auf\u2026') rather than at the start of the longform.",
+          "First transition occurs after the analogy establishes mechanism (weekend sleep-in = time-zone shift).",
+          "Second transition occurs at concept naming ('Social Jetlag') and flows directly into definition + consequence ('Junk Sleep' \u2192 less deep sleep \u2192 not rested).",
+          "Clip ends on the generalized pain statement rather than continuing into additional tips, preserving a tight loop."
+        ]
+      },
+      {
+        "kept_characteristics": [
+          "Shock statistic/comparison that is easy to repeat verbatim (A4 paper analogy).",
+          "Everyday object framing (iceberg lettuce from supermarket) with geographic specificity (Holland/Spain).",
+          "Myth reversal / expectation violation (you 'don\u2019t need to wash' because it never touched soil).",
+          "Concrete industrial process description that creates vivid mental images (cotton ball in sugar bath, stacked greenhouses, nutrient solution).",
+          "Implicit outrage trigger via low price point ('19/29 cents') and a moral tag ('brutal')."
+        ],
+        "removed_characteristics": [
+          "Interactive Q&A setup and softening language (asking the listener to guess, conversational fillers).",
+          "Broader nutritional context and additional examples (apple vitamin C decline) that dilute the single narrative.",
+          "Appeals to authority and guideline debates (DGE recommendations, cross-country comparisons).",
+          "Long explanatory tangents/definitions (what molecular medicine is, individualized dosage discussion)."
+        ],
+        "transition_points": [
+          "Cut IN at longform ~32.4s: begins exactly at the first fully-formed shocking claim (no lead-in about buying lettuce or guessing vitamin C).",
+          "Hard cut between kept segments is minimal because segments [5,6,7] are contiguous; the restructure relies on a continuous monologue without re-contextualization.",
+          "Cut OUT at longform ~79.9s: ends right after the price anchor and emotional verdict, before the narrative shifts to apple vitamin C and dietary guidelines."
+        ]
+      },
+      {
+        "kept_characteristics": [
+          "Everyday relationship scenario with high audience match (food/hunger, sitting together, mood drops).",
+          "Humor via misinterpretation + gendered 'language' metaphor ('frauisch' vs 'm\u00e4nnlich').",
+          "Concrete dialogue that viewers can quote/replay (memetic lines).",
+          "Clear emotional turn: confusion \u2192 irritation \u2192 'aha' decoding.",
+          "Generalizable principle stated explicitly ('auf unterschiedlichen Ebenen kommunizieren wir').",
+          "Speaker vulnerability/recognition (both sides misunderstand; not purely blaming)."
+        ],
+        "removed_characteristics": [
+          "Existential/values framing about end-of-life importance and emotional anecdote (too long to pay off in short-form).",
+          "Statistics and seminar authority-building (useful in longform, slows short-form).",
+          "Audience participation/exercise instructions (breaks narrative immersion in a clip).",
+          "Multi-step context about being a couple coach and social media distraction (requires setup, lower immediate punch)."
+        ],
+        "transition_points": [
+          "Cut-in begins exactly at a strong standalone premise ('verschiedene Sprachen') rather than mid-explanation.",
+          "Internal jump from her perspective (she thinks 'hat der mich nicht verstanden?') to his decoding perspective ('Wenn ich das nicht raush\u00f6re...').",
+          "Cut-out lands on a method/tease ('S\u00e4tze \u00fcbersetzen in meine Sprache') instead of completing the method\u2014designed to create curiosity."
+        ]
+      },
+      {
+        "kept_characteristics": [
+          "Standalone thesis that doesn't depend on the speaker's personal story.",
+          "Framework-first structure (timeline model) that viewers can map onto themselves instantly.",
+          "High relatability via common life script and routine imagery (job commute, known people, favorite pizza).",
+          "Escalation: recognition \u2192 warning ('Anfang vom Ende') \u2192 stagnation metaphor ('nur noch verwaltest') \u2192 call-to-action.",
+          "Second-person direct address ('du') increasing intimacy and accountability.",
+          "Rhythmic enumeration and repetition to maintain momentum and reduce drop-off.",
+          "Utility-heavy ending (clear behavioral prompts) suitable for saving and sharing."
+        ],
+        "removed_characteristics": [
+          "Slow scenic intros and mood-building sequences (nature/atmosphere) with low idea density.",
+          "Personal biographical context (1999, med student, injury, drinking, breakup) requiring empathy investment and longer setup.",
+          "Complex emotional narrative arcs that need multiple minutes to pay off.",
+          "Anything that introduces niche context (clinic specifics, oncology details) not required for the universal point.",
+          "Long pauses or descriptive passages without a clear claim, contrast, or instruction."
+        ],
+        "transition_points": [
+          "Cut begins at the first fully-formed universal framework segment (the 'life line' model) instead of earlier greetings or personal setup.",
+          "Jump/keep-through from milestone enumeration directly into the contrarian problem statement (recognition \u2192 tension).",
+          "Transition from abstract life timeline to concrete routine vignette ('pizzeria', 'Pizza Nummer 8/13') to re-ground attention.",
+          "Final transition into advice list with imperative verbs; clip ends immediately after the comedic escalation to maximize last-second memorability."
+        ]
+      }
+    ],
+    "count": 9
+  },
+  "quality_signals": {
+    "patterns": [
+      {
+        "what_makes_good_cut": [
+          "First sentence is a complete hookable premise that triggers emotion or controversy without context.",
+          "Contains at least one instantly visualizable scene and one quantifiable constraint (e.g., space size).",
+          "Escalates: emotion claim \u2192 ethical framing \u2192 concrete example \u2192 strong concluding judgment.",
+          "Minimal pronoun ambiguity; viewer knows who is 'they' and what situation is being criticized within ~5 seconds.",
+          "Ends with a quote-worthy line that can be used as on-screen text and encourages discussion."
+        ],
+        "what_makes_bad_cut": [
+          "Starts with setup, credentials, or interviewer question before the core claim.",
+          "Requires prior segments to understand who/what is being discussed (missing referents).",
+          "Ends on a mid-thought or transitions to a new topic, reducing shareable closure.",
+          "Overloads with non-dramatic numbers/facts that don\u2019t intensify the emotional argument.",
+          "Lacks a concrete example; stays abstract and therefore feels preachy rather than vivid."
+        ]
+      },
+      {
+        "what_makes_good_cut": [
+          "Hook is an immediate, concrete, unusual image that does not require context (rotting fins + socks).",
+          "Clip contains self-contained narrative arc with a terminal payoff (problem \u2192 attempted fix/absurdity \u2192 realization \u2192 consequence/death).",
+          "Includes at least one sharp numeric contrast that compresses meaning and increases credibility.",
+          "Moral/insight is demonstrated through story, not asserted abstractly.",
+          "Ends on a definitive line that completes the thought and invites reaction/shares."
+        ],
+        "what_makes_bad_cut": [
+          "Starts with greetings, credentials, or timeline instead of the most emotionally charged moment.",
+          "Relies on abstract ethics without a concrete scene or sensory anchor.",
+          "No clear payoff/ending; feels like a mid-conversation excerpt.",
+          "Too many proper nouns/facts that require external context, reducing retention.",
+          "Lacks a perspective shift or accusation/contrarian statement that triggers comment debate."
+        ]
+      },
+      {
+        "what_makes_good_cut": [
+          "First sentence is self-contained and curiosity-triggering (question + shocking number).",
+          "Recognizable nouns early (brands/industries) that allow instant context without prior setup.",
+          "Escalation structure that increases stakes within the first 10-20 seconds.",
+          "Mid-clip pivot from facts to interpretation so the clip has a story arc (setup \u2192 tension \u2192 claim).",
+          "Ending lands on a clear, quotable thesis that can be debated/shared.",
+          "No dead air, applause, or meta-talk; every line advances argument or evidence."
+        ],
+        "what_makes_bad_cut": [
+          "Starts with definitions, background, or 'today I want to talk about...' instead of a claim.",
+          "Requires earlier context (technical terms, referenced diagrams, prior premises).",
+          "Single-thread explanation without escalation or pivot (feels like a lecture fragment).",
+          "Ends on a hedge, a setup for the next point, or a trailing explanation (no payoff).",
+          "Low entity recognizability (abstract biology) leading to weaker share triggers and lower retention."
+        ]
+      },
+      {
+        "what_makes_good_cut": [
+          "Self-contained: viewer understands the problem, rule, and solution without prior segments.",
+          "Early value: actionable rule appears within the first 5-8 seconds.",
+          "Memorability: includes numbers + a named concept + a vivid metaphor.",
+          "Tension/contrast: explicitly states the common mistake ('nicht 7,0 oder 8,0').",
+          "Mechanism included: explains why the rule works (alarm interrupts sleep cycle), increasing trust and shares.",
+          "Ends with a takeaway phrased as a simple condition (if/then) suitable for captions and on-screen text."
+        ],
+        "what_makes_bad_cut": [
+          "Starts with credentials, greetings, or 'today we\u2019ll talk about\u2026' instead of the rule/insight.",
+          "Omits either the 'why' or the 'how', leaving only a claim (reduces credibility and retention).",
+          "Includes multiple competing tips (sleep cycles + deep sleep + caffeine + screens) in one clip, diluting recall.",
+          "Ends mid-explanation or on a setup without delivering the avoidance/solution step.",
+          "Uses abstract terms without a concrete example or trigger (e.g., only 'Schlafqualit\u00e4t' talk)."
+        ]
+      },
+      {
+        "what_makes_good_cut": [
+          "Viewer can understand the premise within 5 seconds without knowing the longform topic.",
+          "Contains a complete narrative loop with a clear causal mechanism revealed at the end.",
+          "Mid-clip pattern break (objection/conflict) prevents monotony and boosts retention.",
+          "Ending line is a generalizable principle that viewers can apply/share; it directly resolves the question raised.",
+          "Edits occur at semantic boundaries (reward changes, dialogue lines, beat transitions) rather than mid-idea."
+        ],
+        "what_makes_bad_cut": [
+          "Clip starts with context-dependent references or abstract framing that takes >10s to ground.",
+          "No escalation markers (no changing stakes/numbers), resulting in flat pacing.",
+          "Ends without an explicit takeaway or without resolving the implied question ('so what?').",
+          "Cuts remove the causal link (e.g., showing reward drops but not the final 'intrinsic \u2192 extrinsic' explanation).",
+          "Over-includes qualifiers, lists, or quotes that slow comprehension and reduce shareability."
+        ]
+      },
+      {
+        "what_makes_good_cut": [
+          "Opens with a self-contained command that requires zero context to understand.",
+          "Contains a vivid analogy within the first third that makes the claim believable.",
+          "Includes at least one named concept and defines it immediately (no jargon left unexplained).",
+          "Ends with an emotionally resonant, widely relatable summary line that invites shares/comments ('das bin ich').",
+          "Maintains a single throughline (one problem, one mechanism, one consequence) with no side quests."
+        ],
+        "what_makes_bad_cut": [
+          "Starts with introductions, credentials, or 'today we\u2019ll talk about\u2026' (low retention in shorts).",
+          "Uses jargon without instant definition or relies on earlier longform context to understand it.",
+          "Includes multiple tips/mechanisms that compete for attention in <45s.",
+          "Ends on an incomplete thought or a setup for the next section instead of a punchy conclusion.",
+          "Lacks a concrete mechanism/analogy, making the advice feel like opinion rather than insight."
+        ]
+      },
+      {
+        "what_makes_good_cut": [
+          "Standalone comprehension: viewer understands the claim and why it matters without needing earlier context (starts on the comparison).",
+          "Single-thread escalation: each subsequent sentence increases specificity and stakes (paper \u2192 no soil \u2192 sugar bath \u2192 cheap price).",
+          "High quotability: contains at least one repeatable line/metaphor and one punchy judgment closer.",
+          "Concrete anchors: includes place/product/price details that feel verifiable and personal.",
+          "No topic switching: ends before the speaker pivots to a new example or abstract guideline discussion."
+        ],
+        "what_makes_bad_cut": [
+          "Starts with setup questions or vague context that delays the first shock beyond ~3 seconds.",
+          "Includes multiple nutrition topics (e.g., apples + RDAs + medical definitions) causing narrative diffusion.",
+          "Cuts before the mechanism explanation, leaving only a claim that feels like unsupported rage-bait.",
+          "Ends without a closing verdict or implication, producing a 'hanging' feeling and lower shareability.",
+          "Uses authority-name drops or numbers without imagery, reducing emotional/visual retention."
+        ]
+      },
+      {
+        "what_makes_good_cut": [
+          "First line is a complete hook that works without any prior context.",
+          "Contains a full mini-arc: setup \u2192 example \u2192 conflict \u2192 insight within <45s.",
+          "Dialogue provides instant visuals and pacing without needing B-roll.",
+          "Ends with an insight/tool statement that invites viewers to apply it (comment/share trigger).",
+          "High 'quote density' (multiple short, punchy lines) and low filler.",
+          "Two-perspective framing reduces backlash and increases relatability across audiences."
+        ],
+        "what_makes_bad_cut": [
+          "Starts with abstract framing or slow moralizing before the example appears.",
+          "No clear escalation; stays in description without a reveal/decoding moment.",
+          "Ends after the joke but before the insight (feels pointless) or ends mid-sentence without a deliberate cliffhanger.",
+          "Requires external context (who is speaking, why it matters, previous story) to understand the premise.",
+          "Overlong sentences with few scene changes; low beat frequency (>12-15s without a new beat)."
+        ]
+      },
+      {
+        "what_makes_good_cut": [
+          "The first sentence establishes the entire topic and stakes without context (framework hook).",
+          "Contains a complete short-form narrative arc: model \u2192 problem \u2192 symptom/metaphor \u2192 solution.",
+          "High 'idea-per-second' with concrete nouns and short clauses suitable for captions.",
+          "Mid-clip pattern break (abstract \u2192 concrete routine) that refreshes attention around 25-35s.",
+          "Ending provides multiple actionable steps (utility) plus a memorable tag (comment bait) after the value is delivered.",
+          "Clip can be titled from any 1-2 lines inside it (e.g., 'Anfang vom Ende', 'Du verwaltest nur noch dein Leben') indicating strong packaging options."
+        ],
+        "what_makes_bad_cut": [
+          "Starts with greetings, context, or scenic setup before the first claim (weak first 3 seconds).",
+          "Requires knowledge of the longform backstory to understand why the speaker is saying it.",
+          "Only contains problem exposition without a prescriptive payoff (no save/share utility).",
+          "Stays abstract the whole time (no concrete routine examples) leading to lower retention.",
+          "Ends mid-thought or before the advice list, reducing closure and replay value.",
+          "Places edgy/comedic line too early, causing viewers to miss the core message or perceive it as incoherent."
+        ]
+      }
+    ],
+    "count": 9
+  },
+  "examples": [
+    {
+      "id": "example_001",
+      "compression": 0.04357816904285306,
+      "views": null,
+      "confidence": 0.606144455747711
+    },
+    {
+      "id": "example_002",
+      "compression": 0.039768781404469135,
+      "views": null,
+      "confidence": 0.6133733837091966
+    },
+    {
+      "id": "example_003",
+      "compression": 0.038158655131666344,
+      "views": null,
+      "confidence": 0.5973479798116109
+    },
+    {
+      "id": "example_004",
+      "compression": 0.038065013374438954,
+      "views": null,
+      "confidence": 0.6125893172974884
+    },
+    {
+      "id": "example_005",
+      "compression": 0.03252971806847613,
+      "views": null,
+      "confidence": 0.6100418168709444
+    },
+    {
+      "id": "example_006",
+      "compression": 0.03356757491952669,
+      "views": null,
+      "confidence": 0.6081391013691585
+    },
+    {
+      "id": "example_007",
+      "compression": 0.04797292499940833,
+      "views": null,
+      "confidence": 0.6110595709499151
+    },
+    {
+      "id": "example_008",
+      "compression": 0.0344140350877193,
+      "views": null,
+      "confidence": 0.5937906084199865
+    },
+    {
+      "id": "example_009",
+      "compression": 0.059555760459717125,
+      "views": null,
+      "confidence": 0.6046545742129701
+    }
+  ]
+}

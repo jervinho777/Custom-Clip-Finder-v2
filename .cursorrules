@@ -1,0 +1,47 @@
+# Custom Clip Finder - Cursor Rules
+
+## Projekt-Kontext (IMMER ZUERST LESEN!)
+
+**CONTEXT.md** → Aktueller Stand, nächste Schritte  
+**PROJECT_HISTORY.md** → Vollständige History, alle Entscheidungen, Learnings
+
+## Tech Stack
+
+- Python 3.x
+- APIs: OpenAI (GPT), Anthropic (Claude), Google (Gemini), DeepSeek, xAI (Grok)
+- FFmpeg für Video-Verarbeitung
+- Google Sheets Integration
+
+## Code-Regeln
+
+- Antworte auf Deutsch
+- Erkläre kurz WAS du änderst und WARUM bevor du Code schreibst
+- Keine neuen v2, v3, v4 Dateien erstellen - bestehende Files bearbeiten
+- API Keys werden aus .env geladen (nie hardcoden)
+- Type hints verwenden
+- Docstrings für Funktionen
+- Error handling mit try/except und logging
+
+## Architektur-Prinzipien
+
+- Principle-based, nicht rigid rules
+- Batch processing wo möglich (80% Kostenersparnis)
+- Conditional processing (nur verarbeiten was nötig ist)
+- Sonnet für Processing, Opus nur für finale Entscheidungen
+
+## Wichtige Pfade
+
+- Input Videos: `data/uploads/`
+- Cache: `data/cache/`
+- Learnings: `data/learnings/`
+- Output: `output/`
+
+## Pipeline-Stages (V4)
+
+0 → 1 → 1.75 → 2 → 2.5 → 2.6 → 2.7 → 2.8 → Godmode
+
+## Vor jeder größeren Änderung
+
+1. Lies CONTEXT.md für aktuellen Stand
+2. Check PROJECT_HISTORY.md ob ähnliches schon probiert wurde
+3. Erkläre deinen Plan bevor du codest

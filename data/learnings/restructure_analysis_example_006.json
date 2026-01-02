@@ -1,0 +1,78 @@
+{
+  "segment_selection_rules": [
+    "Start on an imperative contrarian command that challenges a common habit (e.g., 'H\u00f6rt bitte auf \u2026'). Prioritize segments where the first sentence is actionable and slightly provocative.",
+    "Select segments that immediately justify the command with a concrete analogy/metaphor that compresses complexity into a vivid image (e.g., 'Transatlantikflug Richtung New York' to explain circadian shift).",
+    "Keep segments that introduce a named concept (label) within 10\u201315 seconds (e.g., 'Social Jetlag') because labels increase memorability and make the clip feel 'scientific' without needing full context.",
+    "Prefer segments that define the concept in one sentence and tie it to a commonly known anchor term (e.g., 'Junk Food kennt jeder' \u2192 'Junk Sleep'), enabling instant comprehension.",
+    "End on a universal pain statement that mirrors audience experience (e.g., 'Wir schlafen genug und sind trotzdem nie ausgeruht') to create emotional closure and shareability.",
+    "Remove intro/credential/build-up segments (host introduction, speaker bio, mission statements, event context). If a segment contains names, accolades, or stage logistics, exclude it.",
+    "Remove framework/setup segments that require prior context (e.g., explaining the whole 'Tiefschlafverdichtung' system) unless they can be expressed as a single label + one-sentence definition.",
+    "Avoid segments with multiple subordinate clauses or long preambles before the point; prioritize sentences that deliver a claim within the first 3\u20135 seconds of the segment.",
+    "Prefer segments that contain at least one of: (a) direct instruction, (b) causal mechanism, (c) consequence stated in plain language, all within the same 10\u201320 second window.",
+    "Select consecutive segments that form a micro-arc: Command \u2192 Mechanism/term \u2192 Consequence, with no need for external references."
+  ],
+  "timing_patterns": {
+    "clip_length_optimal": "30-45 seconds",
+    "hook_position": "first 0-2 seconds (imperative + contrarian framing)",
+    "payoff_position": "last 8-12 seconds (definition + consequence + relatable pain line)",
+    "pacing_rules": [
+      "Deliver the core claim by <=2s; do not spend time on greetings or context.",
+      "Introduce the explanatory analogy by <=12s to maintain retention after the hook.",
+      "Introduce a named concept by <=15s (e.g., 'Social Jetlag') to create a 'learning reward' early.",
+      "Use 2-3 idea beats max across the clip (here: stop sleeping in \u2192 social jetlag \u2192 junk sleep/deep sleep loss).",
+      "Keep sentence lengths short; if a sentence runs >6-8 seconds, cut or split.",
+      "End with a high-generalization line that summarizes the problem in 1 sentence (audience self-identification)."
+    ]
+  },
+  "content_patterns": {
+    "kept_characteristics": [
+      "Contrarian behavioral advice (anti-common habit) stated as a direct command.",
+      "Fast causal explanation using a travel/jetlag analogy (converts abstract circadian disruption into a concrete scenario).",
+      "Scientific-sounding label ('Social Jetlag') + plain-language definition immediately after.",
+      "Relatable framing via familiar comparison ('Junk Food' \u2192 'Junk Sleep') to reduce cognitive load.",
+      "Clear consequence tied to a measurable sleep outcome (reduced deep sleep) and a felt outcome (not rested).",
+      "Second-person/collective language ('wir', 'bitte') that feels like coaching and creates intimacy."
+    ],
+    "removed_characteristics": [
+      "Host/speaker introductions, credentials, event hype, and mission statements.",
+      "Longform agenda-setting ('in den n\u00e4chsten 18 Minuten\u2026') and meta-commentary about what will be covered.",
+      "Broad societal framing without immediate actionable takeaway.",
+      "Complex method exposition (e.g., full 'Tiefschlafverdichtung' framework) that needs multiple steps or prior definitions."
+    ],
+    "transition_points": [
+      "Cut begins mid-talk on a standalone directive ('H\u00f6rt bitte auf\u2026') rather than at the start of the longform.",
+      "First transition occurs after the analogy establishes mechanism (weekend sleep-in = time-zone shift).",
+      "Second transition occurs at concept naming ('Social Jetlag') and flows directly into definition + consequence ('Junk Sleep' \u2192 less deep sleep \u2192 not rested).",
+      "Clip ends on the generalized pain statement rather than continuing into additional tips, preserving a tight loop."
+    ]
+  },
+  "quality_indicators": {
+    "what_makes_good_cut": [
+      "Opens with a self-contained command that requires zero context to understand.",
+      "Contains a vivid analogy within the first third that makes the claim believable.",
+      "Includes at least one named concept and defines it immediately (no jargon left unexplained).",
+      "Ends with an emotionally resonant, widely relatable summary line that invites shares/comments ('das bin ich').",
+      "Maintains a single throughline (one problem, one mechanism, one consequence) with no side quests."
+    ],
+    "what_makes_bad_cut": [
+      "Starts with introductions, credentials, or 'today we\u2019ll talk about\u2026' (low retention in shorts).",
+      "Uses jargon without instant definition or relies on earlier longform context to understand it.",
+      "Includes multiple tips/mechanisms that compete for attention in <45s.",
+      "Ends on an incomplete thought or a setup for the next section instead of a punchy conclusion.",
+      "Lacks a concrete mechanism/analogy, making the advice feel like opinion rather than insight."
+    ]
+  },
+  "example_id": "example_006",
+  "selection_info": {
+    "selected_indices": [
+      50,
+      73,
+      74
+    ],
+    "matched_count": 3,
+    "coverage": 1.0
+  },
+  "compression_ratio": 0.03356757491952669,
+  "views": null,
+  "confidence": 0.6081391013691585
+}

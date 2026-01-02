@@ -1,0 +1,78 @@
+{
+  "segment_selection_rules": [
+    "Select segments that open with a surprising, concrete number tied to a widely-known brand/category (e.g., 'McDonald 3.2B') rather than abstract science framing.",
+    "Select segments that create an 'enemy/target + contrast' structure within 1 sentence (e.g., 'supplement industry vs tobacco/alcohol/pharma').",
+    "Keep segments that can be understood with zero prior context (no references to earlier definitions like TH-cells, gut surface area, etc.).",
+    "Prefer segments that stack multiple data points in rapid succession (list escalation) to create momentum and perceived evidence density.",
+    "Select segments that contain an explicit implication cue ('mal dr\u00fcber nachdenken', 'aber...') that invites the viewer to form a conclusion (curiosity + controversy).",
+    "Keep segments that shift from facts \u2192 mechanism \u2192 thesis in a single breath (facts: revenues; mechanism: meds treat symptoms; thesis: nutrition/supplements address causes).",
+    "Remove segments that require long setup, analogies, or multi-step explanations (e.g., immune system as city, training of T-helper cells).",
+    "Remove segments with stage context or meta-intro/outro (applause, 'Danke', 'wer mich kennt', 'dar\u00fcber m\u00f6chte ich sprechen') because they spend seconds without informational payoff.",
+    "Avoid segments with heavy jargon density unless the jargon is the point of controversy; prioritize everyday language ('Umsatz', 'Dauerkonsument', 'Basisern\u00e4hrung').",
+    "Prefer segments that contain a 'soft hedge' ('Vermutung') which reduces perceived risk while still delivering a provocative claim."
+  ],
+  "timing_patterns": {
+    "clip_length_optimal": "35-55 seconds",
+    "hook_position": "first 0-2 seconds (must contain a surprising fact/number + recognizable entity)",
+    "payoff_position": "last 8-15 seconds (deliver the thesis/solution claim after building pressure)",
+    "pacing_rules": [
+      "Maintain high information density: introduce a new concrete data point or claim every ~2-4 seconds (revenue stacking at 0-16s).",
+      "Use escalation pacing: start with one shocking number, then stack bigger categories (McD \u2192 supplements \u2192 tobacco \u2192 alcohol \u2192 pharma).",
+      "Insert a brief reflective beat (~0.5-1.5s) after the escalation to let the implication land ('mal dr\u00fcber nachdenken'), then immediately move to mechanism.",
+      "Transition from 'numbers' to 'why it matters' around the mid-point (~15-20s) to avoid list fatigue.",
+      "End with a forward-looking actionable thesis in one sentence; avoid adding extra qualifiers after the final claim."
+    ]
+  },
+  "content_patterns": {
+    "kept_characteristics": [
+      "Contrarian framing that challenges a common narrative ('supplements get attacked' vs larger industries).",
+      "Socially legible entities (McDonald, tobacco, alcohol, pharma) that trigger instant recognition and emotion.",
+      "Evidence compression via numeric stacking (multiple industries + revenues) to simulate strong proof quickly.",
+      "Causal narrative: incentives (industry money) \u2192 behavior (symptom treatment) \u2192 outcome (chronic consumption) \u2192 alternative (nutrition/supplements).",
+      "Provocation with plausible deniability: 'Ich habe eine Vermutung' softens but preserves the punch.",
+      "Clear villain/beneficiary model: meds create 'Dauerkonsument' vs nutrition addresses 'Ursache'."
+    ],
+    "removed_characteristics": [
+      "Long educational scaffolding (immune system analogies, cell counts, gut surface area) that delays the point.",
+      "Complex technical immunology (TH cells, intracellular pathogens) that increases cognitive load and reduces shareability.",
+      "Speaker credibility/introduction segments and audience interaction (applause/thanks) that reduce retention in short-form.",
+      "Neutral/nuanced scientific tone; replaced by debate-ready claims and incentive-based framing."
+    ],
+    "transition_points": [
+      "Cut begins directly on a hook statement (no lead-in): immediate 'Wusstet ihr...?'",
+      "Internal pivot at ~15.9s: from revenue list \u2192 implication/critique ('bevor es mit der Impferei losging...').",
+      "Second pivot at ~31.0s: from mechanism ('Symptome lindern' \u2192 'Dauerkonsument') \u2192 thesis/solution (nutrition + targeted supplements address causes).",
+      "End cut immediately after the thesis sentence to preserve a strong closing and avoid dilution."
+    ]
+  },
+  "quality_indicators": {
+    "what_makes_good_cut": [
+      "First sentence is self-contained and curiosity-triggering (question + shocking number).",
+      "Recognizable nouns early (brands/industries) that allow instant context without prior setup.",
+      "Escalation structure that increases stakes within the first 10-20 seconds.",
+      "Mid-clip pivot from facts to interpretation so the clip has a story arc (setup \u2192 tension \u2192 claim).",
+      "Ending lands on a clear, quotable thesis that can be debated/shared.",
+      "No dead air, applause, or meta-talk; every line advances argument or evidence."
+    ],
+    "what_makes_bad_cut": [
+      "Starts with definitions, background, or 'today I want to talk about...' instead of a claim.",
+      "Requires earlier context (technical terms, referenced diagrams, prior premises).",
+      "Single-thread explanation without escalation or pivot (feels like a lecture fragment).",
+      "Ends on a hedge, a setup for the next point, or a trailing explanation (no payoff).",
+      "Low entity recognizability (abstract biology) leading to weaker share triggers and lower retention."
+    ]
+  },
+  "example_id": "example_003",
+  "selection_info": {
+    "selected_indices": [
+      69,
+      70,
+      71
+    ],
+    "matched_count": 3,
+    "coverage": 1.0
+  },
+  "compression_ratio": 0.038158655131666344,
+  "views": null,
+  "confidence": 0.5973479798116109
+}

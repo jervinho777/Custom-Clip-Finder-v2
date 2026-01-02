@@ -1,0 +1,74 @@
+[
+  {
+    "version": 1,
+    "timestamp": "2025-11-24T02:07:11.143803",
+    "training_samples": 25,
+    "r2_score": 1.0,
+    "top_features": [
+      [
+        "pitch_variance",
+        0.3671447682930107
+      ],
+      [
+        "spectral_centroid_var",
+        0.1828616708030485
+      ],
+      [
+        "avg_energy",
+        0.13678036338246316
+      ],
+      [
+        "max_energy",
+        0.05607684385475403
+      ],
+      [
+        "spectral_centroid_mean",
+        0.05398599308185992
+      ],
+      [
+        "person_mentions",
+        0.04400655434414509
+      ],
+      [
+        "char_count",
+        0.03260064598378318
+      ],
+      [
+        "word_count",
+        0.03002608858791849
+      ],
+      [
+        "energy_variance",
+        0.01702312272833215
+      ],
+      [
+        "tempo",
+        0.016035686538667288
+      ]
+    ],
+    "test_r2_score": 1.0,
+    "train_r2_score": 1.0
+  },
+  {
+    "version": 2,
+    "training_samples": 778,
+    "test_samples": 195,
+    "train_r2_score": 0.6149496790223173,
+    "test_r2_score": -0.07937711795897728,
+    "cv_mean": -0.042156537731562936,
+    "cv_std": 0.06296618403274117,
+    "timestamp": "2025-11-24T10:12:14.460415",
+    "top_features": {
+      "avg_energy": 0.23467857770563705,
+      "max_energy": 0.22719853563689024,
+      "spectral_centroid_var": 0.12275477241643142,
+      "pitch_variance": 0.1199888751114029,
+      "char_count": 0.11507354471268696,
+      "word_count": 0.10578838768740355,
+      "tempo": 0.04584181746541009,
+      "person_mentions": 0.028675489264137887,
+      "question_marks": 0.0,
+      "duration": 0.0
+    }
+  }
+]

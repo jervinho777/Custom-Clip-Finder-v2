@@ -1,0 +1,72 @@
+{
+  "segment_selection_rules": [
+    "Select segments that open with a concrete, counterintuitive numeric comparison (e.g., 'Vitamin C in 1 lettuce leaf \u2248 1 sheet of A4 paper')\u2014start clip on the first shocking claim, not on setup questions.",
+    "Select segments that immediately answer 'why/ how' with a vivid mechanism explanation (e.g., 'never saw soil' \u2192 'grown on cotton in sugar bath' \u2192 'stacked greenhouses'). Keep the causal chain intact.",
+    "Select segments that contain sensory/visualizable nouns and locations (Holland/Spain, Supermarkt, Boden/Erdreich, Wattebausch, Zuckerbad, Gew\u00e4chshaus, Etagen) because they generate imagery without needing visuals.",
+    "Select segments that contain implicit consumer relevance ('in the supermarket', '19 or 29 cents') to anchor the claim in the viewer\u2019s daily life.",
+    "Remove segments that are primarily conversational scaffolding (questions like 'Was sch\u00e4tzt du?', audience interaction, hedges) unless they add conflict; here the clip drops the estimate-question and jumps to the punchline.",
+    "Remove segments that broaden scope into policy/authority references (e.g., DGE guidelines, international comparisons, definitions like 'Molekularmediziner') when the viral angle is a single concrete product myth-bust.",
+    "Prefer a 1-topic micro-story over multi-topic nutrition context: keep only the 'iceberg lettuce nutrient emptiness + industrial growing method' storyline; cut adjacent vitamin C-in-apple and RDA debate.",
+    "End on a strong evaluative button line ('Das ist brutal.') or equivalent moral verdict; if none exists, select the nearest high-emotion judgment sentence as the final segment."
+  ],
+  "timing_patterns": {
+    "clip_length_optimal": "35-50 seconds (example: 41s) for a single shocking claim + mechanism explanation + judgment",
+    "hook_position": "0-3 seconds (start directly on the strongest comparison/claim; no preamble)",
+    "payoff_position": "last 3-8 seconds (price anchor + broader implication + emotional verdict)",
+    "pacing_rules": [
+      "Use a 'claim \u2192 implication \u2192 mechanism' cadence with no detours: (1) shocking comparison, (2) consumer action implication ('you don\u2019t even need to wash it'), (3) explanation of industrial process.",
+      "Keep sentence density high: avoid pauses, definitions, and external references; the selected 3 segments are consecutive and maintain momentum.",
+      "Maintain escalating specificity every ~8-12 seconds: comparison (paper) \u2192 hygiene implication (no washing) \u2192 soil absence \u2192 cotton/sugar bath \u2192 multi-level greenhouses \u2192 nutrient solution \u2192 cheap price.",
+      "Cut at topic boundaries, not mid-argument: include only contiguous segments until the argument resolves; stop immediately after the strongest concluding judgment."
+    ]
+  },
+  "content_patterns": {
+    "kept_characteristics": [
+      "Shock statistic/comparison that is easy to repeat verbatim (A4 paper analogy).",
+      "Everyday object framing (iceberg lettuce from supermarket) with geographic specificity (Holland/Spain).",
+      "Myth reversal / expectation violation (you 'don\u2019t need to wash' because it never touched soil).",
+      "Concrete industrial process description that creates vivid mental images (cotton ball in sugar bath, stacked greenhouses, nutrient solution).",
+      "Implicit outrage trigger via low price point ('19/29 cents') and a moral tag ('brutal')."
+    ],
+    "removed_characteristics": [
+      "Interactive Q&A setup and softening language (asking the listener to guess, conversational fillers).",
+      "Broader nutritional context and additional examples (apple vitamin C decline) that dilute the single narrative.",
+      "Appeals to authority and guideline debates (DGE recommendations, cross-country comparisons).",
+      "Long explanatory tangents/definitions (what molecular medicine is, individualized dosage discussion)."
+    ],
+    "transition_points": [
+      "Cut IN at longform ~32.4s: begins exactly at the first fully-formed shocking claim (no lead-in about buying lettuce or guessing vitamin C).",
+      "Hard cut between kept segments is minimal because segments [5,6,7] are contiguous; the restructure relies on a continuous monologue without re-contextualization.",
+      "Cut OUT at longform ~79.9s: ends right after the price anchor and emotional verdict, before the narrative shifts to apple vitamin C and dietary guidelines."
+    ]
+  },
+  "quality_indicators": {
+    "what_makes_good_cut": [
+      "Standalone comprehension: viewer understands the claim and why it matters without needing earlier context (starts on the comparison).",
+      "Single-thread escalation: each subsequent sentence increases specificity and stakes (paper \u2192 no soil \u2192 sugar bath \u2192 cheap price).",
+      "High quotability: contains at least one repeatable line/metaphor and one punchy judgment closer.",
+      "Concrete anchors: includes place/product/price details that feel verifiable and personal.",
+      "No topic switching: ends before the speaker pivots to a new example or abstract guideline discussion."
+    ],
+    "what_makes_bad_cut": [
+      "Starts with setup questions or vague context that delays the first shock beyond ~3 seconds.",
+      "Includes multiple nutrition topics (e.g., apples + RDAs + medical definitions) causing narrative diffusion.",
+      "Cuts before the mechanism explanation, leaving only a claim that feels like unsupported rage-bait.",
+      "Ends without a closing verdict or implication, producing a 'hanging' feeling and lower shareability.",
+      "Uses authority-name drops or numbers without imagery, reducing emotional/visual retention."
+    ]
+  },
+  "example_id": "example_007",
+  "selection_info": {
+    "selected_indices": [
+      5,
+      6,
+      7
+    ],
+    "matched_count": 3,
+    "coverage": 1.0
+  },
+  "compression_ratio": 0.04797292499940833,
+  "views": null,
+  "confidence": 0.6110595709499151
+}

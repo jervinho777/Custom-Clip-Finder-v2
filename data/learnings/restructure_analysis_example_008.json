@@ -1,0 +1,77 @@
+{
+  "segment_selection_rules": [
+    "Keep segments that open with an immediately relatable conflict framed as a funny/true observation (e.g., 'Wir sprechen verschiedene Sprachen') rather than a philosophical setup.",
+    "Select moments that contain a self-contained micro-skit: (1) premise, (2) dialogue example, (3) misunderstanding consequence, (4) interpretation/explanation.",
+    "Prefer segments with direct speech/quoted dialogue (Q/A lines) because they create instant scene + characters without context.",
+    "Keep segments where both perspectives are represented (she interprets, he responds; then he explains her subtext). This creates 'two-sided reveal' and prevents the clip from feeling like a rant.",
+    "Choose segments with a clear escalating beat: question \u2192 wrong literal answer \u2192 time passes \u2192 internal frustration \u2192 explicit 'translation' reveal.",
+    "Keep segments that include a concrete time/urgency marker ('n\u00e4chste halbe Stunde', 'in 15 Minuten') to add stakes and pacing.",
+    "Select segments that end on a forward-driving promise or method (e.g., 'S\u00e4tze \u00fcbersetzen') so the last line functions as a cliffhanger/solution teaser.",
+    "Remove segments that require prior narrative context (e.g., earlier life-meaning framing, seminar setup, audience exercises) to understand why it matters.",
+    "Remove slow reflective passages, gratitude/values statements, or long descriptive storytelling that doesn't resolve within ~30-40 seconds.",
+    "Avoid segments where the punchline depends on previous definitions or multi-minute buildup; prioritize clips whose humor is contained in the selected lines."
+  ],
+  "timing_patterns": {
+    "clip_length_optimal": "30-45 seconds (example: 37s)",
+    "hook_position": "first 0-2 seconds (immediate 'different languages' premise)",
+    "payoff_position": "last 5-8 seconds (explicit translation insight + method setup)",
+    "pacing_rules": [
+      "Start on the thesis line (no greetings, no framing, no 'today we will talk about').",
+      "Introduce the example dialogue within the first 3-6 seconds to convert premise into a scene fast.",
+      "Escalate every ~8-12 seconds: add a new beat (time passes \u2192 frustration \u2192 male decoding \u2192 general principle).",
+      "Use compression by skipping connective phrases; keep only lines that change the situation (question, answer, consequence, explanation).",
+      "End on an actionable reframe or tool statement, not on a soft conclusion (keeps comments/saves high)."
+    ]
+  },
+  "content_patterns": {
+    "kept_characteristics": [
+      "Everyday relationship scenario with high audience match (food/hunger, sitting together, mood drops).",
+      "Humor via misinterpretation + gendered 'language' metaphor ('frauisch' vs 'm\u00e4nnlich').",
+      "Concrete dialogue that viewers can quote/replay (memetic lines).",
+      "Clear emotional turn: confusion \u2192 irritation \u2192 'aha' decoding.",
+      "Generalizable principle stated explicitly ('auf unterschiedlichen Ebenen kommunizieren wir').",
+      "Speaker vulnerability/recognition (both sides misunderstand; not purely blaming)."
+    ],
+    "removed_characteristics": [
+      "Existential/values framing about end-of-life importance and emotional anecdote (too long to pay off in short-form).",
+      "Statistics and seminar authority-building (useful in longform, slows short-form).",
+      "Audience participation/exercise instructions (breaks narrative immersion in a clip).",
+      "Multi-step context about being a couple coach and social media distraction (requires setup, lower immediate punch)."
+    ],
+    "transition_points": [
+      "Cut-in begins exactly at a strong standalone premise ('verschiedene Sprachen') rather than mid-explanation.",
+      "Internal jump from her perspective (she thinks 'hat der mich nicht verstanden?') to his decoding perspective ('Wenn ich das nicht raush\u00f6re...').",
+      "Cut-out lands on a method/tease ('S\u00e4tze \u00fcbersetzen in meine Sprache') instead of completing the method\u2014designed to create curiosity."
+    ]
+  },
+  "quality_indicators": {
+    "what_makes_good_cut": [
+      "First line is a complete hook that works without any prior context.",
+      "Contains a full mini-arc: setup \u2192 example \u2192 conflict \u2192 insight within <45s.",
+      "Dialogue provides instant visuals and pacing without needing B-roll.",
+      "Ends with an insight/tool statement that invites viewers to apply it (comment/share trigger).",
+      "High 'quote density' (multiple short, punchy lines) and low filler.",
+      "Two-perspective framing reduces backlash and increases relatability across audiences."
+    ],
+    "what_makes_bad_cut": [
+      "Starts with abstract framing or slow moralizing before the example appears.",
+      "No clear escalation; stays in description without a reveal/decoding moment.",
+      "Ends after the joke but before the insight (feels pointless) or ends mid-sentence without a deliberate cliffhanger.",
+      "Requires external context (who is speaking, why it matters, previous story) to understand the premise.",
+      "Overlong sentences with few scene changes; low beat frequency (>12-15s without a new beat)."
+    ]
+  },
+  "example_id": "example_008",
+  "selection_info": {
+    "selected_indices": [
+      41,
+      43,
+      44
+    ],
+    "matched_count": 3,
+    "coverage": 1.0
+  },
+  "compression_ratio": 0.0344140350877193,
+  "views": null,
+  "confidence": 0.5937906084199865
+}

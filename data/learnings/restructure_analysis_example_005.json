@@ -1,0 +1,76 @@
+{
+  "segment_selection_rules": [
+    "Select segments that form a complete micro-story arc (setup \u2192 escalation \u2192 twist \u2192 explanation) within <60s; prioritize self-contained anecdotes over abstract argumentation.",
+    "Keep segments with an explicit, contrarian or prescriptive opener (imperative/negation), e.g., 'Arbeite niemals\u2026' to function as an immediate thesis.",
+    "Prefer segments that introduce concrete characters + setting in the first 3\u20135s (e.g., 'Kinder\u2026 alter Mann\u2026 Stra\u00dfe') to reduce context load and increase comprehension without prior longform context.",
+    "Choose segments with repeated pattern escalation (same action repeated with variation: \u20ac1 \u2192 50 Cent \u2192 10 Cent \u2192 nothing) because repetition creates rhythm and retention checkpoints.",
+    "Include segments where numbers/amounts/countdowns change; numeric steps act as natural 'beat markers' and make the progression easy to follow.",
+    "Keep segments that contain direct speech/quoted dialogue; dialogue provides natural cut points and increases perceived immediacy.",
+    "End on a named principle/lesson stated in one sentence ('Freude am Tun\u2026 ersetzt\u2026'); ensure the final line generalizes the story into a transferable takeaway.",
+    "Remove segments that rely on long philosophical framing, citations (e.g., Goethe), or multi-step conceptual buildup that requires >10s before the viewer understands the point.",
+    "Remove segments with references to earlier talk context ('wie wir hier auf der B\u00fchne\u2026', seminar lists, personal backstory) unless they are essential to understand the clip in isolation.",
+    "Avoid segments where the 'why it matters' is delayed beyond ~45s; if the explanation cannot land by the final 5\u20138s, do not select."
+  ],
+  "timing_patterns": {
+    "clip_length_optimal": "45-65 seconds",
+    "hook_position": "0-2 seconds (thesis line) + 2-5 seconds (immediate scene/characters)",
+    "payoff_position": "last 5-8 seconds (explicit question \u2192 principle/answer)",
+    "pacing_rules": [
+      "Use a 4-beat structure: Beat 1 setup (0-15s), Beat 2 repeat with reward (15-30s), Beat 3 diminishing reward + resistance (30-45s), Beat 4 stop + explanation (45-59s).",
+      "Insert a 'friction moment' around 25-35s (e.g., 'Moment\u2026 Betrug') to reset attention mid-clip.",
+      "Maintain forward motion by cutting out pauses and keeping each beat <15s; each beat must add new information (usually a changed reward/decision).",
+      "Place a rhetorical question at ~45-55s ('Was ist hier passiert?') to force cognitive closure and keep viewers through the final line."
+    ]
+  },
+  "content_patterns": {
+    "kept_characteristics": [
+      "Contrarian, memorable thesis that is easy to quote ('Arbeite niemals f\u00fcr Geld').",
+      "Concrete parable with clear protagonists and a simple, visualizable setting.",
+      "Escalation via repeated actions with changing stakes (reward reduction) creating a predictable-but-evolving loop.",
+      "Dialogue-driven narration (characters speak), enabling fast comprehension and clean edits.",
+      "Single-sentence moral that maps directly to the thesis (intrinsic motivation vs external reward)."
+    ],
+    "removed_characteristics": [
+      "Long introspective framing about gratitude/birth odds that requires emotional buy-in and time.",
+      "Poetic/literary detours (Goethe quote) and abstract leadership-trait lists (Gravitas, Presence, etc.).",
+      "Multi-minute conceptual scaffolding (education process, philosophy) that doesn\u2019t resolve quickly.",
+      "Any content that depends on visuals from the stage (photos, slides) for meaning."
+    ],
+    "transition_points": [
+      "Hard cut into a thesis statement rather than easing in from prior context (start at a new topic boundary).",
+      "Cuts aligned to beat changes: after each reward change (\u20ac1 \u2192 50 Cent \u2192 10 Cent \u2192 nothing).",
+      "Final transition: story ends \u2192 rhetorical question \u2192 immediate explanation (no extra commentary between question and answer)."
+    ]
+  },
+  "quality_indicators": {
+    "what_makes_good_cut": [
+      "Viewer can understand the premise within 5 seconds without knowing the longform topic.",
+      "Contains a complete narrative loop with a clear causal mechanism revealed at the end.",
+      "Mid-clip pattern break (objection/conflict) prevents monotony and boosts retention.",
+      "Ending line is a generalizable principle that viewers can apply/share; it directly resolves the question raised.",
+      "Edits occur at semantic boundaries (reward changes, dialogue lines, beat transitions) rather than mid-idea."
+    ],
+    "what_makes_bad_cut": [
+      "Clip starts with context-dependent references or abstract framing that takes >10s to ground.",
+      "No escalation markers (no changing stakes/numbers), resulting in flat pacing.",
+      "Ends without an explicit takeaway or without resolving the implied question ('so what?').",
+      "Cuts remove the causal link (e.g., showing reward drops but not the final 'intrinsic \u2192 extrinsic' explanation).",
+      "Over-includes qualifiers, lists, or quotes that slow comprehension and reduce shareability."
+    ]
+  },
+  "example_id": "example_005",
+  "selection_info": {
+    "selected_indices": [
+      78,
+      80,
+      82,
+      84,
+      85
+    ],
+    "matched_count": 5,
+    "coverage": 1.0
+  },
+  "compression_ratio": 0.03252971806847613,
+  "views": null,
+  "confidence": 0.6100418168709444
+}

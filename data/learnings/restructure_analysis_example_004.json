@@ -1,0 +1,79 @@
+{
+  "segment_selection_rules": [
+    "Select segments that open with a concrete analogy/metaphor mapping the topic to a universally understood domain (e.g., 'Schlafen ist wie Fu\u00dfball spielen') within the first sentence.",
+    "Select segments that contain explicit, numeric prescriptions that can be screenshot/remembered (e.g., 'Vielfachen von 90 Minuten', '6,0 / 7,5 / 9,0 / 4,5 Stunden').",
+    "Select segments that include a clear 'don\u2019t do X' contrast immediately after the rule (e.g., 'nicht 7,0 oder 8,0'), creating a binary decision for the viewer.",
+    "Select segments that explain a single causal mechanism in one chain: action \u2192 trigger \u2192 consequence (e.g., 'Wecker rei\u00dft\u2026 mitten im Zyklus' \u2192 'Schlaftrunkenheit').",
+    "Select segments that name the phenomenon with a label (e.g., 'Schlaftrunkenheit') to increase perceived authority and memorability.",
+    "Select segments that include a vivid sensory/emotional description of the downside (e.g., 'wie von einem LKW \u00fcberfahren') to spike attention and relatability.",
+    "Select segments that end with an immediate, easy-to-execute solution statement (e.g., 'Wir k\u00f6nnen es vermeiden\u2026 wenn\u2026') to deliver payoff before drop-off.",
+    "Remove segments that are host intros, credentials, or mission statements (speaker bio, applause, 'in den n\u00e4chsten 18 Minuten', brand positioning) because they delay value delivery.",
+    "Remove segments that set up broad context (societal problem framing, 'Massenph\u00e4nomen') unless they contain a surprising statistic or direct rule.",
+    "Remove segments that require multi-step prerequisites or extended frameworks (e.g., explaining 'Tiefschlafverdichtung' at length) when the clip goal is a single actionable takeaway.",
+    "Avoid segments where the core point depends on earlier definitions; prefer self-contained micro-lessons that stand alone without context."
+  ],
+  "timing_patterns": {
+    "clip_length_optimal": "35-55 seconds (example: 42s)",
+    "hook_position": "0-2 seconds (analogy + topic stated immediately)",
+    "payoff_position": "last 8-12 seconds (named problem + how to avoid it)",
+    "pacing_rules": [
+      "Deliver the main rule by ~5-8s (here: 'Vielfachen von 90 Minuten').",
+      "Introduce contrast ('but not\u2026') by ~10-18s to prevent monotony and create stakes.",
+      "Explain mechanism in one sentence spanning ~10-15s (avoid branching explanations).",
+      "Place the strongest emotional/visual phrase around ~25-35s to re-capture attention mid-clip (here: 'LKW \u00fcberfahren').",
+      "End on an actionable conditional ('wenn\u2026') rather than a story beat; keep the last line as a memory cue ('ganz einfach zu merken').",
+      "Maintain one idea per clip; if a second idea appears, cut before it starts and use it as the hook for the next clip."
+    ]
+  },
+  "content_patterns": {
+    "kept_characteristics": [
+      "Single, compact heuristic that viewers can apply tonight (sleep in 90-minute multiples).",
+      "High-clarity structure: analogy \u2192 rule \u2192 what not to do \u2192 why it matters \u2192 fix.",
+      "Concrete numbers and examples (specific hour options) that reduce ambiguity.",
+      "Causal explanation tied to a familiar trigger (alarm clock) rather than abstract biology.",
+      "Authority marker via terminology ('Schlaftrunkenheit') without lengthy credentialing.",
+      "Relatable pain description that matches common experience (waking groggy despite enough sleep)."
+    ],
+    "removed_characteristics": [
+      "Speaker introduction, social proof, and event framing (applause, 'internationaler Speaker', '18 Minuten').",
+      "Broad motivational framing and mission statements not tied to an immediate action.",
+      "Longform educational setup (societal context, extended frameworks like 'Tiefschlafverdichtung' unless distilled).",
+      "Audience interaction segments ('Wer hat das schon mal erlebt?') that slow delivery in short-form."
+    ],
+    "transition_points": [
+      "Cut starts at the moment a self-contained micro-lesson begins (no preface, no context needed).",
+      "Cut preserves the full causal loop (rule + consequence + avoidance) without jumping across unrelated subtopics.",
+      "Cut ends right after the actionable resolution cue ('Wir k\u00f6nnen es vermeiden\u2026') and before any expansion ('Und es ist ganz einfach zu merken,' suggests a natural endpoint or a setup for a follow-up clip)."
+    ]
+  },
+  "quality_indicators": {
+    "what_makes_good_cut": [
+      "Self-contained: viewer understands the problem, rule, and solution without prior segments.",
+      "Early value: actionable rule appears within the first 5-8 seconds.",
+      "Memorability: includes numbers + a named concept + a vivid metaphor.",
+      "Tension/contrast: explicitly states the common mistake ('nicht 7,0 oder 8,0').",
+      "Mechanism included: explains why the rule works (alarm interrupts sleep cycle), increasing trust and shares.",
+      "Ends with a takeaway phrased as a simple condition (if/then) suitable for captions and on-screen text."
+    ],
+    "what_makes_bad_cut": [
+      "Starts with credentials, greetings, or 'today we\u2019ll talk about\u2026' instead of the rule/insight.",
+      "Omits either the 'why' or the 'how', leaving only a claim (reduces credibility and retention).",
+      "Includes multiple competing tips (sleep cycles + deep sleep + caffeine + screens) in one clip, diluting recall.",
+      "Ends mid-explanation or on a setup without delivering the avoidance/solution step.",
+      "Uses abstract terms without a concrete example or trigger (e.g., only 'Schlafqualit\u00e4t' talk)."
+    ]
+  },
+  "example_id": "example_004",
+  "selection_info": {
+    "selected_indices": [
+      24,
+      25,
+      26
+    ],
+    "matched_count": 3,
+    "coverage": 1.0
+  },
+  "compression_ratio": 0.038065013374438954,
+  "views": null,
+  "confidence": 0.6125893172974884
+}

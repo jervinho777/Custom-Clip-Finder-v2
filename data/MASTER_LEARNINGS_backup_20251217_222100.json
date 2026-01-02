@@ -1,0 +1,204 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "last_updated": "2025-11-25T16:34:47.139947",
+    "sources": [
+      {
+        "file": "data/deep_learned_patterns.json",
+        "updated_at": "2025-11-24T15:18:26.059377",
+        "clips_analyzed": {
+          "top_outliers": 49,
+          "almost_viral": 50,
+          "underperformers": 50,
+          "total": 149
+        }
+      },
+      {
+        "file": "data/deep_learned_patterns.json",
+        "updated_at": "2025-11-24T15:18:56.617157",
+        "clips_analyzed": {
+          "top_outliers": 49,
+          "almost_viral": 50,
+          "underperformers": 50,
+          "total": 149
+        }
+      },
+      {
+        "file": "data/deep_learned_patterns.json",
+        "updated_at": "2025-11-25T16:34:47.139909",
+        "clips_analyzed": {
+          "top_outliers": 49,
+          "almost_viral": 50,
+          "underperformers": 50,
+          "total": 149
+        }
+      }
+    ]
+  },
+  "algorithm_understanding": {
+    "core_principle": "Der Algorithmus ist ein Performance-Vergleichsmechanismus mit EINEM Ziel: Watchtime maximieren",
+    "key_facts": [
+      "Du kämpfst gegen ALLE anderen Videos - Algorithmus ist nur Schiedsrichter",
+      "Plattformen verdienen 99% durch Ads → Mehr Watchtime = Mehr Geld",
+      "Kein Shadowbanning - nur schlechtere Performance als Konkurrenz",
+      "Make a video so good that people cannot physically scroll past"
+    ],
+    "metrics_priority": [
+      "Watch Time",
+      "Completion Rate",
+      "Engagement",
+      "Session Duration"
+    ],
+    "testgroup_mechanism": "Initial Test → Performance-Vergleich → Skalierung zum Gewinner"
+  },
+  "key_insights": [
+    "Die stärksten Hooks nutzen PARADOX-PATTERN: Etablierte Wahrheiten werden scheinbar widersprüchlich herausgefordert (92% der Top-Performer nutzen paradoxe Statements)",
+    "UNIVERSELLE PAIN POINTS schlagen Nischenwissen: Videos über Elternschaft, Beziehungen, Gesundheit und Geld performen 3x besser als spezifische Expertentipps",
+    "INFORMATION GAPS sind wichtiger als Entertainment: 88% der Top-Performer öffnen einen Loop in den ersten 3 Sekunden und lösen ihn erst am Ende auf"
+  ],
+  "hook_mastery": {
+    "winning_hook_types": [
+      {
+        "type": "Paradox Statement",
+        "frequency_in_top": "73%",
+        "template": "Wir machen [UNIVERSELLES VERHALTEN] falsch - und zwar dort wo wir [GEGENTEIL] machen sollten",
+        "examples": [
+          "Wir verwechseln Liebe mit Kontrolle",
+          "Wir belohnen Kinder genau dann, wenn wir sie nicht belohnen sollten"
+        ],
+        "why_it_works": "Erzeugt sofortige kognitive Dissonanz und zwingt User zum Weiterschauen um Paradox aufzulösen"
+      },
+      {
+        "type": "Authority Curiosity",
+        "frequency_in_top": "67%",
+        "template": "Und es haben nur [ZIELGRUPPE] ein sogenanntes [MYSTERIÖSER BEGRIFF]",
+        "examples": [
+          "Nur Frauen haben ein sogenanntes Rieselorgan",
+          "Tesla nutzte diese mysteriöse 369-Methode"
+        ],
+        "why_it_works": "Kombiniert Exclusivity + Information Gap + Authority Borrowing"
+      },
+      {
+        "type": "Everyday Mystery",
+        "frequency_in_top": "58%",
+        "template": "[ALLTÄGLICHES], das du [MACHST/KAUFST], [SCHOCKIERENDE WAHRHEIT]",
+        "examples": [
+          "Salat aus Spanien wird mit Kot gedüngt",
+          "Cola 30 Tage = 2kg Zucker"
+        ],
+        "why_it_works": "Nimmt harmlose Alltagsgewohnheiten und enthüllt versteckte, schockierende Realität"
+      }
+    ],
+    "hook_formulas": [
+      "Formel 1: [Paradox Statement] + [Pause] + [Universeller Pain Point]",
+      "Formel 2: [Authority Figure] + [Mysteriöser Begriff] + [Exklusivität]",
+      "Formel 3: [Alltägliches Produkt] + [Schockierende Wahrheit] + [Gesundheitskonsequenz]",
+      "Formel 4: [Scheinlösung] + 'Das ist leider nicht so einfach' + [Bessere Lösung]"
+    ],
+    "power_words": [
+      "falsch",
+      "niemals",
+      "Geheimnis",
+      "schockierend",
+      "paradox",
+      "mysteriös",
+      "sogenanntes",
+      "Wahrheit",
+      "versteckt",
+      "nur",
+      "alle",
+      "niemals"
+    ],
+    "words_to_avoid": [
+      "Zu komplexe Sprache in ersten 3 Sekunden",
+      "Keine Information Gap",
+      "Kein universeller Bezug",
+      "Payoff zu früh verraten"
+    ],
+    "timing": "0-3 Sekunden KRITISCH"
+  },
+  "structure_mastery": {
+    "optimal_structure": "Hook → Loop öffnen → Content mit Pattern Interrupts → Payoff",
+    "pattern_interrupts": "Alle 5-7 Sekunden",
+    "emotional_arc": "Achterbahn, nicht Flatline",
+    "key_rules": [
+      "Jede Sekunde muss Grund liefern weiterzuschauen",
+      "Keine Füller, keine Langeweile",
+      "Loop öffnen vor Sekunde 3, schließen am Ende"
+    ],
+    "winning_structures": [
+      {
+        "name": "Paradox-Explanation-Metaphor",
+        "flow": "Paradoxer Hook → Konkrete Beispiele → Alltagsmetapher → Emotionaler Call-to-Action",
+        "timing": "Hook (0-3s) → Problem (3-15s) → Lösung (15-25s) → Payoff (25-30s)",
+        "frequency_in_top": "41%"
+      },
+      {
+        "name": "Story-Arc-With-Lesson",
+        "flow": "Neugier-Hook → Story-Setup → Twist → Practical Learning",
+        "timing": "Hook (0-3s) → Setup (3-10s) → Climax (10-20s) → Lesson (20-30s)",
+        "frequency_in_top": "35%"
+      },
+      {
+        "name": "Problem-Solution-Expanded",
+        "flow": "Problem Statement → Scheinlösung → 'Aber das reicht nicht' → Bessere Lösung",
+        "timing": "Problem (0-5s) → Quick Fix (5-10s) → Reality Check (10-15s) → Real Solution (15-30s)",
+        "frequency_in_top": "29%"
+      }
+    ],
+    "pattern_interrupt_techniques": [
+      "Tempo-Wechsel",
+      "Paradoxe Statements",
+      "Direkte Ansprache",
+      "Unerwartete Zahlen",
+      "Metapher-Wechsel",
+      "Tonfall-Shift"
+    ]
+  },
+  "emotional_mastery": {
+    "best_emotions": [
+      "existential_awakening",
+      "guilt",
+      "curiosity",
+      "surprise",
+      "recognition"
+    ],
+    "trigger_phrases": [
+      "Das kennst du bestimmt auch",
+      "Wir machen alle",
+      "Jeden Tag",
+      "Du wirst schockiert sein",
+      "Die Wahrheit ist",
+      "Niemand erzählt dir"
+    ],
+    "arousal_level": "High Arousal performt besser"
+  },
+  "content_rules": {
+    "do_this": [
+      "Paradoxe Statements in ersten 3 Sekunden",
+      "Universelle Pain Points (Eltern, Beziehung, Geld, Gesundheit)",
+      "Information Gap bis zum Ende offen halten",
+      "Alltagsmetaphern für komplexe Konzepte",
+      "Authority Borrowing von bekannten Figuren",
+      "Pattern Interrupts alle 7-10 Sekunden",
+      "Direkte 'Du'-Ansprache durchgehend"
+    ],
+    "never_do": [
+      "Educational Content ohne Entertainment-Wrapper",
+      "Payoff in ersten 15 Sekunden verraten",
+      "Nischenwissen ohne universelle Relevanz",
+      "Schwache Hooks ohne Information Gap",
+      "Business-Sprache statt Alltagssprache",
+      "Theorie ohne konkrete Beispiele/Stories"
+    ]
+  },
+  "scoring_weights": {
+    "hook_strength": 0.3,
+    "emotional_intensity": 0.25,
+    "information_gap": 0.2,
+    "universality": 0.15,
+    "pattern_interrupts": 0.05,
+    "personal_address": 0.03,
+    "cialdini_triggers": 0.02
+  }
+}

@@ -1,0 +1,68 @@
+# V4 INTEGRATION PATCH
+# Apply these changes to create_clips_v4_integrated.py
+
+## 1. Add import at top of file:
+
+from master_learnings_v2 import get_learnings_for_prompt
+
+
+## 2. Update _evaluate_quality_debate() method (ca. line 400):
+
+async def _evaluate_quality_debate(self, clip: Dict, story_structure: Dict) -> Dict:
+    '''
+    Quality evaluation using debate strategy WITH LEARNINGS!
+    '''
+    
+    # GET REAL VIRAL PATTERNS!
+    learnings_prompt = get_learnings_for_prompt()
+    
+    clip_text = self._format_clip_for_eval(clip)
+    
+    prompt = f'''{learnings_prompt}
+
+# CLIP ZU BEWERTEN:
+{clip_text}
+
+Bewerte BASIEREND auf den gelernten Viral Patterns (0-50):
+
+1. Hook Strength (0-10)
+   - Verwendet er winning hook types?
+   - Power words present?
+   - Timing richtig (0-3s)?
+
+2. Story Coherence (0-10)
+   - Folgt winning structure?
+   - Pattern interrupts alle 5-7s?
+   - Loop opened & closed?
+
+3. Natural Flow (0-10)
+   - Keine Filler?
+   - Emotional arc?
+   - Jede Sekunde Grund weiterzuschauen?
+
+4. Watchtime Potential (0-10)
+   - High arousal emotion?
+   - Mass appeal?
+   - Information gap?
+
+5. Emotional Impact (0-10)
+   - Best emotions used?
+   - Trigger phrases?
+   - Achterbahn, nicht flatline?
+
+Antworte in JSON:
+{{
+  "scores": {{...}},
+  "total_score": X,
+  "quality_tier": "A/B/C/D",
+  "reasoning": {{
+    "strengths": ["Was folgt gelernten Patterns?"],
+    "weaknesses": ["Was missachtet Patterns?"],
+    "learned_patterns_applied": ["Welche Patterns erkannt?"]
+  }}
+}}
+'''
+    
+    system = "Du bist ein Qualitäts-Evaluator trainiert auf {clips_analyzed} viralen Clips."
+    
+    # Rest bleibt gleich...

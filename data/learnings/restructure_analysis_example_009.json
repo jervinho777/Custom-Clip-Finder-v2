@@ -1,0 +1,86 @@
+{
+  "segment_selection_rules": [
+    "Select segments that start with a universal model/framework (e.g., 'Lebenslinie' timeline) that can be understood with zero context from the longform.",
+    "Select segments that rapidly enumerate familiar life milestones (high recognition density: birth\u2192school\u2192job\u2192partner\u2192kids\u2192retirement) to create instant viewer alignment and momentum.",
+    "Keep the first segment that contains a contrarian or alarming reframe (e.g., 'bei vielen Menschen f\u00e4ngt direkt danach der Anfang vom Ende an') because it converts recognition into tension.",
+    "Keep segments that introduce a concrete, relatable 'stuckness' metaphor anchored in everyday routine (job route, projects, same pizzeria order) to make the abstract thesis visceral.",
+    "End on a prescriptive list with multiple actionable verbs (take different route, read X, meet new people, go new places) to deliver clear takeaway + shareability.",
+    "Prefer segments that contain repeated time-markers or seasonal markers (e.g., 'schon wieder Weihnachten') because they compress time and intensify the 'life is slipping' feeling.",
+    "Remove segments that require biographical setup (e.g., personal history, origin story, childhood, 'how it started') unless they directly support the framework in <10 seconds.",
+    "Remove atmospheric B-roll / scene-setting (river, paddling, 'watch the atmosphere') because it slows pacing and reduces idea-per-second in short-form.",
+    "Remove medical/relationship backstory detail (injury, depression, breakup, clinics) when the viral clip goal is a broad, non-niche life lesson rather than empathy narrative.",
+    "Avoid segments with long emotional buildup before the first clear point; short-form selection favors immediate thesis over gradual reveal.",
+    "Prefer segments with punchy recurring nouns and concrete objects (pizzeria, pizza numbers, waitress) that are easy to visualize and caption.",
+    "Select contiguous segments that already form a mini-arc (model \u2192 problem \u2192 consequence \u2192 advice) to minimize the need for editorial bridging."
+  ],
+  "timing_patterns": {
+    "clip_length_optimal": "60-80 seconds",
+    "hook_position": "first 1-3 seconds (open on the framework noun: 'Lebenslinie' + birth/end)",
+    "payoff_position": "last 15-25 seconds (actionable advice list + escalation to 'verr\u00fcckte Dinge')",
+    "pacing_rules": [
+      "Target high 'concept density' in the first 10 seconds: at least 8-12 short beats (life milestones) with minimal pauses.",
+      "Insert the main tension statement by ~12-18s (contrarian reframe) to prevent the list from feeling like filler.",
+      "Use a mid-clip concreteness pivot at ~25-35s: move from abstract timeline to specific routine examples (job route, pizzeria order).",
+      "Use time-compression refrain around ~35-50s ('schon wieder Weihnachten') to spike urgency and retention.",
+      "Finish with rapid-fire imperatives (\u22656 distinct actions in \u226420s) to create 'save/share' utility.",
+      "Allow one comedic/edgy tag in the final 5-10s (unexpected twist) to trigger rewatch and comments, but keep it after the core advice so it doesn't derail meaning."
+    ]
+  },
+  "content_patterns": {
+    "kept_characteristics": [
+      "Standalone thesis that doesn't depend on the speaker's personal story.",
+      "Framework-first structure (timeline model) that viewers can map onto themselves instantly.",
+      "High relatability via common life script and routine imagery (job commute, known people, favorite pizza).",
+      "Escalation: recognition \u2192 warning ('Anfang vom Ende') \u2192 stagnation metaphor ('nur noch verwaltest') \u2192 call-to-action.",
+      "Second-person direct address ('du') increasing intimacy and accountability.",
+      "Rhythmic enumeration and repetition to maintain momentum and reduce drop-off.",
+      "Utility-heavy ending (clear behavioral prompts) suitable for saving and sharing."
+    ],
+    "removed_characteristics": [
+      "Slow scenic intros and mood-building sequences (nature/atmosphere) with low idea density.",
+      "Personal biographical context (1999, med student, injury, drinking, breakup) requiring empathy investment and longer setup.",
+      "Complex emotional narrative arcs that need multiple minutes to pay off.",
+      "Anything that introduces niche context (clinic specifics, oncology details) not required for the universal point.",
+      "Long pauses or descriptive passages without a clear claim, contrast, or instruction."
+    ],
+    "transition_points": [
+      "Cut begins at the first fully-formed universal framework segment (the 'life line' model) instead of earlier greetings or personal setup.",
+      "Jump/keep-through from milestone enumeration directly into the contrarian problem statement (recognition \u2192 tension).",
+      "Transition from abstract life timeline to concrete routine vignette ('pizzeria', 'Pizza Nummer 8/13') to re-ground attention.",
+      "Final transition into advice list with imperative verbs; clip ends immediately after the comedic escalation to maximize last-second memorability."
+    ]
+  },
+  "quality_indicators": {
+    "what_makes_good_cut": [
+      "The first sentence establishes the entire topic and stakes without context (framework hook).",
+      "Contains a complete short-form narrative arc: model \u2192 problem \u2192 symptom/metaphor \u2192 solution.",
+      "High 'idea-per-second' with concrete nouns and short clauses suitable for captions.",
+      "Mid-clip pattern break (abstract \u2192 concrete routine) that refreshes attention around 25-35s.",
+      "Ending provides multiple actionable steps (utility) plus a memorable tag (comment bait) after the value is delivered.",
+      "Clip can be titled from any 1-2 lines inside it (e.g., 'Anfang vom Ende', 'Du verwaltest nur noch dein Leben') indicating strong packaging options."
+    ],
+    "what_makes_bad_cut": [
+      "Starts with greetings, context, or scenic setup before the first claim (weak first 3 seconds).",
+      "Requires knowledge of the longform backstory to understand why the speaker is saying it.",
+      "Only contains problem exposition without a prescriptive payoff (no save/share utility).",
+      "Stays abstract the whole time (no concrete routine examples) leading to lower retention.",
+      "Ends mid-thought or before the advice list, reducing closure and replay value.",
+      "Places edgy/comedic line too early, causing viewers to miss the core message or perceive it as incoherent."
+    ]
+  },
+  "example_id": "example_009",
+  "selection_info": {
+    "selected_indices": [
+      90,
+      91,
+      95,
+      97,
+      98
+    ],
+    "matched_count": 5,
+    "coverage": 1.0
+  },
+  "compression_ratio": 0.059555760459717125,
+  "views": null,
+  "confidence": 0.6046545742129701
+}

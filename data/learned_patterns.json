@@ -1,0 +1,296 @@
+{
+  "viral_patterns": [
+    {
+      "id": "VP001",
+      "name": "Story-Opening mit direkter Konfrontation",
+      "description": "Videos beginnen sofort mit einer konkreten Geschichte oder Situation ohne Einleitung. Beispiel: 'Horde Kinder sitzt am Straßenrand...' oder 'Ein alter Mann kommt...'",
+      "detection_keywords": [
+        "Horde Kinder",
+        "Ein alter Mann",
+        "Es war",
+        "Kommt ein Typ",
+        "Ich war"
+      ],
+      "detection_rules": "Beginnt direkt mit Handlung, ohne 'Hallo' oder 'Heute erkläre ich'",
+      "frequency_viral": 0.85,
+      "frequency_normal": 0.15,
+      "impact_score": 0.9,
+      "examples": [
+        "Horde Kinder sitzt am Straßenrand gelangen",
+        "Ein alter Mann kommt die Straßenklanken"
+      ]
+    },
+    {
+      "id": "VP002",
+      "name": "Paradox-Hook Pattern",
+      "description": "Statements die dem gesunden Menschenverstand widersprechen und sofort Neugierde erzeugen",
+      "detection_keywords": [
+        "niemals",
+        "hört auf",
+        "ist eine Lüge",
+        "funktioniert nicht",
+        "Problem ist"
+      ],
+      "detection_rules": "Aussage die etablierte Meinungen herausfordert",
+      "frequency_viral": 0.78,
+      "frequency_normal": 0.22,
+      "impact_score": 0.88,
+      "examples": [
+        "wird bitte auf am Wochenende auszuschlafen",
+        "Arbeitel niemals vergelft"
+      ]
+    },
+    {
+      "id": "VP003",
+      "name": "Extreme Zahlen-Schock",
+      "description": "Verwendung extremer, unerwarteter Zahlen die sofort Aufmerksamkeit erzeugen",
+      "detection_keywords": [
+        "33.7x",
+        "6400000",
+        "13 Kilow",
+        "500 mehr Zedes",
+        "3,2 Milliarden"
+      ],
+      "detection_rules": "Große, konkrete Zahlen die schockieren oder überraschen",
+      "frequency_viral": 0.72,
+      "frequency_normal": 0.28,
+      "impact_score": 0.85,
+      "examples": [
+        "6400000 views",
+        "13 Kilow Zucker pro Jahr",
+        "3,2 Milliarden Umsatz"
+      ]
+    },
+    {
+      "id": "VP004",
+      "name": "Wissenschafts-Analogie Pattern",
+      "description": "Komplexe wissenschaftliche Konzepte durch einfache, überraschende Analogien erklärt",
+      "detection_keywords": [
+        "Social Jet-Leg",
+        "Junkslip",
+        "Transatlantikflug",
+        "90 Minuten",
+        "Molekül"
+      ],
+      "detection_rules": "Wissenschaftlicher Begriff + alltägliche Analogie",
+      "frequency_viral": 0.81,
+      "frequency_normal": 0.19,
+      "impact_score": 0.87,
+      "examples": [
+        "Social Jet-Leg ist wie Transatlantikflug",
+        "Schlafen ist wie Fußballspielen"
+      ]
+    },
+    {
+      "id": "VP005",
+      "name": "Direkte Du-Ansprache mit Imperativ",
+      "description": "Direkter Befehl oder dringende Empfehlung an den Zuschauer",
+      "detection_keywords": [
+        "wird bitte",
+        "hört auf",
+        "macht das",
+        "lasst mich",
+        "stelle dir vor"
+      ],
+      "detection_rules": "Imperativ + persönliche Ansprache in den ersten Sekunden",
+      "frequency_viral": 0.74,
+      "frequency_normal": 0.31,
+      "impact_score": 0.82,
+      "examples": [
+        "wird bitte auf am Wochenende auszuschlafen",
+        "stelle dir vor"
+      ]
+    }
+  ],
+  "hook_patterns": {
+    "winning_hooks": [
+      {
+        "type": "Anti-Common-Sense",
+        "template": "[Hört auf/Macht niemals] + [etablierte Gewohnheit]",
+        "examples": [
+          "wird bitte auf am Wochenende auszuschlafen",
+          "Arbeitel niemals vergelft"
+        ],
+        "effectiveness": 0.92
+      },
+      {
+        "type": "Story-Drop-In",
+        "template": "[Gruppe/Person] + [konkrete Situation] ohne Vorrede",
+        "examples": [
+          "Horde Kinder sitzt am Straßenrand",
+          "Ein alter Mann kommt"
+        ],
+        "effectiveness": 0.89
+      },
+      {
+        "type": "Shock-Number",
+        "template": "[Extreme Zahl] + [überraschender Kontext]",
+        "examples": [
+          "6400000 views",
+          "13 Kilow Zucker"
+        ],
+        "effectiveness": 0.85
+      }
+    ],
+    "hook_red_flags": [
+      "Begrüßungen wie 'Hallo' oder 'Heute erkläre ich'",
+      "Lange Einleitungen über das Thema",
+      "Selbstvorstellung am Anfang",
+      "Fragen ohne sofortige Antwort"
+    ],
+    "strong_first_words": [
+      "wird",
+      "Horde",
+      "Ein",
+      "Arbeitel",
+      "Problem",
+      "niemals",
+      "stelle"
+    ],
+    "weak_first_words": [
+      "Hallo",
+      "Heute",
+      "Ich",
+      "Willkommen",
+      "Also",
+      "Ja"
+    ]
+  },
+  "content_structure": {
+    "optimal_flow": "Schock-Hook → Geschichte/Analogie → Wissenschaftlicher Beleg → Praktische Konsequenz",
+    "timing": {
+      "hook_duration": "0-3 Sekunden - sofortige Konfrontation",
+      "first_loop": "3-15 Sekunden - Geschichte entwickeln",
+      "pattern_interrupts": "alle 8-12 Sekunden durch neue Wendung"
+    },
+    "key_elements": [
+      "Keine Einleitung - direkt ins Thema",
+      "Konkrete Beispiele statt Theorie",
+      "Überraschende wissenschaftliche Fakten",
+      "Praktische Handlungsaufforderungen"
+    ]
+  },
+  "emotional_triggers": {
+    "primary_emotions": [
+      "Schock",
+      "Neugierde",
+      "Überraschung",
+      "Dringlichkeit",
+      "Sorge"
+    ],
+    "trigger_words_german": [
+      "niemals",
+      "Problem",
+      "Scheiße",
+      "Katastrophe",
+      "gefährlich",
+      "brutal",
+      "Hammer"
+    ],
+    "emotional_arc": "Sofortiger Schock → Neugierde durch Widerspruch → Verstehen durch Analogie → Handlungsdrang"
+  },
+  "scoring_criteria": {
+    "hook_strength": {
+      "weight": 0.25,
+      "indicators": [
+        "Direkte Konfrontation",
+        "Anti-Common-Sense",
+        "Sofortige Geschichte",
+        "Extreme Zahlen"
+      ]
+    },
+    "information_gap": {
+      "weight": 0.2,
+      "indicators": [
+        "Paradoxe Aussagen",
+        "Unvollständige Geschichten",
+        "Überraschende Wendungen"
+      ]
+    },
+    "emotional_intensity": {
+      "weight": 0.15,
+      "indicators": [
+        "Schock-Worte",
+        "Persönliche Betroffenheit",
+        "Dringlichkeit"
+      ]
+    },
+    "mass_appeal": {
+      "weight": 0.15,
+      "indicators": [
+        "Alltägliche Situationen",
+        "Universelle Probleme",
+        "Einfache Sprache"
+      ]
+    },
+    "simplicity": {
+      "weight": 0.1,
+      "indicators": [
+        "Klare Analogien",
+        "Konkrete Beispiele",
+        "Einfache Worte"
+      ]
+    },
+    "storytime": {
+      "weight": 0.1,
+      "indicators": [
+        "Narrative Struktur",
+        "Charaktere",
+        "Konflikte"
+      ]
+    },
+    "shareability": {
+      "weight": 0.05,
+      "indicators": [
+        "Überraschende Fakten",
+        "Praktische Tips",
+        "Diskussionswürdige Aussagen"
+      ]
+    }
+  },
+  "red_flags": [
+    "Beginnen mit Begrüßung oder Selbstvorstellung",
+    "Theoretische Erklärungen ohne konkrete Beispiele",
+    "Fragen stellen ohne sofortige Spannung zu erzeugen",
+    "Lange Einleitungen über das kommende Thema",
+    "Schwache erste Worte wie 'Also' oder 'Ja'",
+    "Keine emotionale Komponente in den ersten 10 Sekunden"
+  ],
+  "quick_checks": [
+    {
+      "check": "Beginnt das Video ohne Begrüßung direkt mit einer Geschichte/Aussage?",
+      "impact": "+15 oder -10"
+    },
+    {
+      "check": "Widerspricht die erste Aussage dem gesunden Menschenverstand?",
+      "impact": "+12 oder -5"
+    },
+    {
+      "check": "Enthält der Hook konkrete, extreme Zahlen?",
+      "impact": "+8 oder -3"
+    },
+    {
+      "check": "Wird eine wissenschaftliche Analogie verwendet?",
+      "impact": "+10 oder -2"
+    },
+    {
+      "check": "Werden Schock-Wörter in den ersten 10 Sekunden verwendet?",
+      "impact": "+7 oder -3"
+    }
+  ],
+  "actionable_insights": [
+    "Eliminiere jede Form von Begrüßung - starte sofort mit der kontroversen Hauptaussage",
+    "Verwende das Anti-Common-Sense Pattern: 'Hört auf [etablierte Gewohnheit]' funktioniert extrem gut",
+    "Baue wissenschaftliche Konzepte in alltägliche Analogien um (Social Jet-Lag = Transatlantikflug)",
+    "Nutze extreme, konkrete Zahlen die schockieren (13 Kilow Zucker statt 'viel Zucker')",
+    "Beginne Geschichten ohne Kontext - 'Horde Kinder sitzt...' statt 'Ich erzähle euch eine Geschichte'",
+    "Verwende Schock-Wörter strategisch: 'brutal', 'Katastrophe', 'Scheiße' erzeugen emotionale Reaktionen",
+    "Strukturiere als: Schock → Geschichte → Wissenschaft → Handlung (nicht umgekehrt)"
+  ],
+  "metadata": {
+    "learned_at": "2025-11-24T13:52:49.013942",
+    "outliers_analyzed": 40,
+    "normal_analyzed": 40,
+    "total_training_clips": 972
+  }
+}

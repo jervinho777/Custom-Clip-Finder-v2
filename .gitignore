@@ -1,0 +1,93 @@
+# Environment & API Keys (CRITICAL!)
+.env
+.env.*
+.env.backup*
+*.key
+*_API_KEY*
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.pyc
+
+# Cache & Large Files
+data/cache/
+data/uploads/*.mp4
+data/uploads/*.mov
+data/uploads/*.avi
+data/outputs/
+
+# Training data & examples (LARGE!)
+data/restructure_examples/
+data/audio/
+data/training/Longform*/
+data/training/*.mp4
+data/training/*.mov
+data/models/
+data/transcripts_cache/
+
+# Audio files
+*.wav
+*.m4a
+*.mp3
+*.aac
+
+# Video files
+*.mp4
+*.mov
+*.avi
+*.mkv
+
+# Keep directory structure
+!data/uploads/.gitkeep
+!data/cache/.gitkeep
+!data/outputs/.gitkeep
+!data/cache/transcripts/.gitkeep
+!data/cache/pipeline/.gitkeep
+
+# System Files
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
+.AppleDouble
+.LSOverride
+
+# Logs
+*.log
+test_output.log
+
+# Output directories
+output/
+Archiv/
+backend/
+
+# Jupyter
+*.ipynb_checkpoints/
+*.ipynb
+
+# Temporary
+*.tmp
+*.temp
+*.textClipping
+
+# ML Models (large!)
+*.pkl
+*.h5
+*.pth
+*.npy
+
+# Credentials
+credentials.json
+token.json
+*.pem

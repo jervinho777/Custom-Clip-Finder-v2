@@ -1,0 +1,160 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "last_updated": "2025-12-17T22:16:37",
+    "sources": [
+      {
+        "type": "viral_example",
+        "example_id": "example_20251217_221637",
+        "added_at": "2025-12-17T22:16:37"
+      }
+    ]
+  },
+  "algorithm_understanding": {
+    "core_principle": "Der Algorithmus ist ein Performance-Vergleichsmechanismus mit EINEM Ziel: Watchtime maximieren",
+    "key_facts": [
+      "Du kämpfst gegen ALLE anderen Videos - Algorithmus ist nur Schiedsrichter",
+      "Plattformen verdienen 99% durch Ads → Mehr Watchtime = Mehr Geld",
+      "Kein Shadowbanning - nur schlechtere Performance als Konkurrenz",
+      "Make a video so good that people cannot physically scroll past"
+    ],
+    "metrics_priority": ["Watch Time", "Completion Rate", "Engagement", "Session Duration"],
+    "testgroup_mechanism": "Initial Test → Performance-Vergleich → Skalierung zum Gewinner"
+  },
+  "key_insights": [
+    "Hook öffnet sofort Information Gap",
+    "Payoff zuerst erzeugt sofortige Spannung"
+  ],
+  "hook_mastery": {
+    "winning_hook_types": [],
+    "hook_formulas": [
+      "Warum [kontraintuitives Statement]"
+    ],
+    "power_words": [
+      "Warum",
+      "größte",
+      "Fehler"
+    ],
+    "words_to_avoid": [],
+    "timing": "0-3 Sekunden KRITISCH"
+  },
+  "structure_mastery": {
+    "optimal_structure": "Hook → Loop öffnen → Content mit Pattern Interrupts → Payoff",
+    "pattern_interrupts": "Alle 5-7 Sekunden",
+    "emotional_arc": "Achterbahn, nicht Flatline",
+    "key_rules": [
+      "Jede Sekunde muss Grund liefern weiterzuschauen",
+      "Keine Füller, keine Langeweile",
+      "Loop öffnen vor Sekunde 3, schließen am Ende"
+    ],
+    "winning_structures": [
+      "reordered"
+    ]
+  },
+  "emotional_mastery": {
+    "best_emotions": [],
+    "trigger_phrases": [],
+    "arousal_level": "High Arousal performt besser"
+  },
+  "content_rules": {
+    "do_this": [],
+    "never_do": []
+  },
+  "scoring_weights": {
+    "hook_strength": 0.25,
+    "information_gap": 0.20,
+    "emotional_intensity": 0.15,
+    "mass_appeal": 0.15,
+    "structure_flow": 0.10,
+    "simplicity": 0.10,
+    "personal_address": 0.05
+  },
+  "viral_examples": [
+    {
+      "example_id": "example_20251217_221637",
+      "template_id": "template_20251217_221637",
+      "when_to_use": [
+        "Video enthält question Hook",
+        "Starker Payoff-Moment vorhanden",
+        "Original-Struktur optimierbar"
+      ],
+      "restructuring_strategy": "reordered",
+      "hook_pattern": {
+        "hook_text": "Warum der größte Fehler bei Social Media ist",
+        "hook_type": "question",
+        "first_words": ["Warum", "der", "größte"],
+        "power_words": ["Warum", "größte", "Fehler"],
+        "emotional_trigger": "curiosity",
+        "information_gap": false,
+        "hook_formula": "Warum [kontraintuitives Statement]",
+        "effectiveness": {
+          "score": 0.9,
+          "watch_time_impact": "high",
+          "hook_strength": 9
+        },
+        "matched_patterns": ["question_hook"]
+      },
+      "structure_pattern": {
+        "structure_name": "reordered",
+        "structure": {
+          "hook": {
+            "start": 0.0,
+            "end": 3.0,
+            "duration": 3.0,
+            "role": "hook",
+            "purpose": "Stop-Trigger, Information Gap"
+          },
+          "context": {
+            "start": 3.0,
+            "end": 7.0,
+            "duration": 4.0,
+            "role": "context",
+            "purpose": "Aufbau, Loop öffnen"
+          },
+          "content": {
+            "start": 7.0,
+            "end": 12.0,
+            "duration": 5.0,
+            "role": "content",
+            "purpose": "Hauptinhalt mit Pattern Interrupts"
+          }
+        },
+        "timing": {
+          "hook_duration": 3.0,
+          "first_loop": 3.0,
+          "pattern_interrupts": [],
+          "total_duration": 15.0,
+          "optimal_length": {
+            "min": 30,
+            "max": 60,
+            "sweet_spot": 45
+          }
+        },
+        "tension_arc": {
+          "arc_type": "plateau",
+          "tension_points": [
+            {"time": 0.0, "level": 9, "reason": "hook"},
+            {"time": 3.0, "level": 7, "reason": "context"},
+            {"time": 7.0, "level": 6, "reason": "content"}
+          ],
+          "average_tension": 7.0,
+          "min_tension": 5.0,
+          "max_tension": 9.0
+        },
+        "effectiveness": {
+          "score": 0.6,
+          "watch_time_impact": "high",
+          "completion_rate_impact": "high"
+        }
+      },
+      "performance": {
+        "views": 500000,
+        "watch_time": 85,
+        "followers": 5000
+      },
+      "success_rate": 0.6,
+      "learned_at": "2025-12-17T22:16:37"
+    }
+  ]
+}
+

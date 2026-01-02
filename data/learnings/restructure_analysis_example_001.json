@@ -1,0 +1,77 @@
+{
+  "segment_selection_rules": [
+    "Select segments where the guest makes a universal moral claim + direct audience address (e.g., 'wie wir', 'genau wie Sie alle hier sitzen')\u2014these lines travel without prior context.",
+    "Select segments that compress a complex topic into a concrete, visual micro-scene viewers can imagine instantly (e.g., ape turns away behind glass; kids knocking on the window).",
+    "Select segments containing an explicit emotion stack (>=3 emotions/needs named in sequence: 'Einsamkeit, Scham, Liebe') to create perceived depth fast.",
+    "Select segments with a clear 'constraint vs. nature' contrast quantified or bounded (e.g., 'auf 150 Quadratmetern')\u2014numbers anchor outrage and memorability.",
+    "Select segments that include a rhetorical question or implicit challenge to the viewer's default behavior (e.g., 'wie f\u00fchlt er sich denn?') to trigger self-reflection and comments.",
+    "Select segments that end with a decisive verdict statement ('v\u00f6llig absurd', 'nicht mehr zeitgem\u00e4\u00df') to function as a shareable punchline.",
+    "Remove segments that require identity setup, credentials, or backstory to understand (intro, biography, career arc).",
+    "Remove segments that are explanatory/academic (definitions, methodology, 'how do you know') unless they contain a single striking proof line.",
+    "Remove segments that depend on prior references (e.g., earlier whale shark example) or need visuals not present in the clip to land.",
+    "Prefer contiguous blocks (like [42,43,44]) when they form a complete mini-argument: hook (relatable), build (constraints), payoff (judgment)."
+  ],
+  "timing_patterns": {
+    "clip_length_optimal": "35-55 seconds",
+    "hook_position": "first 1-3 seconds (start on the claim/image, no lead-in)",
+    "payoff_position": "last 5-10 seconds (rhetorical question + hard judgment line)",
+    "pacing_rules": [
+      "Open mid-thought on a high-signal noun phrase ('Menschenaffen', 'wie wir')\u2014avoid greetings, names, or interviewer prompts.",
+      "Maintain a single escalation curve: (1) identification/relatability \u2192 (2) emotional attribution \u2192 (3) constraint/injustice detail \u2192 (4) everyday example (kids/visitors) \u2192 (5) verdict.",
+      "Use list pacing: deliver 2-4 short clauses back-to-back (emotion stack) to increase density without needing cuts.",
+      "Insert the most vivid concrete scene by ~25-35% of runtime to prevent abstraction fatigue.",
+      "Reserve the strongest condemnatory phrase for the final sentence; do not spend it early.",
+      "Avoid topic pivots inside <60s; one subject (apes in enclosures) for the entire clip."
+    ]
+  },
+  "content_patterns": {
+    "kept_characteristics": [
+      "Self-contained argument that does not rely on the longform context (no references to earlier fish/aquarium job).",
+      "High empathy framing + anthropomorphic bridge ('die sind ja wie wir') that instantly reduces cognitive load.",
+      "Concrete enclosure context (glass, Gehege, 150 Quadratmeter) that creates a mental picture and moral tension.",
+      "Audience implication: viewers are positioned as participants ('von ihnen abwenden', 'angegafft werden'), increasing emotional stakes.",
+      "Everyday social proof vignette (children knocking) that contrasts innocence with harm and invites debate."
+    ],
+    "removed_characteristics": [
+      "Host-led setup, biography, and credentials (age, job titles, locations) that slow entry and reduce retention.",
+      "Process explanations (how knowledge was acquired, research years) that are low-arousal in short-form.",
+      "Multi-topic breadth (fish capture, whale shark economics) that dilutes a single shareable thesis.",
+      "Nuanced hedging or conditional language; clip favors certainty and moral clarity."
+    ],
+    "transition_points": [
+      "Cut begins at the first sentence that introduces a universally recognizable subject + immediate stance ('Einen Menschenaffen... Die sind ja wie wir').",
+      "Cut preserves the internal escalation across three contiguous segments: emotions \u2192 spatial constraint \u2192 public behavior vignette \u2192 final judgment.",
+      "Cut ends immediately after the strongest normative conclusion ('v\u00f6llig absurd... nicht mehr zeitgem\u00e4\u00df')\u2014no cooldown, no follow-up."
+    ]
+  },
+  "quality_indicators": {
+    "what_makes_good_cut": [
+      "Standalone comprehension: a viewer can summarize the point without knowing who is speaking or prior context.",
+      "Immediate imagery within 3 seconds (ape behind glass turning away) that functions without B-roll.",
+      "Presence of an emotional triad/list that feels 'deep' and quotable in short time.",
+      "A measurable detail (e.g., '150 Quadratmetern') that increases credibility and shareability.",
+      "Viewer-role activation (implied guilt/participation) that drives comments and retention.",
+      "Strong terminal line that can be used as the on-screen caption/title and as the clip\u2019s final frame."
+    ],
+    "what_makes_bad_cut": [
+      "Starts with introductions, names, or 'I want to ask...' prompts\u2014low immediate value and weak hook.",
+      "Requires missing context (references to earlier animals, jobs, or examples) to feel complete.",
+      "Ends without a verdict or ends on a setup for the next thought\u2014reduces share rate.",
+      "Contains multiple topic switches (fish \u2192 whales \u2192 apes) inside <60s\u2014confuses the viewer.",
+      "Overly technical justification without a single vivid example\u2014drops arousal and retention."
+    ]
+  },
+  "example_id": "example_001",
+  "selection_info": {
+    "selected_indices": [
+      42,
+      43,
+      44
+    ],
+    "matched_count": 3,
+    "coverage": 1.0
+  },
+  "compression_ratio": 0.04357816904285306,
+  "views": null,
+  "confidence": 0.6069787401963201
+}

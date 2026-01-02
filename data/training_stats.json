@@ -1,0 +1,60 @@
+{
+  "total_clips": 972,
+  "clips_with_content": 972,
+  "outliers": 205,
+  "total_views": 296111576,
+  "accounts": 15,
+  "updated_at": "2025-11-24T13:54:18.795312",
+  "top_accounts": [
+    {
+      "account": "Greator",
+      "clips": 395,
+      "median_views": 190000
+    },
+    {
+      "account": "Finanzfluss",
+      "clips": 173,
+      "median_views": 129189
+    },
+    {
+      "account": "Fuat & Marta",
+      "clips": 163,
+      "median_views": 202400
+    },
+    {
+      "account": "Meet Your Master",
+      "clips": 119,
+      "median_views": 163000
+    },
+    {
+      "account": "Rafael Bettencourt",
+      "clips": 36,
+      "median_views": 130000
+    },
+    {
+      "account": "Silke Sch\u00e4fer",
+      "clips": 28,
+      "median_views": 90700
+    },
+    {
+      "account": "Gereon J\u00f6rn",
+      "clips": 22,
+      "median_views": 113500
+    },
+    {
+      "account": "Robert Marc Lehmann",
+      "clips": 14,
+      "median_views": 741451
+    },
+    {
+      "account": "Chris Surel",
+      "clips": 10,
+      "median_views": 570950
+    },
+    {
+      "account": "Lea Ernst",
+      "clips": 4,
+      "median_views": 153950
+    }
+  ]
+}

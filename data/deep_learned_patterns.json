@@ -1,0 +1,370 @@
+{
+  "metadata": {
+    "clips_analyzed": {
+      "total": 175,
+      "top_outliers": 47,
+      "almost_viral": 78,
+      "underperformers": 50
+    },
+    "created_at": "2025-12-20T09:20:29.435341",
+    "version": "v2_multi_ai"
+  },
+  "executive_summary": {
+    "key_insight_1": "Top hooks open loops and create information gaps",
+    "key_insight_2": "Pattern interrupts every 5-7 seconds maintain attention",
+    "key_insight_3": "High arousal emotions (curiosity, surprise) outperform low arousal"
+  },
+  "hook_mastery": {
+    "winning_hook_types": [
+      {
+        "type": "statement + curiosity (paradox)",
+        "template": "„Die meisten denken X ist der Anfang—aber eigentlich ist es der Anfang von Y.“ (paradoxer Satz über ein universelles Thema)",
+        "example": "…leben … auf einer Lebenslinie. Die Geburt … ist das Ende. Du kommst auf die Welt…",
+        "strength": 8,
+        "why_works": "Paradoxer Frame („Geburt ist das Ende“) erzeugt sofort kognitive Dissonanz. Der Zuschauer will verstehen, was gemeint ist → Informationslücke. Gleichzeitig wird ein universelles Thema (Leben/Zeit/Altern) aufgemacht, das fast jeden betrifft → breite Zielgruppe, hoher Initial-Interest. Der Ton wirkt wie ein spontaner Monolog/„Truth rant“: authentisch, schwer zu ignorieren."
+      },
+      {
+        "type": "story",
+        "template": "„Mach NIEMALS [X]. Hier ist die kurze Story, warum…“ (sofort Szene + Konflikt in 1-2 Sätzen)",
+        "example": "Ärgere niemals … Eine Horde Kinder sitzt am Straßenrand. Ein alter Mann kommt vorbei und sie beschließen, ihn zu ärgern.",
+        "strength": 7,
+        "why_works": "Startet sofort mit Konflikt + klarer Szene (Kinder vs. alter Mann). Der Satz „Ärgere niemals …“ wirkt wie eine Warnung/Regel und erzeugt sofort die Frage: Warum nicht? Gleichzeitig wird das Setting in 1-2 Sätzen gebaut, ohne Kontextballast."
+      },
+      {
+        "type": "statement",
+        "template": "„Du machst X zu oft – genau an der Stelle, wo du eigentlich Y machen müsstest.“",
+        "example": "Wir stellen zu viele Fragen – und zwar an Stellen, wo wir Aussagen machen müssten.",
+        "strength": 8,
+        "why_works": "Kontra-intuitiver Take (\"zu viele Fragen\" klingt erstmal positiv) + direkte Relevanz für Eltern/Erziehende. Es setzt sofort ein Problem-Frame: Du machst etwas Alltägliches falsch, ohne es zu merken. Das öffnet eine starke Information Gap: Welche Fragen? Warum sind sie falsch? Was stattdessen?"
+      },
+      {
+        "type": "statement/command + curiosity",
+        "template": "„Hör auf mit [beliebte Gewohnheit]. Wenn du [Gewohnheit] machst, ist das wie [extreme, sofort bildhafte Analogie].“",
+        "example": "Wird bitte auf, am Wochenende auszuschlafen. Wenn wir am Wochenende länger schlafen als unter der Woche…",
+        "strength": 8,
+        "why_works": "Direkter Imperativ („wird bitte auf…“) ist ein Pattern-Interrupt gegen die Standard-Erwartung (alle wollen ausschlafen). Sofortiger Widerspruch zu einer verbreiteten Gewohnheit erzeugt kognitive Dissonanz: „Warum sollte Ausschlafen schlecht sein?“ Das öffnet einen Information-Gap, der in den nächsten Sekunden mit einer starken Analogie (Transatlantikflug) gefüttert wird."
+      },
+      {
+        "type": "statement/command + curiosity",
+        "template": "„Hör auf mit [beliebte Gewohnheit]. Wenn du [Gewohnheit] machst, ist das wie [extreme, sofort bildhafte Analogie].“",
+        "example": "Wird bitte auf, am Wochenende auszuschlafen. Wenn wir am Wochenende länger schlafen als unter der Woche…",
+        "strength": 8,
+        "why_works": "Direkter Imperativ („wird bitte auf…“) ist ein Pattern-Interrupt gegen die Standard-Erwartung (alle wollen ausschlafen). Sofortiger Widerspruch zu einer verbreiteten Gewohnheit erzeugt kognitive Dissonanz: „Warum sollte Ausschlafen schlecht sein?“ Das öffnet einen Information-Gap, der in den nächsten Sekunden mit einer starken Analogie (Transatlantikflug) gefüttert wird."
+      },
+      {
+        "type": "question",
+        "template": "„Wie viele von euch kennen [Menschentyp/Situation], wenn [Alltagsproblem/Beobachtung] – und dann passiert [unlogischer Normbruch]?“",
+        "example": "Wie viele von euch kennen Menschen, wenn du mit den Monopunys spielst…",
+        "strength": 6,
+        "why_works": "Direkte Publikumsansprache („Wie viele von euch…“) + Social-Relatability-Frame („kennt ihr Menschen…“) erzeugt sofort Identifikation. Der Satz wirkt leicht „off“/chaotisch, was einen unabsichtlichen Curiosity-Effekt erzeugt: Man bleibt kurz dran, um zu verstehen, worauf es hinausläuft. Das öffnet einen Loop: ‚Welche Menschen? Was ist die Pointe?‘"
+      },
+      {
+        "type": "statement/curiosity",
+        "template": "„Manchmal kommt’s mir vor, wir sprechen komplett unterschiedliche Sprachen: Ich spreche [X] und [Person] spricht [Y].“",
+        "example": "Mir kommt das mal so vor, als wir den kompletten Sch… sprechen. Ich spreche Frauisch und er…",
+        "strength": 8,
+        "why_works": "Extrem relatable Konflikt-Setup in 1 Satz (Kommunikationsproblem in Beziehung) + ungewöhnliches Framing ('Frauisch' vs. 'Mensch') erzeugt sofort ein Information Gap: Was heißt das konkret? Dazu klare Perspektive (ich vs er) und impliziter Streit/Alltagsdrama → hoher Relevanz-Trigger für große Zielgruppe."
+      },
+      {
+        "type": "story",
+        "template": "„Er war als [jung/niemand] aufgefallen, weil er [seltene Fähigkeit]. Dann sollte er zu [bester Experte der Welt] – aber der sagte: ‚[harte Ablehnung]‘.“",
+        "example": "Er war als Jugendlicher aufgefallen, dass er schnell laufen kann. Und er soll den besten Trainer bekommen: Lenn Mills.",
+        "strength": 7,
+        "why_works": "Sofort ein Talent + ein klares Ziel (\"bester Trainer der Welt\") erzeugt Status/Gravitas. Der Name-drop (Lenn Mills) wirkt wie Autorität und triggert: 'Was passiert, wenn der Beste ihn nimmt/ablehnt?' → klassischer Story-Start mit implizitem Konflikt."
+      },
+      {
+        "type": "curiosity",
+        "template": "„[Alltagsprodukt] aus [Ort] hat eine Eigenschaft, die so absurd ist wie [konkreter Vergleich/Objekt].“",
+        "example": "Ein Eisbergsalat, den du aus Holland oder Spanien beziehst, ein Blatt davon ist ungefähr so viel wie vier Blätter Kopierpapier.",
+        "strength": 8,
+        "why_works": "Startet sofort mit einem unerwarteten Vergleich (Salatblatt = 4x Kopierpapier) → bricht Erwartung, erzeugt sofortige Neugier und einen impliziten 'Wie kann das sein?'-Loop. Der Hook ist konkret (Holland/Spanien, Blatt, Kopierpapier) und damit leicht zu visualisieren/zu prüfen."
+      },
+      {
+        "type": "statement/curiosity (relatable confession + setup)",
+        "template": "„Ich mach das auch manchmal (relatable) – aber wusstest du, was das wirklich bedeutet?“",
+        "example": "Wisst ihr, ich trink ab und zu mal so eine kleine Cola… nur ‘ne 3-Literflasche…",
+        "strength": 7,
+        "why_works": "Extrem relatable Einstieg („ich trink auch…“) senkt Abwehrhaltung und erzeugt sofortige Identifikation. Gleichzeitig wird ein Kontrast/Loop geöffnet: „ist ja nicht schlimm, sondern…“ → Zuschauer wartet auf die überraschende Einschränkung/Begründung. Alltagsobjekt (Cola/Red Bull/Fanta) = sofort verständlich, keine Kontextkosten."
+      },
+      {
+        "type": "curiosity",
+        "template": "„[Nur Gruppe X] hat [seltsames Feature]. Das klingt wie ein Witz, aber [‚Beweis‘-Frame]. Warte bis du siehst, was passiert, wenn…“",
+        "example": "Und es haben nur Männer ein sogenanntes Nichts-Kästchen. Guckt das heute nach, das ist der absolute Hammer…",
+        "strength": 8,
+        "why_works": "Extrem starker Curiosity-Claim („nur Männer…“ + „Nichts-Kästchen“) kombiniert mit Challenge/Authority („guckt das nach“) und Hyperbel („absoluter Hammer“). Das öffnet sofort eine Wissenslücke: Was ist das? Stimmt das? Habe ich das auch? Dadurch entsteht instant Relevanz + Streitpotenzial."
+      },
+      {
+        "type": "statement + contradiction/curiosity",
+        "template": "„Mach X (super einfache Regel). Fertig. — Aber genau das ist der Fehler. Hier ist die echte Regel: Y.“",
+        "example": "Kauft Lebensmittel, die keine Zutatenliste tragen. Fertig, ganz einfach. Das mit dem „einfach“ ist leider nicht so einfach…",
+        "strength": 8,
+        "why_works": "Extrem schnelle, klare Regel („kauft Lebensmittel ohne Zutatenliste“) erzeugt sofortigen Nutzen. Dann sofortiger Pattern-Interrupt durch Widerspruch („leider nicht so einfach“) öffnet eine Informationslücke: Warum nicht? Was ist die echte Regel? Das triggert Weitergucken, weil das Gehirn die Auflösung will."
+      },
+      {
+        "type": "story",
+        "template": "„Wenn du mit [Kind/Person] [Alltagsaktion] machst, brauchst du für [kleine Distanz] plötzlich [absurde Zeit] – weil [konkrete Detail-Beobachtung].“",
+        "example": "In dem nahen zweijährigen Spazieren gehst, brauchst du für 100 Metern halbe Stunde.",
+        "strength": 8,
+        "why_works": "Extrem konkretes, bildhaftes Mini-Szenario (\"2-jähriges Kind\", \"100 Meter\", \"halbe Stunde\"). Das ist sofort verständlich, relatable (Eltern/Beobachter), und erzeugt einen impliziten Konflikt: Warum dauert das so lange – und was sagt das über uns aus? Gleichzeitig ist es ein Pattern-Interrupt gegen typische Social-Intros, weil es direkt mitten in eine Beobachtung springt."
+      },
+      {
+        "type": "question/curiosity",
+        "template": "„[Beliebter Mythos/Ideal] gibt es in der Praxis gar nicht — wer macht das wirklich NIE?“",
+        "example": "Kann ich mir das mit kein Kortison gibt es gar nicht in der Praxis? Wer verwendet nicht mal chemische Mittel?",
+        "strength": 7,
+        "why_works": "Direkter Widerspruch gegen ein verbreitetes Ideal/Versprechen („kein Kortison“). Das triggert sofort eine Kontroverse + Realitätscheck („in der Praxis“). Zweite Frage universalisiert („Wer… nicht mal…?“) → Zuschauer fühlen sich angesprochen und wollen wissen, ob sie „falsch“ liegen."
+      },
+      {
+        "type": "statement",
+        "template": "„Das kann ich jedem empfehlen, der [weit verbreitetes Problem] hat: [ultra einfache Übung/Move].“",
+        "example": "Das kann ich nur jedem empfehlen, der über Lenden- oder Nackenschulter-Probleme klagt.",
+        "strength": 7,
+        "why_works": "Direkter Nutzen-Claim an ein riesiges Problemfeld (Rücken/Nacken). Sofortige Zielgruppen-Qualifizierung („nur jedem empfehlen, der…“). Implizite Promise: einfache Übung → spürbare Erleichterung. Öffnet einen Loop: „Was genau ist diese Empfehlung/Übung und wie macht man sie richtig?“"
+      },
+      {
+        "type": "number",
+        "template": "„Sie machen X von [EXTREMZAHL] auf [KLEINZAHL] und dann wieder auf [ZAHL] – und du zahlst am Ende trotzdem mehr.“",
+        "example": "Wir erhöhen die Spritpreise bis 22, dann lassen wir sie wieder auf 2,5, 12, 12…",
+        "strength": 8,
+        "why_works": "Startet sofort mit extremen, konkreten Zahlen (22 → 2,5 → 12 → 12). Das erzeugt kognitive Dissonanz: 'Was soll diese Zahlenfolge? Was bedeutet 22? Warum runter auf 2,5?' = starker Information-Gap. Außerdem ist es ein 'Hot Topic' (Spritpreise) mit hoher Alltagsrelevanz, wodurch die Scroll-Stop-Wahrscheinlichkeit steigt."
+      },
+      {
+        "type": "curiosity",
+        "template": "„[Chaos/ungefilterter Moment] + [Kontext-Keywords, die nach ‚wichtigem Gespräch‘ klingen] → dann plötzlich ein harter Satz/Urteil.“",
+        "example": "Der Ali, der Kosta, der Mehranung wie das Management, Management mit ihm hier, Flipchaster, Whiteboard, Here…",
+        "strength": 8,
+        "why_works": "Extrem ungewöhnlicher Einstieg: Namen-Stack + chaotische Meeting-Keywords (Management/Flipchart/Whiteboard) erzeugen sofort ein „Was passiert hier?“-Gefühl. Das wirkt wie ein ‚caught on mic‘-Moment (authentisch/ungefiltert) und baut einen starken Information Gap auf: Wer sind die? Warum klingt es so wirr? Wohin führt das? Diese Irritation ist ein starker Scroll-Stopper, weil das Gehirn automatisch versucht, Muster/Sinn herzustellen."
+      },
+      {
+        "type": "question+number+curiosity",
+        "template": "„Wusstest du, dass [Land/Jahr] [X] allein [Zahl] Umsatz macht – mehr als [Vergleich]?“",
+        "example": "Wusstet ihr, dass alleine in Deutschland 2020 ein Umsatz von 3,2 Milliarden gemacht hat?",
+        "strength": 8,
+        "why_works": "Direkte Ansprache („Wusstet ihr…“) + konkrete Zahl („3,2 Milliarden“) erzeugt sofort einen Vergleichs-/Skandal-Frame: „Wie kann das sein?“ Der Hook setzt implizit ein Rätsel auf: WELCHER Markt/wer macht diesen Umsatz? Dadurch entsteht ein Information Gap, der Watchtime in den ersten Sekunden schützt."
+      },
+      {
+        "type": "story",
+        "template": "„[Extremes Ereignis] ist passiert, weil jemand [moralisch fragwürdige Handlung] getan hat. Aber der Grund dafür ist unfassbar…“",
+        "example": "In den USA stand ein Mann vor Gericht, weil er seinen Arzt brutal angegriffen hat. Frage: warum?",
+        "strength": 9,
+        "why_works": "Extrem schnelle Stakes in 1 Satz (Gericht + Gewalt) + sofortiger Why-Loop („warum?“). Das setzt den Zuschauer in einen Erklärungszwang: Man muss die Begründung hören, sonst bleibt die Geschichte unvollständig. Zusätzlich: moralische Ambivalenz (Arzt angegriffen) triggert Urteil/Neugier."
+      },
+      {
+        "type": "story + curiosity (parenting scenario) + implicit conflict",
+        "template": "„Stell dir vor, dein Kind sagt X (klassischer Konflikt). Erfahrene Eltern wissen, was jetzt kommt…“",
+        "example": "Ich gehe zum Beispiel zum … möchte es zu nicht über zuerst Hausaufgaben machen. Das schmeißen sich die erfahrenen Eltern schon weg …",
+        "strength": 7,
+        "why_works": "Startet sofort mit einer alltäglichen, hoch-relatable Eltern-Kind-Szene (Hausaufgaben/Verweigerung). Gleichzeitig wird ein Meta-Tease gesetzt: „erfahrene Eltern wissen schon, was er antwortet“ → Information Gap (was antwortet er? und was mache ich dann?). Das erzeugt sofortige mentale Beteiligung (Zuschauer simuliert die Situation und will die Auflösung/den richtigen Umgang)."
+      }
+    ],
+    "hook_formulas": [
+      "„Die meisten denken X ist der Anfang—aber eigentlich ist es der Anfang von Y.“ (paradoxer Satz über ein universelles Thema)",
+      "„Mach NIEMALS [X]. Hier ist die kurze Story, warum…“ (sofort Szene + Konflikt in 1-2 Sätzen)",
+      "„Du machst X zu oft – genau an der Stelle, wo du eigentlich Y machen müsstest.“",
+      "„Hör auf mit [beliebte Gewohnheit]. Wenn du [Gewohnheit] machst, ist das wie [extreme, sofort bildhafte Analogie].“",
+      "„Hör auf mit [beliebte Gewohnheit]. Wenn du [Gewohnheit] machst, ist das wie [extreme, sofort bildhafte Analogie].“",
+      "„Wie viele von euch kennen [Menschentyp/Situation], wenn [Alltagsproblem/Beobachtung] – und dann passiert [unlogischer Normbruch]?“",
+      "„Manchmal kommt’s mir vor, wir sprechen komplett unterschiedliche Sprachen: Ich spreche [X] und [Person] spricht [Y].“",
+      "„Er war als [jung/niemand] aufgefallen, weil er [seltene Fähigkeit]. Dann sollte er zu [bester Experte der Welt] – aber der sagte: ‚[harte Ablehnung]‘.“",
+      "„[Alltagsprodukt] aus [Ort] hat eine Eigenschaft, die so absurd ist wie [konkreter Vergleich/Objekt].“",
+      "„Ich mach das auch manchmal (relatable) – aber wusstest du, was das wirklich bedeutet?“"
+    ],
+    "power_words_for_hooks": [
+      "problem",
+      "niemals",
+      "genießt",
+      "ergebnis",
+      "im schlimmsten fall",
+      "stolz",
+      "erfolg",
+      "probleme",
+      "ende",
+      "geil",
+      "vollgas",
+      "super",
+      "ganz genau",
+      "nicht in der lage",
+      "transatlantikflug",
+      "social jet-leg",
+      "hauptproblem",
+      "ursachen",
+      "junkslip",
+      "tiefschlaf",
+      "erholung",
+      "hart",
+      "ungefähr",
+      "theoretisch",
+      "zuckerbad",
+      "schwimmt",
+      "nur",
+      "ganz einfach",
+      "botschaft",
+      "schön",
+      "ziele",
+      "gierig",
+      "ursache",
+      "empfehlen",
+      "spannung",
+      "zeit nehmen",
+      "simpel",
+      "wirksam",
+      "akzeptiere ich",
+      "selbstbewusstsein",
+      "immer",
+      "reißt",
+      "vermeiden",
+      "beziehungskrise",
+      "andere frau",
+      "hölle",
+      "nicht gesehen",
+      "zeichen",
+      "gestrandet",
+      "weitere erfahrungen"
+    ],
+    "hook_mistakes": []
+  },
+  "structure_mastery": {
+    "winning_structures": [
+      {
+        "type": "hook (paradox) → chronologische Lebens-Sequence → Problem/Diagnose („gestrandet/verwaltet“) → Reframe/Call-to-action („mach Erfahrungen…“) → provokanter comedic kicker (Pizzeria)",
+        "template": "Paradox-Hook → schnelle Timeline/Listausschnitt (relatable) → schmerzhafte Diagnose (Problem benennen) → Reframe (neue Perspektive) → konkrete Mini-Challenge („mach heute X anders“) → unerwarteter Punchline/Tabu-Endsatz",
+        "flow_score": 7
+      },
+      {
+        "type": "story-arc (setup → escalation → twist → moral/payoff)",
+        "template": "Setup (Konflikt) → Wiederholung der Situation → jedes Mal Regel/Belohnung leicht ändern (3-5 Stufen) → sichtbarer Motivations-/Verhaltens-Kipppunkt → „Was ist passiert?“ → 1-Satz-Erklärung/Moral",
+        "flow_score": 8
+      },
+      {
+        "type": "hook -> example -> insight/diagnose -> escalation (Folgen fürs Kind) -> implied payoff (was man anders machen sollte)",
+        "template": "Contrarian These -> alltägliche Szene -> Publikum lacht/erkennt sich -> Twist/Diagnose („eigentlich tust du Z“) -> Eskalation zu langfristiger Konsequenz -> (optional) klare Alternative/Regel",
+        "flow_score": 7
+      },
+      {
+        "type": "hook -> kontraintuitive Behauptung -> starke Analogie -> Begriff einführen -> Problem eskalieren -> Symptom erklären -> impliziter Call-to-action",
+        "template": "1) Normbruch/Imperativ 2) Bildhafte Analogie 3) Benenne das Phänomen (neuer Begriff) 4) Erkläre Konsequenz (Problem) 5) Benenne zweites Phänomen (Symptom-Label) 6) Mechanismus (warum es passiert) 7) Identifikations-Satz („du machst X und fühlst Y“) 8) (Optional) 1 konkrete Lösung als finaler Payoff",
+        "flow_score": 7
+      },
+      {
+        "type": "hook -> kontraintuitive Behauptung -> starke Analogie -> Begriff einführen -> Problem eskalieren -> Symptom erklären -> impliziter Call-to-action",
+        "template": "1) Normbruch/Imperativ 2) Bildhafte Analogie 3) Benenne das Phänomen (neuer Begriff) 4) Erkläre Konsequenz (Problem) 5) Benenne zweites Phänomen (Symptom-Label) 6) Mechanismus (warum es passiert) 7) Identifikations-Satz („du machst X und fühlst Y“) 8) (Optional) 1 konkrete Lösung als finaler Payoff",
+        "flow_score": 7
+      },
+      {
+        "type": "hook-content-payoff (anekdotische Story mit Twist/Status-Lesson)",
+        "template": "1) Publikum-Frage (Relatability) → 2) „Vor X Jahren…“ (Story-Frame) → 3) Normbruch/Chaos-Entry → 4) Konkrete Status-Details (Zahl/Marke/Ort) → 5) Dialog-Frage → 6) Überraschende Antwort (Zahl/Alter) → 7) Prinzip/Lektion als Payoff",
+        "flow_score": 7
+      },
+      {
+        "type": "hook-story-arc-payoff (Beobachtung → Beispiel-Dialog → Eskalation → Erkenntnis/Lösung)",
+        "template": "Hook (ungewöhnliches Framing) → 1-2 Mini-Dialoge als Beweis → Eskalation mit Zeit-/Konsequenzmarker → Erkenntnis („eigentlich meint sie…“) → Lösung/Takeaway („ab jetzt übersetze ich…“).",
+        "flow_score": 8
+      },
+      {
+        "type": "story-arc (talent → gatekeeper/trainer → ablehnung/konflikt → entscheidung/risiko → payoff/legende)",
+        "template": "1) Talent/Versprechen (0-2s) → 2) Gatekeeper/Autorität (2-5s) → 3) Ablehnung/Twist (5-8s) → 4) Reibung/Training/Problem (8-15s) → 5) High-stakes Commitment („Ich übernehme die Verantwortung“) (15-20s) → 6) Zeitsprung + übergroßer Payoff („X Jahre ungeschlagen“) (20-30s) → 7) Absolutheits-Claim („nie wieder“) als Endkicker",
+        "flow_score": 6
+      },
+      {
+        "type": "hook-content-payoff",
+        "template": "Hook (absurde Zahl/Comparison) → Regel-Umkehr (du musst X nicht tun) → Schock-Ursache (es hat Y nie erlebt) → Produktionsbild (ungewöhnliche, visuelle Beschreibung) → Preis/Alltag (das kaufst du für Z) → (optional) klare Schlussfolgerung/Handlungsimpuls.",
+        "flow_score": 7
+      },
+      {
+        "type": "hook → normalisieren → Zahlenschock → Hochrechnung → Gesundheitsfolge (stakes escalation)",
+        "template": "Relatable Normalisierung → 1 harte Zahl (pro Tag) → Hochrechnung (pro Jahr) → Hochrechnung (10 Jahre) + Visualisierung → Stakes-Pivot (Gesundheitsfolge/Betroffene: Kinder) → implizite Handlungsaufforderung",
+        "flow_score": 7
+      },
+      {
+        "type": "hook-content-payoff (Curiosity-Claim → pseudo-wissenschaftliche Erklärung → überraschender Twist/Payoff)",
+        "template": "Steile Behauptung (0–2s) → Glaubwürdigkeits-Requisite (‚Studie/MRT/Experiment‘) → konkretes Beispiel (ein Bild/Trigger) → rhythmische Aufzählung als Spannungsrampe → überzeichneter Payoff → kurzer Abschluss-Satz als Punktlandung.",
+        "flow_score": 7
+      },
+      {
+        "type": "hook -> problem/objection -> refined rule/formula -> payoff (simple law)",
+        "template": "1) Ein-Satz-Regel (extrem simpel) -> 2) sofortiger Widerspruch/Problem -> 3) „Formel/Gesetz“ ankündigen -> 4) konkrete Zahl/Heuristik liefern -> 5) kurze Konsequenz/Reason-Why -> 6) Abschluss mit Merksatz.",
+        "flow_score": 7
+      },
+      {
+        "type": "hook (konkrete Szene) -> meaning shift (Eltern-Verhalten) -> universelle Botschaft (Leben/Ziele) -> moralischer Reframe (Stolz/Ehrgeiz als Sünde) -> offene Einsicht (wir merken es nicht)",
+        "template": "Konkrete Szene (relatable) -> Detail-Aufzählung (Micro-payoffs) -> Perspektivwechsel (wir/Eltern/Gesellschaft) -> These (hier/jetzt vs dort/dann) -> Eskalation (Ziele/Ehrgeiz/Gier) -> unerwarteter Reframe (Moral/Tabu/Religion) -> nachdenkliche Pointe (wir merken es nicht).",
+        "flow_score": 7
+      },
+      {
+        "type": "hook (Kontroverse) → Normbruch/Tabu → Begründung (Ursache) → Lösung/Empfehlung (Mittel gegen Entzündung/Schmerz)",
+        "template": "Kontroverse Frage → kurzer Tabu-/Normsatz → „In Wahrheit…“ → Fokus auf Ursache (Diagnose) → Ergebnis/Benefit (Linderung/Erfolg) → (optional) konkrete 1–3 Schritte als Abschluss",
+        "flow_score": 6
+      },
+      {
+        "type": "hook-content-payoff (Problem -> Anleitung -> Wirksamkeits-Claim)",
+        "template": "1) Breites Problem benennen -> 2) Sofort demonstrieren (Position, Griff, Bewegung) -> 3) Somatischen Marker setzen („Spannung hier“) -> 4) Halten/Atmen (Mini-Zeitfenster) -> 5) Andere Seite (symmetrischer Abschluss) -> 6) Wirksamkeits-Stamp („simpel, aber wirksam“).",
+        "flow_score": 8
+      }
+    ],
+    "pattern_interrupt_techniques": []
+  },
+  "emotional_mastery": {
+    "best_emotions": [
+      {
+        "emotion": "curiosity",
+        "frequency": 25
+      },
+      {
+        "emotion": "surprise",
+        "frequency": 10
+      },
+      {
+        "emotion": "fear",
+        "frequency": 2
+      },
+      {
+        "emotion": "relief",
+        "frequency": 2
+      },
+      {
+        "emotion": "anger",
+        "frequency": 2
+      },
+      {
+        "emotion": "surprise/fear (Zahlenschock → Gesundheitsangst)",
+        "frequency": 1
+      },
+      {
+        "emotion": "nostalgia",
+        "frequency": 1
+      },
+      {
+        "emotion": "curiosity (mit Schuld/Betroffenheit als sekundärer Trigger)",
+        "frequency": 1
+      },
+      {
+        "emotion": "fear (gepaart mit Spannung/Empörung über Erziehungsdynamik)",
+        "frequency": 1
+      },
+      {
+        "emotion": "curiosity/surprise",
+        "frequency": 1
+      }
+    ],
+    "trigger_phrases": []
+  },
+  "quick_reference": {
+    "do_this": [
+      "Top hooks open loops and create information gaps",
+      "Pattern interrupts every 5-7 seconds maintain attention",
+      "High arousal emotions (curiosity, surprise) outperform low arousal",
+      "Most common hook type: statement + curiosity (paradox)",
+      "Best performing emotion: curiosity"
+    ],
+    "never_do": []
+  },
+  "scoring_weights": {
+    "hook_strength": 0.25,
+    "information_gap": 0.2,
+    "emotional_intensity": 0.15,
+    "mass_appeal": 0.15,
+    "structure_flow": 0.1,
+    "simplicity": 0.1,
+    "personal_address": 0.05
+  }
+}

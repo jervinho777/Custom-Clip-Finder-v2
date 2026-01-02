@@ -1,0 +1,62 @@
+{
+  "version": "2.0-fallback",
+  "updated_at": "2026-01-02T18:25:52.621818",
+  "note": "AI synthesis failed, using basic principles",
+  "data_sources": {
+    "isolated_clips": 0,
+    "transformations": 0
+  },
+  "core_algorithm": {
+    "principle": "Maximize watchtime through engagement",
+    "metrics": [
+      "completion_rate",
+      "watch_time",
+      "engagement"
+    ]
+  },
+  "hook_principles": {
+    "core": "Stop scroll within 3 seconds",
+    "methods": [
+      "curiosity_gap",
+      "bold_statement",
+      "question",
+      "pattern_interrupt"
+    ],
+    "extraction_strategy": {
+      "principle": "Best hooks can come from anywhere in video",
+      "cross_moment_ok": true
+    }
+  },
+  "duration_principles": {
+    "core": "Balance completeness with engagement",
+    "observations": [
+      "High completion clips range 20-90s",
+      "Completeness matters more than duration"
+    ]
+  },
+  "cutting_principles": {
+    "core": "Every word must earn its place",
+    "what_to_cut": [
+      "Unnecessary descriptors",
+      "Filler words"
+    ],
+    "what_to_preserve": [
+      "Core narrative",
+      "Emotional beats"
+    ]
+  },
+  "timing_principles": {
+    "core": "Strategic silence creates impact",
+    "when_to_pause": [
+      "After questions",
+      "Before payoff"
+    ]
+  },
+  "structure_principles": {
+    "core": "Structure adapts to content type",
+    "viable_patterns": {
+      "story": "Setup → Escalation → Resolution",
+      "insight": "Problem → Analysis → Solution"
+    }
+  }
+}
