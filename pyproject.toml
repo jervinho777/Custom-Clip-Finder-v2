@@ -19,6 +19,7 @@ dependencies = [
     
     # Video Processing
     "ffmpeg-python>=0.2.0",
+    "yt-dlp>=2024.0.0",  # Video download from URLs
     
     # Audio Transcription
     "assemblyai>=0.30.0",

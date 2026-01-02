@@ -29,23 +29,29 @@ console = Console()
 
 @app.command()
 def process(
-    video_path: str = typer.Argument(..., help="Path to video file"),
+    video_path: str = typer.Argument(..., help="Path to video file or URL (YouTube, TikTok, etc.)"),
     output_dir: str = typer.Option("data/output", help="Output directory"),
     num_clips: int = typer.Option(10, help="Number of clips to generate"),
     skip_cache: bool = typer.Option(False, help="Skip cached results"),
-    formats: str = typer.Option("mp4,xml,json", help="Export formats (comma-separated)")
+    formats: str = typer.Option("mp4,xml,json", help="Export formats (comma-separated)"),
+    godmode: bool = typer.Option(True, help="Enable Godmode final evaluation"),
+    min_score: int = typer.Option(35, help="Minimum Godmode score (0-50)")
 ):
     """
     Process a video and extract viral clips.
     
-    Full pipeline: DISCOVER → COMPOSE → VALIDATE → EXPORT
+    Supports both local paths and URLs (YouTube, Instagram, TikTok, etc.)
+    
+    Full pipeline: DISCOVER → COMPOSE → VALIDATE → (GODMODE) → EXPORT
     """
     asyncio.run(_process_video(
         video_path=video_path,
         output_dir=output_dir,
         num_clips=num_clips,
         use_cache=not skip_cache,
-        formats=formats.split(",")
+        formats=formats.split(","),
+        godmode=godmode,
+        min_score=min_score
     ))
 
 
@@ -54,19 +60,31 @@ async def _process_video(
     output_dir: str,
     num_clips: int,
     use_cache: bool,
-    formats: list
+    formats: list,
+    godmode: bool = True,
+    min_score: int = 35
 ):
     """Run the full pipeline."""
     from utils import Cache
     from utils.transcribe import transcribe_video_sync
-    
-    video_path = Path(video_path)
-    
-    if not video_path.exists():
-        console.print(f"[red]Error: Video not found: {video_path}[/red]")
-        raise typer.Exit(1)
+    from utils.download import is_url, get_video_path
     
     console.print(f"\n[bold blue]Custom Clip Finder v2[/bold blue]")
+    
+    # Handle URL or local path
+    if is_url(video_path):
+        console.print(f"Detected URL: {video_path[:50]}...")
+        console.print("[yellow]Downloading video...[/yellow]")
+        video_path, was_downloaded = get_video_path(video_path)
+        console.print(f"[green]Downloaded: {video_path.name}[/green]\n")
+    else:
+        video_path = Path(video_path)
+        was_downloaded = False
+        
+        if not video_path.exists():
+            console.print(f"[red]Error: Video not found: {video_path}[/red]")
+            raise typer.Exit(1)
+    
     console.print(f"Processing: {video_path.name}\n")
     
     cache = Cache()
@@ -149,8 +167,34 @@ async def _process_video(
     approved = [v for v in validated if v.validation.verdict in ["approve", "refine"]]
     console.print(f"  Approved: {len(approved)}/{len(validated)}\n")
     
+    # Optional: Godmode Evaluation
+    if godmode and approved:
+        console.print("[bold]STEP 4.5: GODMODE EVALUATION[/bold]")
+        
+        from pipeline.godmode import godmode_evaluate, filter_by_godmode
+        
+        # Prepare clips for godmode
+        godmode_clips = [
+            {
+                "clip_id": f"clip_{i+1}",
+                "hook_text": v.clip.get("hook_text", ""),
+                "total_duration": v.clip.get("total_duration", 0),
+                "structure_type": v.clip.get("structure_type", ""),
+                "reasoning": v.clip.get("reasoning", "")
+            }
+            for i, v in enumerate(approved)
+        ]
+        
+        godmode_results = await godmode_evaluate(godmode_clips)
+        
+        # Filter by min_score
+        passing_ids = {r.clip_id for r in godmode_results if r.score >= min_score}
+        approved = [v for i, v in enumerate(approved) if f"clip_{i+1}" in passing_ids]
+        
+        console.print(f"  Passed Godmode: {len(approved)}/{len(godmode_clips)}\n")
+    
     # Rank and select top N
-    ranked = await rank_clips(validated, target_count=num_clips)
+    ranked = await rank_clips(approved if godmode else validated, target_count=num_clips)
     
     # Step 5: Export
     console.print("[bold]STEP 5: EXPORT[/bold]")
