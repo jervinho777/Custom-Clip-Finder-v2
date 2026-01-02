@@ -129,7 +129,7 @@ class BrainAnalyzer:
         num_batches = min((total_clips + batch_size - 1) // batch_size, max_batches)
         
         print(f"   Analysiere ALLE {total_clips} Clips in {num_batches} Batches (à {batch_size} Clips)")
-        print(f"   Geschätzte Kosten: ~${num_batches * 0.10:.2f} (Sonnet)")
+        print(f"   Geschätzte Kosten: ~${num_batches * 0.50:.2f} (Opus 4.5 💎)")
         
         # Analyze in batches and aggregate patterns
         all_batch_patterns = []
@@ -192,7 +192,7 @@ Hook (erste 100 chars): {transcript[:100]}
 ---
 """
         
-        model = get_model("anthropic", tier="sonnet")
+        model = get_model("anthropic", tier="opus")  # OPUS für beste Prinzipien-Extraktion 💎
         
         try:
             response = await model.generate(
@@ -272,7 +272,7 @@ Prinzipien sind flexibel und kontextabhängig anwendbar.""",
         print(f"      Merging: {len(all_hook_principles)} hook, {len(all_content_principles)} content, {len(all_structural_principles)} structural")
         
         # Use Claude to synthesize and deduplicate
-        model = get_model("anthropic", tier="sonnet")
+        model = get_model("anthropic", tier="opus")  # OPUS für beste Prinzipien-Extraktion 💎
         
         try:
             response = await model.generate(
@@ -426,7 +426,7 @@ Antworte als JSON mit den synthetisierten Master-Prinzipien.""",
         """
         from models.base import get_model
         
-        model = get_model("anthropic", tier="sonnet")
+        model = get_model("anthropic", tier="opus")  # OPUS für beste Prinzipien-Extraktion 💎
         
         longform_text = longform.get("text", "")[:2000]  # Truncate
         clip_text = clip.get("text", "")
@@ -520,7 +520,7 @@ Antworte als JSON:
                 current_principles = json.load(f)
         
         from models.base import get_model
-        model = get_model("anthropic", tier="sonnet")
+        model = get_model("anthropic", tier="opus")  # OPUS für beste Prinzipien-Extraktion 💎
         
         synthesis_prompt = f"""
 Du hast zwei Datenquellen für virale Content-PRINZIPIEN:

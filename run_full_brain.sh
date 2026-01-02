@@ -4,9 +4,10 @@
 # =============================================================================
 #
 # Analysiert ALLE 972 Clips prinzipienbasiert für das BRAIN System.
+# Verwendet OPUS 4.5 für beste Qualität bei Prinzipien-Extraktion! 💎
 #
-# Geschätzte Dauer: 30-60 Minuten
-# Geschätzte Kosten: ~$5-10 (Sonnet für alle Batches)
+# Geschätzte Dauer: 45-90 Minuten
+# Geschätzte Kosten: ~$25-40 (Opus für alle Batches - LOHNT SICH!)
 #
 # Usage:
 #   chmod +x run_full_brain.sh
