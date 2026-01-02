@@ -1,15 +1,59 @@
 {
   "version": "2.0",
   "last_updated": "2026-01-02",
-  "source": "Extracted from MASTER_LEARNINGS.json (175 clips analyzed)",
+  "source": "MASTER_LEARNINGS.json + Social_Media_Algorithmus.pdf",
+  
+  "_MASTER_PRINCIPLE": "Make a video so good that people cannot physically scroll past",
   
   "algorithm_understanding": {
-    "core_principle": "Der Algorithmus ist ein Performance-Vergleichsmechanismus mit EINEM Ziel: Watchtime maximieren",
-    "key_facts": [
-      "Du kämpfst gegen ALLE anderen Videos - Algorithmus ist nur Schiedsrichter",
-      "Make a video so good that people cannot physically scroll past"
+    "core_principle": "Der Algorithmus ist ein reiner Performance-Vergleichsmechanismus mit EINEM Ziel: Maximierung der Watchtime",
+    "why": "Plattformen verdienen 99% durch Werbeanzeigen. Mehr Watchtime = mehr Ad-Impressions = mehr Umsatz",
+    
+    "multiplayer_game": {
+      "truth": "Du kämpfst NICHT gegen den Algorithmus - er ist nur der Schiedsrichter",
+      "reality": "Du kämpfst gegen ALLE anderen Videos in deiner Nische",
+      "mechanism": "Der Algorithmus wählt einfach das Video mit den besten Metriken aus dem Pool",
+      "no_shadowban": "Wenn dein Video nicht performt, ist es nicht 'Shadowbanning' - es ist einfach schlechter als die Konkurrenz"
+    },
+    
+    "testgroup_mechanism": {
+      "step_1": "Initial Test: Jedes Video wird einer kleinen Testgruppe gezeigt (User mit Interesse am Thema)",
+      "step_2": "Performance-Vergleich: Deine Metriken werden mit ALLEN anderen Videos zum selben Thema verglichen",
+      "step_3": "Skalierung: Das Video mit der höchsten Watchtime/Engagement gewinnt und wird weiter ausgespielt"
+    },
+    
+    "metrics_priority": [
+      "Watch Time (absolute Priorität)",
+      "Completion Rate",
+      "Engagement (als Indikator für Interesse)",
+      "Session Duration (wie lange bleiben User nach deinem Video auf der Plattform)"
     ],
-    "metrics_priority": ["Watch Time", "Completion Rate", "Engagement", "Session Duration"]
+    
+    "brutal_truth": "Vergiss Trends, Hashtags, Posting-Zeiten - das ist alles sekundär. Der Algorithmus wird IMMER das Video bevorzugen, das Menschen länger auf der Plattform hält. Punkt."
+  },
+  
+  "hook_requirements": {
+    "window": "0-3 Sekunden",
+    "must_do": [
+      "Sofort Spannung aufbauen",
+      "Klare Value Proposition",
+      "Visueller Stop-Trigger"
+    ],
+    "why_critical": "Wenn User hier abspringen, kostest du die Plattform Geld"
+  },
+  
+  "content_structure": {
+    "core_rule": "Jede Sekunde muss einen Grund liefern weiterzuschauen",
+    "requirements": [
+      "Keine Füller, keine Langeweile",
+      "Ständige Mini-Payoffs und Teaser für kommende Information"
+    ]
+  },
+  
+  "psychological_triggers": {
+    "open_loops": "Unvollständige Loops (Gehirn will Abschluss)",
+    "pattern_interrupts": "Pattern Interrupts bei Aufmerksamkeits-Dips",
+    "emotional_journey": "Emotionale Achterbahn statt Flatline"
   },
   
   "hook_patterns": {
@@ -117,7 +161,7 @@
     "Cliffhangers without payoff in clip",
     "Too many ideas in one clip",
     "Cutting authentic moments for 'optimization'",
-    "Rigid rules over principle-based thinking"
+    "Rigid rules over principle-based thinking",
+    "Optimizing for trends/hashtags instead of watchtime"
   ]
 }
-
