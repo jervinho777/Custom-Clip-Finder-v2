@@ -100,38 +100,88 @@ class BrainAnalyzer:
             return {"patterns": [], "source": "none"}
         
         with open(goat_file) as f:
-            clips = json.load(f)
+            all_clips = json.load(f)
         
-        # Filter high performers (>500k views)
-        high_performers = [
-            c for c in clips
-            if c.get("performance", {}).get("views", 0) >= 500000
+        # Filter clips with transcripts (required for analysis)
+        clips_with_transcripts = [
+            c for c in all_clips
+            if c.get("transcript", {}).get("text")
         ]
         
-        print(f"   Gefunden: {len(high_performers)} High-Performer Clips")
+        print(f"   Total Clips: {len(all_clips)}")
+        print(f"   Mit Transkript: {len(clips_with_transcripts)}")
         
-        if not high_performers:
+        if not clips_with_transcripts:
             return {"patterns": [], "source": "goat_training_data.json"}
         
-        # Configurable sample size (default: 50 for cost efficiency, can be increased)
-        # More clips = better patterns, but higher cost
-        max_clips_to_analyze = int(os.getenv("BRAIN_MAX_CLIPS_ANALYZE", "50"))
-        max_clips_in_prompt = int(os.getenv("BRAIN_MAX_CLIPS_IN_PROMPT", "20"))
+        # Sort by views (highest first) for better pattern extraction
+        clips_with_transcripts.sort(
+            key=lambda c: c.get("performance", {}).get("views", 0),
+            reverse=True
+        )
         
-        # Use all high performers if less than max, otherwise sample
-        if len(high_performers) <= max_clips_to_analyze:
-            sample = high_performers
-            print(f"   Analysiere alle {len(sample)} High-Performer")
-        else:
-            sample = high_performers[:max_clips_to_analyze]
-            print(f"   Analysiere Sample von {len(sample)}/{len(high_performers)} High-Performern (max_clips_to_analyze={max_clips_to_analyze})")
+        # Configurable batch size for analysis
+        # We analyze in batches to handle all clips without hitting token limits
+        batch_size = int(os.getenv("BRAIN_BATCH_SIZE", "20"))
+        max_batches = int(os.getenv("BRAIN_MAX_BATCHES", "50"))  # 50 batches * 20 = 1000 clips max
         
-        # Build analysis prompt (use subset for prompt to stay within token limits)
+        total_clips = len(clips_with_transcripts)
+        num_batches = min((total_clips + batch_size - 1) // batch_size, max_batches)
+        
+        print(f"   Analysiere ALLE {total_clips} Clips in {num_batches} Batches (à {batch_size} Clips)")
+        print(f"   Geschätzte Kosten: ~${num_batches * 0.10:.2f} (Sonnet)")
+        
+        # Analyze in batches and aggregate patterns
+        all_batch_patterns = []
+        
+        for batch_idx in range(num_batches):
+            start_idx = batch_idx * batch_size
+            end_idx = min(start_idx + batch_size, total_clips)
+            batch_clips = clips_with_transcripts[start_idx:end_idx]
+            
+            if not batch_clips:
+                break
+            
+            print(f"   📊 Batch {batch_idx + 1}/{num_batches}: Clips {start_idx + 1}-{end_idx}")
+            
+            batch_patterns = await self._analyze_clip_batch(batch_clips, batch_idx + 1)
+            if batch_patterns:
+                all_batch_patterns.append(batch_patterns)
+        
+        # Merge all batch patterns into final patterns
+        print(f"   🔄 Merge {len(all_batch_patterns)} Batch-Ergebnisse...")
+        patterns = await self._merge_batch_patterns(all_batch_patterns)
+        
+        patterns["source"] = "goat_training_data.json"
+        patterns["clips_analyzed"] = total_clips
+        patterns["batches_processed"] = len(all_batch_patterns)
+        patterns["analyzed_at"] = datetime.now().isoformat()
+        
+        # Save
+        with open(self.isolated_patterns_file, 'w', encoding='utf-8') as f:
+            json.dump(patterns, f, indent=2, ensure_ascii=False)
+        
+        print(f"   ✅ Gespeichert: {self.isolated_patterns_file.name}")
+        
+        return patterns
+    
+    async def _analyze_clip_batch(self, clips: List[Dict], batch_num: int) -> Optional[Dict]:
+        """
+        Analysiere einen Batch von Clips und extrahiere Prinzipien.
+        
+        Args:
+            clips: Liste von Clip-Dicts mit transcript und performance
+            batch_num: Batch-Nummer für Logging
+            
+        Returns:
+            Dict mit hook_principles, content_principles, structural_principles
+        """
+        from models.base import get_model
+        import re
+        
+        # Build clips text for prompt
         clips_text = ""
-        clips_for_prompt = sample[:max_clips_in_prompt]
-        print(f"   Verwende {len(clips_for_prompt)} Clips im Prompt (max_clips_in_prompt={max_clips_in_prompt})")
-        
-        for i, clip in enumerate(clips_for_prompt, 1):
+        for i, clip in enumerate(clips, 1):
             perf = clip.get("performance", {})
             transcript = clip.get("transcript", {}).get("text", "")[:500]
             clips_text += f"""
@@ -142,97 +192,125 @@ Hook (erste 100 chars): {transcript[:100]}
 ---
 """
         
-        from models.base import get_model
-        model = get_model("anthropic", tier="sonnet")  # Sonnet für Analyse
+        model = get_model("anthropic", tier="sonnet")
         
-        response = await model.generate(
-            prompt=f"""Analysiere diese Top-Performer Clips und extrahiere PRINZIPIEN (nicht Regeln!):
+        try:
+            response = await model.generate(
+                prompt=f"""Analysiere diese {len(clips)} Clips und extrahiere PRINZIPIEN (nicht Regeln!):
 
 {clips_text}
 
 WICHTIG: Extrahiere PRINZIPIEN, nicht Regeln!
 
-❌ KEINE Regeln wie:
-- "Hook muss immer das Wort X enthalten"
-- "Hook muss genau 3 Sekunden lang sein"
-- "Clip muss immer mit Frage beginnen"
-
-✅ STATTDESSEN Prinzipien wie:
-- "Hooks funktionieren, wenn sie kognitive Dissonanz erzeugen"
-- "Hooks sollten so kurz wie möglich, aber so lang wie nötig sein"
-- "Fragen funktionieren als Hooks, wenn sie eine Information Gap öffnen"
-
 Extrahiere:
-1. Hook-Prinzipien: WARUM funktionieren die erfolgreichsten Hooks? (Nicht WAS sie enthalten)
-2. Content-Prinzipien: Welche übergeordneten Konzepte machen Content viral? (Nicht welche Wörter)
-3. Strukturelle Prinzipien: Welche Prinzipien stecken hinter erfolgreichen Clip-Strukturen? (Nicht feste Templates)
+1. Hook-Prinzipien: WARUM funktionieren diese Hooks?
+2. Content-Prinzipien: Welche übergeordneten Konzepte machen Content viral?
+3. Strukturelle Prinzipien: Welche Prinzipien stecken hinter den Strukturen?
 
 Antworte als JSON:
 {{
   "hook_principles": [
-    {{
-      "principle": "Das übergeordnete Prinzip (z.B. 'Kognitive Dissonanz erzeugt Aufmerksamkeit')",
-      "why_works": "Warum funktioniert dieses Prinzip psychologisch?",
-      "examples": ["Beispiel 1", "Beispiel 2"],
-      "application": "Wie kann man dieses Prinzip auf andere Situationen anwenden?",
-      "frequency": "X%"
-    }}
+    {{"principle": "...", "why_works": "...", "examples": ["..."], "frequency": "X%"}}
   ],
   "content_principles": [
-    {{
-      "principle": "Übergeordnetes Content-Prinzip",
-      "why_works": "Warum funktioniert es?",
-      "characteristics": ["Merkmal 1", "Merkmal 2"],
-      "application": "Wie anwenden?"
-    }}
+    {{"principle": "...", "why_works": "...", "characteristics": ["..."]}}
   ],
   "structural_principles": [
-    {{
-      "principle": "Strukturelles Prinzip (z.B. 'Spannung aufbauen und auflösen')",
-      "why_works": "Warum funktioniert diese Struktur?",
-      "application": "Wie kann man das Prinzip flexibel anwenden?"
-    }}
+    {{"principle": "...", "why_works": "...", "application": "..."}}
   ]
 }}""",
-            system="""Du bist ein Prinzipien-Extraktor für Viral Content. 
-
-WICHTIG: Du extrahierst PRINZIPIEN, nicht Regeln!
-
-Prinzipien sind:
-- Übergeordnete Konzepte, die auf verschiedene Situationen anwendbar sind
-- Erklären WARUM etwas funktioniert, nicht WAS es ist
-- Flexibel und kontextabhängig anwendbar
-
-Regeln sind:
-- Starre Vorschriften ("muss immer X enthalten")
-- Feste Templates ("immer 3 Sekunden")
-- Kontext-unabhängige Formeln
-
-Extrahiere nur Prinzipien!""",
-            temperature=0.3
-        )
-        
-        # Parse response
-        try:
-            import re
+                system="""Du bist ein Prinzipien-Extraktor für Viral Content. 
+Extrahiere PRINZIPIEN (WARUM etwas funktioniert), nicht Regeln (WAS es ist).
+Prinzipien sind flexibel und kontextabhängig anwendbar.""",
+                temperature=0.3,
+                cache_system=True  # Cache für Kostenersparnis
+            )
+            
+            # Parse response
             json_match = re.search(r'\{[\s\S]*\}', response.content)
-            patterns = json.loads(json_match.group()) if json_match else {}
-        except:
-            patterns = {"raw_response": response.content}
+            if json_match:
+                return json.loads(json_match.group())
+            else:
+                print(f"      ⚠️ Batch {batch_num}: Kein JSON gefunden")
+                return None
+                
+        except Exception as e:
+            print(f"      ⚠️ Batch {batch_num}: Fehler - {e}")
+            return None
+    
+    async def _merge_batch_patterns(self, batch_patterns: List[Dict]) -> Dict:
+        """
+        Merge alle Batch-Patterns zu einem finalen Pattern-Set.
         
-        patterns["source"] = "goat_training_data.json"
-        patterns["clips_analyzed"] = len(sample)
-        patterns["total_high_performers"] = len(high_performers)
-        patterns["sample_size"] = max_clips_to_analyze
-        patterns["analyzed_at"] = datetime.now().isoformat()
+        Verwendet Claude um die besten Prinzipien zu synthetisieren.
         
-        # Save
-        with open(self.isolated_patterns_file, 'w', encoding='utf-8') as f:
-            json.dump(patterns, f, indent=2, ensure_ascii=False)
+        Args:
+            batch_patterns: Liste von Pattern-Dicts aus jedem Batch
+            
+        Returns:
+            Merged Pattern Dict
+        """
+        from models.base import get_model
+        import re
         
-        print(f"   ✅ Gespeichert: {self.isolated_patterns_file.name}")
+        if not batch_patterns:
+            return {"hook_principles": [], "content_principles": [], "structural_principles": []}
         
-        return patterns
+        if len(batch_patterns) == 1:
+            return batch_patterns[0]
+        
+        # Collect all principles
+        all_hook_principles = []
+        all_content_principles = []
+        all_structural_principles = []
+        
+        for bp in batch_patterns:
+            all_hook_principles.extend(bp.get("hook_principles", []))
+            all_content_principles.extend(bp.get("content_principles", []))
+            all_structural_principles.extend(bp.get("structural_principles", []))
+        
+        print(f"      Merging: {len(all_hook_principles)} hook, {len(all_content_principles)} content, {len(all_structural_principles)} structural")
+        
+        # Use Claude to synthesize and deduplicate
+        model = get_model("anthropic", tier="sonnet")
+        
+        try:
+            response = await model.generate(
+                prompt=f"""Du hast {len(batch_patterns)} Batches von Prinzipien aus {len(batch_patterns) * 20} Clips analysiert.
+
+Hier sind ALLE extrahierten Prinzipien:
+
+HOOK-PRINZIPIEN ({len(all_hook_principles)}):
+{json.dumps(all_hook_principles[:30], indent=2, ensure_ascii=False)}
+
+CONTENT-PRINZIPIEN ({len(all_content_principles)}):
+{json.dumps(all_content_principles[:30], indent=2, ensure_ascii=False)}
+
+STRUKTURELLE PRINZIPIEN ({len(all_structural_principles)}):
+{json.dumps(all_structural_principles[:30], indent=2, ensure_ascii=False)}
+
+TASK:
+1. Dedupliziere ähnliche Prinzipien (behalte das stärkste)
+2. Synthetisiere zu den TOP 10-15 wichtigsten Prinzipien pro Kategorie
+3. Berechne die Frequenz basierend auf wie oft ein Prinzip in den Batches vorkam
+
+Antworte als JSON mit den synthetisierten Master-Prinzipien.""",
+                system="Du synthetisierst und deduplizierst Prinzipien aus mehreren Analyse-Batches.",
+                temperature=0.3,
+                cache_system=True
+            )
+            
+            json_match = re.search(r'\{[\s\S]*\}', response.content)
+            if json_match:
+                return json.loads(json_match.group())
+            else:
+                # Fallback: Return first batch
+                return batch_patterns[0]
+                
+        except Exception as e:
+            print(f"      ⚠️ Merge-Fehler: {e}")
+            # Fallback: Return first batch
+            return batch_patterns[0]
     
     async def _analyze_pairs(self) -> Dict:
         """
