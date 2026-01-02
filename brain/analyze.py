@@ -11,6 +11,7 @@ Wird einmalig initial und dann wöchentlich ausgeführt.
 """
 
 import json
+import os
 import asyncio
 from pathlib import Path
 from datetime import datetime
@@ -112,12 +113,25 @@ class BrainAnalyzer:
         if not high_performers:
             return {"patterns": [], "source": "goat_training_data.json"}
         
-        # Sample for analysis (max 50 to save costs)
-        sample = high_performers[:50]
+        # Configurable sample size (default: 50 for cost efficiency, can be increased)
+        # More clips = better patterns, but higher cost
+        max_clips_to_analyze = int(os.getenv("BRAIN_MAX_CLIPS_ANALYZE", "50"))
+        max_clips_in_prompt = int(os.getenv("BRAIN_MAX_CLIPS_IN_PROMPT", "20"))
         
-        # Build analysis prompt
+        # Use all high performers if less than max, otherwise sample
+        if len(high_performers) <= max_clips_to_analyze:
+            sample = high_performers
+            print(f"   Analysiere alle {len(sample)} High-Performer")
+        else:
+            sample = high_performers[:max_clips_to_analyze]
+            print(f"   Analysiere Sample von {len(sample)}/{len(high_performers)} High-Performern (max_clips_to_analyze={max_clips_to_analyze})")
+        
+        # Build analysis prompt (use subset for prompt to stay within token limits)
         clips_text = ""
-        for i, clip in enumerate(sample[:20], 1):
+        clips_for_prompt = sample[:max_clips_in_prompt]
+        print(f"   Verwende {len(clips_for_prompt)} Clips im Prompt (max_clips_in_prompt={max_clips_in_prompt})")
+        
+        for i, clip in enumerate(clips_for_prompt, 1):
             perf = clip.get("performance", {})
             transcript = clip.get("transcript", {}).get("text", "")[:500]
             clips_text += f"""
@@ -208,6 +222,8 @@ Extrahiere nur Prinzipien!""",
         
         patterns["source"] = "goat_training_data.json"
         patterns["clips_analyzed"] = len(sample)
+        patterns["total_high_performers"] = len(high_performers)
+        patterns["sample_size"] = max_clips_to_analyze
         patterns["analyzed_at"] = datetime.now().isoformat()
         
         # Save
@@ -241,6 +257,7 @@ Extrahiere nur Prinzipien!""",
                     with open(analysis_file) as f:
                         analysis = json.load(f)
                     
+                    # Prüfe ob composition_principles vorhanden (neue Struktur)
                     if "composition_principles" in analysis:
                         all_patterns.append({
                             "source": analysis_file.name,
@@ -248,7 +265,16 @@ Extrahiere nur Prinzipien!""",
                         })
                 except:
                     continue
-        else:
+            
+            # Wenn keine composition_principles gefunden, analysiere aus Transkripten
+            if not all_patterns:
+                print("   ⚠️ Vorhandene Analysen haben keine 'composition_principles'")
+                print("   📋 Analysiere Paare aus pairs_config.json...")
+                existing_analyses = []  # Force re-analysis
+            else:
+                print(f"   ✅ {len(all_patterns)} Analysen mit composition_principles gefunden")
+        
+        if not existing_analyses or not all_patterns:
             # Keine vorhandenen Analysen - analysiere Paare aus Config
             print("   ⚠️ Keine vorhandenen Analysen gefunden")
             print("   📋 Analysiere Paare aus pairs_config.json...")
