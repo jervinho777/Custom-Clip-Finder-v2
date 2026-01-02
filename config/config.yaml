@@ -1,0 +1,55 @@
+# Custom Clip Finder v2 Configuration
+# API Keys are loaded from .env file
+
+models:
+  # Stage 1: DISCOVER - 5 AI Ensemble
+  discovery:
+    - provider: anthropic
+      model: claude-sonnet-4-20250514
+      role: synthesis
+    - provider: openai
+      model: gpt-4o
+      role: pattern_recognition
+    - provider: google
+      model: gemini-2.0-flash
+      role: context_analysis
+    - provider: xai
+      model: grok-3
+      role: edge_cases
+    - provider: deepseek
+      model: deepseek-chat
+      role: cost_efficient
+
+  # Stage 2: COMPOSE - Debate
+  compose:
+    primary: claude-sonnet-4-20250514
+    rounds: 3
+
+  # Stage 3: VALIDATE - Final Decision
+  validate:
+    model: claude-sonnet-4-20250514
+    # Opus nur für finale Entscheidungen wenn Budget erlaubt
+    premium_model: claude-opus-4-20250514
+
+brain:
+  vector_store_path: ./brain/vector_store
+  principles_path: ./brain/PRINCIPLES.json
+  update_schedule: weekly
+
+pipeline:
+  # Thresholds
+  min_moment_duration: 20  # seconds
+  max_moment_duration: 90  # seconds
+  min_consensus_votes: 3   # of 5 AIs
+  quality_threshold: 80    # for pre-screening
+
+export:
+  formats:
+    - mp4
+    - xml
+    - json
+  output_dir: ./data/output
+
+# Cost Mode: quality, balanced, fast
+mode: balanced
+

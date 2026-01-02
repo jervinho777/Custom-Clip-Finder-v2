@@ -1,0 +1,123 @@
+{
+  "version": "2.0",
+  "last_updated": "2026-01-02",
+  "source": "Extracted from MASTER_LEARNINGS.json (175 clips analyzed)",
+  
+  "algorithm_understanding": {
+    "core_principle": "Der Algorithmus ist ein Performance-Vergleichsmechanismus mit EINEM Ziel: Watchtime maximieren",
+    "key_facts": [
+      "Du kämpfst gegen ALLE anderen Videos - Algorithmus ist nur Schiedsrichter",
+      "Make a video so good that people cannot physically scroll past"
+    ],
+    "metrics_priority": ["Watch Time", "Completion Rate", "Engagement", "Session Duration"]
+  },
+  
+  "hook_patterns": {
+    "paradox_statement": {
+      "frequency_in_top": "73%",
+      "principle": "Challenge common belief with cognitive dissonance",
+      "template": "Wir machen [UNIVERSELLES] falsch - und zwar dort wo wir [GEGENTEIL] sollten",
+      "examples": ["Wir verwechseln Liebe mit Kontrolle", "Die Geburt ist das Ende"],
+      "avg_completion": 0.34
+    },
+    "authority_curiosity": {
+      "frequency_in_top": "67%",
+      "principle": "Combine exclusivity + information gap + authority",
+      "template": "Nur [ZIELGRUPPE] hat ein sogenanntes [MYSTERIÖSER BEGRIFF]",
+      "examples": ["Nur Frauen haben ein sogenanntes Rieselorgan"],
+      "avg_completion": 0.31
+    },
+    "everyday_mystery": {
+      "frequency_in_top": "58%",
+      "principle": "Reveal hidden truth in harmless habits",
+      "template": "[ALLTÄGLICHES] das du [MACHST], [SCHOCKIERENDE WAHRHEIT]",
+      "examples": ["Salat aus Spanien wird mit Kot gedüngt"],
+      "avg_completion": 0.29
+    },
+    "story_conflict": {
+      "frequency_in_top": "52%",
+      "principle": "Immediate scene + conflict in 1-2 sentences",
+      "template": "Mach NIEMALS [X]. Hier ist die kurze Story warum...",
+      "examples": ["Ärgere niemals... Eine Horde Kinder sitzt am Straßenrand"],
+      "avg_completion": 0.28
+    }
+  },
+  
+  "transformation_patterns": {
+    "hook_extraction": {
+      "when": "Natural hook is weak, payoff is strong",
+      "how": "Move payoff statement to start, then provide context",
+      "example": "Dieter Lange - Lebenslinie hook moved from minute 10 to start",
+      "success_rate": "340% higher completion than clean extraction"
+    },
+    "clean_extraction": {
+      "when": "Natural hook is already strong (8+/10)",
+      "how": "Extract with minimal cuts, preserve natural flow",
+      "example": "Chris Surel - Story has natural strong opening"
+    },
+    "cross_moment_composition": {
+      "when": "Best hook and best content are in different parts",
+      "how": "Combine hook from moment A with content from moment B",
+      "principle": "Thematic relevance matters more than proximity"
+    }
+  },
+  
+  "cutting_principles": {
+    "core": "Every word must earn its place",
+    "what_to_cut": [
+      "Unnecessary descriptors without value",
+      "Verbose transitions (aber, und dann, also)",
+      "Obvious statements the viewer already knows",
+      "Filler words (BUT preserve authenticity!)"
+    ],
+    "what_to_preserve": [
+      "Core narrative beats",
+      "Emotional peaks",
+      "Speaker's natural voice/quirks",
+      "Setup that makes payoff land"
+    ],
+    "compression_ratio": "Top clips compress 10-30min to 30-90sec (5-10%)"
+  },
+  
+  "duration_principles": {
+    "principle": "Duration serves content, not arbitrary targets",
+    "guidelines": {
+      "story": "45-90 seconds (needs setup + payoff)",
+      "insight": "30-60 seconds (single powerful idea)",
+      "tutorial": "60-90 seconds (step by step)",
+      "emotional": "30-45 seconds (hit hard, get out)"
+    },
+    "constraint": "Never under 20s, rarely over 90s"
+  },
+  
+  "timing_principles": {
+    "hook_window": "3 seconds to capture attention",
+    "pattern_interrupt": "Every 5-7 seconds maintain engagement",
+    "payoff_timing": "Deliver promise before viewer expects it"
+  },
+  
+  "quality_signals": {
+    "from_top_50_clips": true,
+    "strong_indicators": [
+      "Paradox in first sentence",
+      "Universal pain point (parenting, relationships, health, money)",
+      "Information gap opened and resolved",
+      "Emotional arousal (curiosity, surprise > calm)"
+    ],
+    "weak_indicators": [
+      "Generic opening",
+      "Niche expertise without universal angle",
+      "No clear payoff",
+      "Low energy delivery"
+    ]
+  },
+  
+  "anti_patterns": [
+    "Starting with context before hook",
+    "Cliffhangers without payoff in clip",
+    "Too many ideas in one clip",
+    "Cutting authentic moments for 'optimization'",
+    "Rigid rules over principle-based thinking"
+  ]
+}
+
