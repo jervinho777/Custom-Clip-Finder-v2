@@ -1,0 +1,38 @@
+[
+  {
+    "start": 564.63,
+    "end": 655.12,
+    "hook_text": "Arbeite niemals f\u00fcr Geld",
+    "segments": [
+      {
+        "text": "Arbeite niemals f\u00fcr Geld. Horde Kinder sitzt am Stra\u00dfenrand..."
+      }
+    ],
+    "pattern": "hook_extraction",
+    "viral_potential": 9.2
+  },
+  {
+    "start": 480.0,
+    "end": 534.0,
+    "hook_text": "Aus einem Ackergaul wird kein Rennpferd",
+    "segments": [
+      {
+        "text": "Aus einem Ackergaul wird kein Rennpferd. Talent ist das..."
+      }
+    ],
+    "pattern": "clean_extraction",
+    "viral_potential": 8.5
+  },
+  {
+    "start": 321.0,
+    "end": 345.0,
+    "hook_text": "Was willst du eigentlich mal werden?",
+    "segments": [
+      {
+        "text": "Was willst du eigentlich mal werden? Das impliziert doch..."
+      }
+    ],
+    "pattern": "beliefbreaker",
+    "viral_potential": 8.8
+  }
+]
