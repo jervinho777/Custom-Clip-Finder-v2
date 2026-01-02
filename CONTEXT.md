@@ -81,9 +81,9 @@ cd "/Users/jervinquisada/custom-clip-finder v2"
 nohup ./run_full_brain.sh &   # Background (über Nacht)
 ```
 
-Analysiert alle 972 Clips in 49 Batches:
-- **Dauer:** 30-60 Minuten
-- **Kosten:** ~$5-10 (Sonnet mit Prompt Caching)
+Analysiert alle 972 Clips in 49 Batches mit **OPUS 4.5** (beste Qualität):
+- **Dauer:** 45-90 Minuten
+- **Kosten:** ~$25-40 (Opus 4.5 💎 - lohnt sich, BRAIN wird einmal erstellt!)
 - **Output:** `isolated_patterns.json`, `composition_patterns.json`, `PRINCIPLES.json`
 
 ## Entscheidungen (Aktuell)
