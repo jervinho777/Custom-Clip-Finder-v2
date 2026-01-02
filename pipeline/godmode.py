@@ -53,8 +53,9 @@ async def godmode_evaluate(
     print(f"   Clips to evaluate: {len(clips)}")
     print(f"   Batch size: {batch_size}")
     
-    # Use Opus for premium evaluation
-    model = ClaudeModel("claude-opus-4-20250514")
+    # Use Opus for premium evaluation (dynamic detection)
+    from models.base import get_model
+    model = get_model("anthropic", tier="opus")
     
     results = []
     

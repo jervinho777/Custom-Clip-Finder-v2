@@ -68,8 +68,9 @@ async def validate_clip(
         quality_signals=quality_signals
     )
     
-    # Use Claude for validation
-    model = ClaudeModel("claude-sonnet-4-20250514")
+    # Use Claude for validation (dynamic detection)
+    from models.base import get_model
+    model = get_model("anthropic", tier="sonnet")
     
     response = await model.generate(
         prompt=user_prompt,

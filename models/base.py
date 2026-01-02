@@ -450,24 +450,22 @@ class DeepSeekModel(AIModel):
         return (input_tokens * pricing["input"] + output_tokens * pricing["output"]) / 1_000_000
 
 
-def get_model(provider: str, model: str = None) -> AIModel:
+def get_model(provider: str, model: str = None, tier: str = None) -> AIModel:
     """
     Factory function to get AI model by provider.
     
+    Uses dynamic model detection to always get the latest models.
+    
     Args:
         provider: anthropic, openai, google, xai, deepseek
-        model: Optional model name (uses best default if not specified)
+        model: Optional model name (if provided, uses this directly)
+        tier: Optional tier name (opus, sonnet, flagship, pro, etc.)
+              If tier is provided, uses auto_detect to get latest model for that tier
     
     Returns:
         Configured AIModel instance
     """
-    defaults = {
-        "anthropic": "claude-opus-4-20250514",  # Opus 4.5 💎
-        "openai": "gpt-5.2",  # GPT-5.2 🔥
-        "google": "gemini-3.0-pro",  # Gemini 3.0 Pro
-        "xai": "grok-4-1-fast-reasoning",  # Grok 4.1 🚀
-        "deepseek": "deepseek-chat",  # DeepSeek V3.2
-    }
+    from .auto_detect import get_model as get_model_string
     
     models = {
         "anthropic": ClaudeModel,
@@ -480,31 +478,50 @@ def get_model(provider: str, model: str = None) -> AIModel:
     if provider not in models:
         raise ValueError(f"Unknown provider: {provider}. Available: {list(models.keys())}")
     
-    model_name = model or defaults.get(provider)
+    # If model is explicitly provided, use it
+    if model:
+        model_name = model
+    # If tier is provided, use auto_detect
+    elif tier:
+        # Map provider names (google -> gemini)
+        detect_provider = "gemini" if provider == "google" else provider
+        model_name = get_model_string(detect_provider, tier)
+    # Otherwise, use tier-based defaults
+    else:
+        tier_defaults = {
+            "anthropic": "opus",
+            "openai": "flagship",
+            "google": "pro",
+            "xai": "flagship",
+            "deepseek": "chat",
+        }
+        detect_provider = "gemini" if provider == "google" else provider
+        model_name = get_model_string(detect_provider, tier_defaults[provider])
+    
     return models[provider](model_name)
 
 
-# Convenient aliases
+# Convenient aliases (use dynamic detection)
 def get_opus() -> ClaudeModel:
-    """Get Opus 4.5 (Maximum Quality)"""
-    return ClaudeModel("claude-opus-4-20250514")
+    """Get latest Opus (Maximum Quality)"""
+    return get_model("anthropic", tier="opus")
 
 def get_sonnet() -> ClaudeModel:
-    """Get Sonnet 4.5 (Balanced)"""
-    return ClaudeModel("claude-sonnet-4-5-20250929")
+    """Get latest Sonnet (Balanced)"""
+    return get_model("anthropic", tier="sonnet")
 
 def get_gpt() -> OpenAIModel:
-    """Get GPT-5.2"""
-    return OpenAIModel("gpt-5.2")
+    """Get latest GPT flagship"""
+    return get_model("openai", tier="flagship")
 
 def get_gemini() -> GeminiModel:
-    """Get Gemini 3.0 Pro"""
-    return GeminiModel("gemini-3.0-pro")
+    """Get latest Gemini Pro"""
+    return get_model("google", tier="pro")
 
 def get_grok() -> GrokModel:
-    """Get Grok 4.1 Fast Reasoning"""
-    return GrokModel("grok-4-1-fast-reasoning")
+    """Get latest Grok flagship"""
+    return get_model("xai", tier="flagship")
 
 def get_deepseek() -> DeepSeekModel:
-    """Get DeepSeek V3.2"""
-    return DeepSeekModel("deepseek-chat")
+    """Get latest DeepSeek chat"""
+    return get_model("deepseek", tier="chat")

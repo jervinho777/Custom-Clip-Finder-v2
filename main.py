@@ -316,12 +316,13 @@ async def _test_apis():
     
     console.print("[bold]Testing API connections...[/bold]\n")
     
+    # Use dynamic model detection
     apis = [
-        ("anthropic", "claude-sonnet-4-20250514"),
-        ("openai", "gpt-4o"),
-        ("google", "gemini-2.0-flash"),
-        ("xai", "grok-3"),
-        ("deepseek", "deepseek-chat"),
+        ("anthropic", "sonnet"),
+        ("openai", "mini"),  # Use mini for testing to save costs
+        ("google", "flash"),
+        ("xai", "standard"),
+        ("deepseek", "chat"),
     ]
     
     table = Table(title="API Status")
@@ -329,17 +330,20 @@ async def _test_apis():
     table.add_column("Model", style="green")
     table.add_column("Status", style="yellow")
     
-    for provider, model in apis:
+    for provider, tier in apis:
         try:
-            ai = get_model(provider, model)
+            ai = get_model(provider, tier=tier)
             response = await ai.generate("Say 'OK' in one word.", max_tokens=10)
             status = f"✓ ({response.latency_ms}ms)"
+            model_name = ai.model
         except ValueError as e:
             status = f"✗ Missing API key"
+            model_name = f"{provider}/{tier}"
         except Exception as e:
             status = f"✗ {str(e)[:30]}"
+            model_name = f"{provider}/{tier}"
         
-        table.add_row(provider, model, status)
+        table.add_row(provider, model_name, status)
     
     console.print(table)
 

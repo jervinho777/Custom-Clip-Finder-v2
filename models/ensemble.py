@@ -36,13 +36,13 @@ class AIEnsemble:
     - DeepSeek (cost-efficient verification)
     """
     
-    # Verified working models from V1
+    # Use dynamic model detection - always latest models
     DEFAULT_MODELS = [
-        ("anthropic", "claude-opus-4-20250514"),  # Opus 4.5 💎
-        ("openai", "gpt-5.2"),  # GPT-5.2 🔥
-        ("google", "gemini-3.0-pro"),  # Gemini 3.0 Pro
-        ("xai", "grok-4-1-fast-reasoning"),  # Grok 4.1 🚀
-        ("deepseek", "deepseek-chat"),  # DeepSeek V3.2
+        ("anthropic", None, "opus"),      # Latest Opus
+        ("openai", None, "flagship"),    # Latest GPT flagship
+        ("google", None, "pro"),          # Latest Gemini Pro
+        ("xai", None, "flagship"),       # Latest Grok flagship
+        ("deepseek", None, "chat"),      # Latest DeepSeek chat
     ]
     
     def __init__(self, models: Optional[List[tuple]] = None):
@@ -58,11 +58,24 @@ class AIEnsemble:
         self._init_errors: List[str] = []
         
         # Initialize models (skip unavailable ones)
-        for provider, model in self.model_configs:
+        for config in self.model_configs:
             try:
-                self._models.append(get_model(provider, model))
+                # Support both old format (provider, model) and new format (provider, model, tier)
+                if len(config) == 2:
+                    provider, model = config
+                    ai_model = get_model(provider, model=model)
+                elif len(config) == 3:
+                    provider, model, tier = config
+                    if model is None:
+                        ai_model = get_model(provider, tier=tier)
+                    else:
+                        ai_model = get_model(provider, model=model)
+                else:
+                    raise ValueError(f"Invalid config format: {config}")
+                
+                self._models.append(ai_model)
             except ValueError as e:
-                self._init_errors.append(f"{provider}: {e}")
+                self._init_errors.append(f"{config[0]}: {e}")
         
         if not self._models:
             raise ValueError(f"No models available. Errors: {self._init_errors}")

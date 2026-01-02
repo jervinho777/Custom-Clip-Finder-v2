@@ -101,6 +101,9 @@ class VectorStore:
         collection = self._get_collection()
         added = 0
         
+        # Track seen IDs to ensure uniqueness
+        seen_ids = set()
+        
         for i in range(0, len(filtered_clips), batch_size):
             batch = filtered_clips[i:i+batch_size]
             
@@ -109,10 +112,23 @@ class VectorStore:
             metadatas = []
             
             for clip in batch:
-                # Create unique ID
-                clip_id = clip.get("video_id", hashlib.md5(
+                # Create unique ID - use hash of entire clip to ensure uniqueness
+                clip_hash = hashlib.md5(
                     json.dumps(clip, sort_keys=True).encode()
-                ).hexdigest()[:16])
+                ).hexdigest()[:16]
+                
+                # Use video_id if available, but append hash to ensure uniqueness
+                base_id = clip.get("video_id", clip_hash)
+                clip_id = f"{base_id}_{clip_hash}"
+                
+                # Ensure no duplicates within this batch
+                counter = 0
+                original_id = clip_id
+                while clip_id in seen_ids:
+                    counter += 1
+                    clip_id = f"{original_id}_{counter}"
+                
+                seen_ids.add(clip_id)
                 
                 # Get text for embedding
                 transcript = clip.get("transcript", {})
@@ -126,7 +142,8 @@ class VectorStore:
                 # Build metadata
                 perf = clip.get("performance", {})
                 metadata = {
-                    "video_id": clip_id,
+                    "video_id": base_id,  # Original video_id (may be duplicate)
+                    "unique_id": clip_id,  # Unique identifier for this clip
                     "views": perf.get("views", 0),
                     "completion_rate": perf.get("completion_rate", 0),
                     "account": clip.get("account", ""),

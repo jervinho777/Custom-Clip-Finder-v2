@@ -51,8 +51,9 @@ async def compose_clip(
     principles = load_principles()
     composition_patterns = principles.get("transformation_patterns", {})
     
-    # Use Claude Sonnet for debate
-    model = ClaudeModel("claude-sonnet-4-20250514")
+    # Use Claude Sonnet for debate (dynamic detection)
+    from models.base import get_model
+    model = get_model("anthropic", tier="sonnet")
     
     proposals = []
     

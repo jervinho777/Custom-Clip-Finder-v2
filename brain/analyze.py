@@ -128,7 +128,8 @@ Hook (erste 100 chars): {transcript[:100]}
 ---
 """
         
-        model = ClaudeModel("claude-sonnet-4-5-20250929")  # Sonnet für Analyse
+        from models.base import get_model
+        model = get_model("anthropic", tier="sonnet")  # Sonnet für Analyse
         
         response = await model.generate(
             prompt=f"""Analysiere diese Top-Performer Clips und extrahiere PATTERNS:
