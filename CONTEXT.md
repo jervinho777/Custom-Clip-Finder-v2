@@ -58,21 +58,33 @@ AI-powered viral clip extraction system mit 4-Stage Pipeline (DISCOVER → COMPO
 - ✅ **Ground Truth Test** - Test-Script für bekannte virale Momente
 
 ## Was NICHT funktioniert / Probleme ⚠️
-- ⚠️ **BRAIN Analyse:** Erste Analyse lief mit alten Prompts → Output noch regelbasiert, muss neu ausgeführt werden
-- ⚠️ **Pair-Analyse:** Vorhandene `restructure_analysis_*.json` haben keine `composition_principles` → System analysiert jetzt aus `pairs_config.json`
+- ⚠️ **BRAIN Analyse:** Bereit für vollständige Analyse aller 972 Clips (muss noch ausgeführt werden)
 - ⚠️ **Testing:** Noch kein vollständiger End-to-End Test mit echtem Video
 - ⚠️ **Dependencies:** `instructor` und `aiohttp` müssen noch installiert werden
 - ⚠️ **Vector Store:** Initialisiert, aber noch nicht in Production verwendet
 - ⚠️ **Cost Tracking:** Cache-Statistiken werden getrackt, aber noch nicht in Reports integriert
 
 ## Nächste Schritte (Priorität)
-1. [ ] **Dependencies installieren** - `uv sync` (instructor, aiohttp)
-2. [ ] **BRAIN Analyse erneut ausführen** - `python main.py analyze-brain` (mit neuen prinzipienbasierten Prompts)
+1. [ ] **Vollständige BRAIN Analyse** - `./run_full_brain.sh` (alle 972 Clips, ~$5-10, 30-60 min)
+2. [ ] **Dependencies installieren** - `uv sync` (instructor, aiohttp)
 3. [ ] **Vollständiger Production-Test** - Dieter Lange.mp4 durch komplette Pipeline
 4. [ ] **Ground Truth Validation** - Prüfen ob "Arbeite niemals für Geld" gefunden wird
 5. [ ] **Performance Monitoring** - Cache-Statistiken in Reports integrieren
 6. [ ] **Diverse Content-Tests** - Verschiedene Video-Typen testen
 7. [ ] **Documentation** - API-Dokumentation für alle Stages
+
+## BRAIN Analyse über Nacht ausführen
+```bash
+cd "/Users/jervinquisada/custom-clip-finder v2"
+./run_full_brain.sh           # Foreground
+# ODER
+nohup ./run_full_brain.sh &   # Background (über Nacht)
+```
+
+Analysiert alle 972 Clips in 49 Batches:
+- **Dauer:** 30-60 Minuten
+- **Kosten:** ~$5-10 (Sonnet mit Prompt Caching)
+- **Output:** `isolated_patterns.json`, `composition_patterns.json`, `PRINCIPLES.json`
 
 ## Entscheidungen (Aktuell)
 | Datum | Entscheidung | Warum |
