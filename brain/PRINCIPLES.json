@@ -1,37 +1,30 @@
 {
-  "version": "2.0",
-  "last_updated": "2026-01-02",
+  "version": "2.1",
+  "last_updated": "2026-01-03T00:11:20.960714",
   "source": "MASTER_LEARNINGS.json + Social_Media_Algorithmus.pdf",
-  
   "_MASTER_PRINCIPLE": "Make a video so good that people cannot physically scroll past",
-  
   "algorithm_understanding": {
     "core_principle": "Der Algorithmus ist ein reiner Performance-Vergleichsmechanismus mit EINEM Ziel: Maximierung der Watchtime",
     "why": "Plattformen verdienen 99% durch Werbeanzeigen. Mehr Watchtime = mehr Ad-Impressions = mehr Umsatz",
-    
     "multiplayer_game": {
       "truth": "Du kämpfst NICHT gegen den Algorithmus - er ist nur der Schiedsrichter",
       "reality": "Du kämpfst gegen ALLE anderen Videos in deiner Nische",
       "mechanism": "Der Algorithmus wählt einfach das Video mit den besten Metriken aus dem Pool",
       "no_shadowban": "Wenn dein Video nicht performt, ist es nicht 'Shadowbanning' - es ist einfach schlechter als die Konkurrenz"
     },
-    
     "testgroup_mechanism": {
       "step_1": "Initial Test: Jedes Video wird einer kleinen Testgruppe gezeigt (User mit Interesse am Thema)",
       "step_2": "Performance-Vergleich: Deine Metriken werden mit ALLEN anderen Videos zum selben Thema verglichen",
       "step_3": "Skalierung: Das Video mit der höchsten Watchtime/Engagement gewinnt und wird weiter ausgespielt"
     },
-    
     "metrics_priority": [
       "Watch Time (absolute Priorität)",
       "Completion Rate",
       "Engagement (als Indikator für Interesse)",
       "Session Duration (wie lange bleiben User nach deinem Video auf der Plattform)"
     ],
-    
     "brutal_truth": "Vergiss Trends, Hashtags, Posting-Zeiten - das ist alles sekundär. Der Algorithmus wird IMMER das Video bevorzugen, das Menschen länger auf der Plattform hält. Punkt."
   },
-  
   "hook_requirements": {
     "window": "0-3 Sekunden",
     "must_do": [
@@ -41,7 +34,6 @@
     ],
     "why_critical": "Wenn User hier abspringen, kostest du die Plattform Geld"
   },
-  
   "content_structure": {
     "core_rule": "Jede Sekunde muss einen Grund liefern weiterzuschauen",
     "requirements": [
@@ -49,44 +41,50 @@
       "Ständige Mini-Payoffs und Teaser für kommende Information"
     ]
   },
-  
   "psychological_triggers": {
     "open_loops": "Unvollständige Loops (Gehirn will Abschluss)",
     "pattern_interrupts": "Pattern Interrupts bei Aufmerksamkeits-Dips",
     "emotional_journey": "Emotionale Achterbahn statt Flatline"
   },
-  
   "hook_patterns": {
     "paradox_statement": {
       "frequency_in_top": "73%",
       "principle": "Challenge common belief with cognitive dissonance",
       "template": "Wir machen [UNIVERSELLES] falsch - und zwar dort wo wir [GEGENTEIL] sollten",
-      "examples": ["Wir verwechseln Liebe mit Kontrolle", "Die Geburt ist das Ende"],
+      "examples": [
+        "Wir verwechseln Liebe mit Kontrolle",
+        "Die Geburt ist das Ende"
+      ],
       "avg_completion": 0.34
     },
     "authority_curiosity": {
       "frequency_in_top": "67%",
       "principle": "Combine exclusivity + information gap + authority",
       "template": "Nur [ZIELGRUPPE] hat ein sogenanntes [MYSTERIÖSER BEGRIFF]",
-      "examples": ["Nur Frauen haben ein sogenanntes Rieselorgan"],
+      "examples": [
+        "Nur Frauen haben ein sogenanntes Rieselorgan"
+      ],
       "avg_completion": 0.31
     },
     "everyday_mystery": {
       "frequency_in_top": "58%",
       "principle": "Reveal hidden truth in harmless habits",
       "template": "[ALLTÄGLICHES] das du [MACHST], [SCHOCKIERENDE WAHRHEIT]",
-      "examples": ["Salat aus Spanien wird mit Kot gedüngt"],
+      "examples": [
+        "Salat aus Spanien wird mit Kot gedüngt"
+      ],
       "avg_completion": 0.29
     },
     "story_conflict": {
       "frequency_in_top": "52%",
       "principle": "Immediate scene + conflict in 1-2 sentences",
       "template": "Mach NIEMALS [X]. Hier ist die kurze Story warum...",
-      "examples": ["Ärgere niemals... Eine Horde Kinder sitzt am Straßenrand"],
+      "examples": [
+        "Ärgere niemals... Eine Horde Kinder sitzt am Straßenrand"
+      ],
       "avg_completion": 0.28
     }
   },
-  
   "transformation_patterns": {
     "hook_extraction": {
       "when": "Natural hook is weak, payoff is strong",
@@ -158,7 +156,6 @@
       "principle": "Thematic relevance matters more than proximity"
     }
   },
-  
   "cutting_principles": {
     "core": "Every word must earn its place",
     "what_to_cut": [
@@ -175,7 +172,6 @@
     ],
     "compression_ratio": "Top clips compress 10-30min to 30-90sec (5-10%)"
   },
-  
   "duration_principles": {
     "principle": "Duration serves content, not arbitrary targets",
     "guidelines": {
@@ -186,13 +182,11 @@
     },
     "constraint": "Never under 20s, rarely over 90s"
   },
-  
   "timing_principles": {
     "hook_window": "3 seconds to capture attention",
     "pattern_interrupt": "Every 5-7 seconds maintain engagement",
     "payoff_timing": "Deliver promise before viewer expects it"
   },
-  
   "quality_signals": {
     "from_top_50_clips": true,
     "strong_indicators": [
@@ -208,7 +202,6 @@
       "Low energy delivery"
     ]
   },
-  
   "anti_patterns": [
     "Starting with context before hook",
     "Cliffhangers without payoff in clip",
@@ -216,5 +209,9 @@
     "Cutting authentic moments for 'optimization'",
     "Rigid rules over principle-based thinking",
     "Optimizing for trends/hashtags instead of watchtime"
-  ]
+  ],
+  "data_sources": {
+    "isolated_clips": 50,
+    "transformations": 0
+  }
 }

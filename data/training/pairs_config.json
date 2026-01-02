@@ -1,0 +1,70 @@
+{
+  "pairs": [
+    {
+      "id": "dieter_lange",
+      "longform": "Dieter Lange_transcript.json",
+      "clip": "Dieter Lange Viral Clip_transcript.json",
+      "pattern": "hook_extraction",
+      "notes": "Hook 'Arbeite niemals für Geld' wurde vom Ende nach vorne gezogen"
+    },
+    {
+      "id": "fradrich_lebenslinie",
+      "longform": "Dr_Stefan_Frädrich_transcript.json",
+      "clip": "Lebenslinie V2_NOCTA_transcript.json",
+      "pattern": "clean_extraction",
+      "notes": "Starker natürlicher Hook, nur gekürzt"
+    },
+    {
+      "id": "chris_surel_metaphor",
+      "longform": "Chris Surel_transcript.json",
+      "clip": "top02_Chris Surel_Beliefbreaker Headline - Metapher - Wissen - Loop_transcript.json",
+      "pattern": "metaphor_hook",
+      "notes": "Metapher 'Schlafen ist wie Fußball' als Hook"
+    },
+    {
+      "id": "chris_surel_beliefbreaker",
+      "longform": "Chris Surel_transcript.json",
+      "clip": "top06_Greator__transcript.json",
+      "pattern": "beliefbreaker",
+      "notes": "Gegen-intuitive Aussage 'Hört auf auszuschlafen'"
+    },
+    {
+      "id": "robert_lehmann_shock_1",
+      "longform": "Meeresbiologe Robert Marc Lehmann über Zoos  3nach9_transcript.json",
+      "clip": "top10_Robert Marc Lehmann__transcript.json",
+      "pattern": "shock_story",
+      "notes": "Absurde Story 'Mondfisch Kindersocken'"
+    },
+    {
+      "id": "robert_lehmann_shock_2",
+      "longform": "Meeresbiologe Robert Marc Lehmann über Zoos  3nach9_transcript.json",
+      "clip": "top14_Robert Marc Lehmann__transcript.json",
+      "pattern": "shock_story",
+      "notes": "Emotionale Provokation über Menschenaffen"
+    },
+    {
+      "id": "patric_heizmann_paradox",
+      "longform": "Patric Heizmann RN2021_transcript.json",
+      "clip": "top19_Greator__transcript.json",
+      "pattern": "paradox_statement",
+      "notes": "Schockierende Statistik über McDonald's Umsatz"
+    },
+    {
+      "id": "gereon_jorn_everyday",
+      "longform": "USED_17 - Krankheit_transcript.json",
+      "clip": "top37_Gereon Jörn__transcript.json",
+      "pattern": "everyday_mystery",
+      "notes": "Enthüllung über Eisbergsalat Vitamin C"
+    },
+    {
+      "id": "cw_beziehung_paradox",
+      "longform": "CWBeziehung_transcript.json",
+      "clip": "top09_Greator__transcript.json",
+      "pattern": "paradox_statement",
+      "notes": "Relatable conflict 'Männlich vs. Frauisch'"
+    }
+  ],
+  "transcripts_dir": "data/cache/transcripts",
+  "output_dir": "data/learnings"
+}
+

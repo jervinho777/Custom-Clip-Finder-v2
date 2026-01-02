@@ -1,0 +1,129 @@
+{
+  "hook_patterns": [
+    {
+      "type": "Direkte Handlungsaufforderung/Warnung",
+      "frequency": "35%",
+      "example": "wird bitte auf am Wochenende auszuschlafen / Kauft Lebensmittel, die keine Zutatenliste tragen",
+      "why_works": "Schafft sofortige Relevanz durch imperatives 'Du musst das wissen' - triggert Verlustangst und Selbstoptimierungsdrang"
+    },
+    {
+      "type": "Relationale Frage/Identifikation",
+      "frequency": "25%",
+      "example": "Wie viele von euch kennen Menschen... / Wirffen euch, ich trinkt ab und zu mal...",
+      "why_works": "Aktiviert Zuschauer durch direkte Ansprache - 'Das bin ich!' Moment erzeugt emotionale Bindung"
+    },
+    {
+      "type": "Kontraintuitives Statement",
+      "frequency": "20%",
+      "example": "Menschen, die immer und überall sofort einschlafen können... / Arbeitel niemals vergelft",
+      "why_works": "Bricht Erwartungen - 'Was? Das kann nicht sein!' erzeugt kognitive Dissonanz und Neugier"
+    },
+    {
+      "type": "Metapher/Vergleich als Einstieg",
+      "frequency": "10%",
+      "example": "Schlafen ist so wie Fußballspiel",
+      "why_works": "Macht komplexe Themen greifbar durch bekannte Referenzen - senkt mentale Einstiegshürde"
+    },
+    {
+      "type": "Storytelling-Opener",
+      "frequency": "10%",
+      "example": "In U.S. vor Kurzem ein Mann vorgericht gestanden... / Er war als Jugendliche aufgefägen...",
+      "why_works": "Narrative Hook - Menschen sind evolutionär auf Geschichten programmiert"
+    }
+  ],
+  "content_types": [
+    {
+      "type": "Gesundheits-/Schlaf-Hacks",
+      "avg_completion": 0.28,
+      "characteristics": [
+        "Praktische Alltagstipps",
+        "Wissenschaftlich anmutend",
+        "Sofort umsetzbar",
+        "Betrifft jeden (universelle Relevanz)",
+        "Clips 2, 3, 6, 7 - konstant 27-29% Completion"
+      ]
+    },
+    {
+      "type": "Verhaltenspsychologie/Soziale Beobachtungen",
+      "avg_completion": 0.29,
+      "characteristics": [
+        "Entlarvt gesellschaftliche Muster",
+        "Selbstreflexion-Trigger",
+        "Clips 5, 8, 9, 12",
+        "Höhere Completion bei konkreten Beispielen"
+      ]
+    },
+    {
+      "type": "Kuriose Fakten/Geschichten",
+      "avg_completion": 0.33,
+      "characteristics": [
+        "Ungewöhnliche Anekdoten",
+        "Entertainment-Faktor hoch",
+        "Clips 10, 14, 20 - überdurchschnittliche 31-38% Completion",
+        "Kombination aus Humor und Überraschung"
+      ]
+    },
+    {
+      "type": "Ernährungs-/Konsumkritik",
+      "avg_completion": 0.28,
+      "characteristics": [
+        "Systemkritisch aber lösungsorientiert",
+        "Clips 11, 13, 19",
+        "Konkrete Zahlen/Fakten als Autorität"
+      ]
+    },
+    {
+      "type": "Kindererziehung/Entwicklung",
+      "avg_completion": 0.3,
+      "characteristics": [
+        "Clips 4, 15, 16",
+        "Emotionale Komponente",
+        "Beobachtungen aus dem echten Leben"
+      ]
+    }
+  ],
+  "structural_patterns": [
+    {
+      "pattern": "Konsistente Completion Rate (27%)",
+      "description": "14 von 20 Clips haben exakt 27% - deutet auf optimale Clip-Länge oder Algorithmus-Sweet-Spot hin. Vermutlich 30-45 Sekunden Clips bei durchschnittlich 8-12 Sekunden Watch-Time"
+    },
+    {
+      "pattern": "Gesprochene Sprache mit Transkriptions-Artefakten",
+      "description": "Alle Hooks zeigen Sprachfehler/Umgangssprache - authentischer Vortragsstil performt besser als perfekt geschriebener Text. 'Wirffen euch' statt 'Wer von euch' = Natürlichkeit"
+    },
+    {
+      "pattern": "Sofortiger Einstieg ohne Intro",
+      "description": "Keine 'Hallo erstmal' - direkt ins Thema. Erste 3 Wörter müssen bereits Hook sein"
+    },
+    {
+      "pattern": "Completion-Boost durch Spezifität",
+      "description": "Clips mit höchster Completion (34-38%) enthalten konkrete Details: 'drei Liter', 'Gorilla oder Schimpanse', 'Mann vor Gericht' - Spezifität = Glaubwürdigkeit"
+    },
+    {
+      "pattern": "Dualität: Problem + implizite Lösung",
+      "description": "Erfolgreiche Clips präsentieren Problem im Hook, implizieren aber Lösung kommt noch - erzeugt offene Loop"
+    },
+    {
+      "pattern": "Autoritäts-Signale",
+      "description": "Wissenschaftliche Anmutung ('Studien zeigen'), konkrete Zahlen ('3,2 Milliarden', '90 Minuten'), Expertenstatus durch Detailwissen"
+    },
+    {
+      "pattern": "Kontroverse/Polarisierung",
+      "description": "'Hört auf auszuschlafen' - geht gegen Common Sense, erzeugt Widerspruch und damit Engagement"
+    }
+  ],
+  "meta_insights": {
+    "optimal_hook_formula": "Direkte Ansprache + Kontraintuitives Statement + Universelle Relevanz",
+    "completion_rate_drivers": [
+      "Kuriositätsfaktor (33%+ Completion)",
+      "Konkrete Zahlen/Namen",
+      "Storytelling-Elemente",
+      "Emotionale Resonanz"
+    ],
+    "view_count_vs_completion": "Views korrelieren nicht linear mit Completion - Clip 10 hat 1.8M Views aber 34% Completion (höchster Wert außer Clip 14). Quality > Quantity für Algorithmus-Push",
+    "language_style": "Umgangssprache, Dialekt-Färbung, authentische Sprechweise - 'perfektes' Deutsch performt schlechter"
+  },
+  "source": "goat_training_data.json",
+  "clips_analyzed": 50,
+  "analyzed_at": "2026-01-03T00:10:00.854268"
+}

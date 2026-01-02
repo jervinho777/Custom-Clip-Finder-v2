@@ -16,7 +16,7 @@ from pathlib import Path
 from datetime import datetime
 from typing import List, Dict, Optional
 
-from models.base import ClaudeModel
+from models.base import get_model
 
 
 class BrainAnalyzer:
@@ -132,28 +132,69 @@ Hook (erste 100 chars): {transcript[:100]}
         model = get_model("anthropic", tier="sonnet")  # Sonnet für Analyse
         
         response = await model.generate(
-            prompt=f"""Analysiere diese Top-Performer Clips und extrahiere PATTERNS:
+            prompt=f"""Analysiere diese Top-Performer Clips und extrahiere PRINZIPIEN (nicht Regeln!):
 
 {clips_text}
 
+WICHTIG: Extrahiere PRINZIPIEN, nicht Regeln!
+
+❌ KEINE Regeln wie:
+- "Hook muss immer das Wort X enthalten"
+- "Hook muss genau 3 Sekunden lang sein"
+- "Clip muss immer mit Frage beginnen"
+
+✅ STATTDESSEN Prinzipien wie:
+- "Hooks funktionieren, wenn sie kognitive Dissonanz erzeugen"
+- "Hooks sollten so kurz wie möglich, aber so lang wie nötig sein"
+- "Fragen funktionieren als Hooks, wenn sie eine Information Gap öffnen"
+
 Extrahiere:
-1. Hook-Patterns: Was haben die erfolgreichsten Hooks gemeinsam?
-2. Content-Typen: Welche Arten von Content performen am besten?
-3. Strukturelle Muster: Wie sind die Clips aufgebaut?
+1. Hook-Prinzipien: WARUM funktionieren die erfolgreichsten Hooks? (Nicht WAS sie enthalten)
+2. Content-Prinzipien: Welche übergeordneten Konzepte machen Content viral? (Nicht welche Wörter)
+3. Strukturelle Prinzipien: Welche Prinzipien stecken hinter erfolgreichen Clip-Strukturen? (Nicht feste Templates)
 
 Antworte als JSON:
 {{
-  "hook_patterns": [
-    {{"type": "...", "frequency": "X%", "example": "...", "why_works": "..."}}
+  "hook_principles": [
+    {{
+      "principle": "Das übergeordnete Prinzip (z.B. 'Kognitive Dissonanz erzeugt Aufmerksamkeit')",
+      "why_works": "Warum funktioniert dieses Prinzip psychologisch?",
+      "examples": ["Beispiel 1", "Beispiel 2"],
+      "application": "Wie kann man dieses Prinzip auf andere Situationen anwenden?",
+      "frequency": "X%"
+    }}
   ],
-  "content_types": [
-    {{"type": "...", "avg_completion": 0.XX, "characteristics": ["..."]}}
+  "content_principles": [
+    {{
+      "principle": "Übergeordnetes Content-Prinzip",
+      "why_works": "Warum funktioniert es?",
+      "characteristics": ["Merkmal 1", "Merkmal 2"],
+      "application": "Wie anwenden?"
+    }}
   ],
-  "structural_patterns": [
-    {{"pattern": "...", "description": "..."}}
+  "structural_principles": [
+    {{
+      "principle": "Strukturelles Prinzip (z.B. 'Spannung aufbauen und auflösen')",
+      "why_works": "Warum funktioniert diese Struktur?",
+      "application": "Wie kann man das Prinzip flexibel anwenden?"
+    }}
   ]
 }}""",
-            system="Du bist ein Viral Content Analyst. Extrahiere Patterns aus erfolgreichen Clips.",
+            system="""Du bist ein Prinzipien-Extraktor für Viral Content. 
+
+WICHTIG: Du extrahierst PRINZIPIEN, nicht Regeln!
+
+Prinzipien sind:
+- Übergeordnete Konzepte, die auf verschiedene Situationen anwendbar sind
+- Erklären WARUM etwas funktioniert, nicht WAS es ist
+- Flexibel und kontextabhängig anwendbar
+
+Regeln sind:
+- Starre Vorschriften ("muss immer X enthalten")
+- Feste Templates ("immer 3 Sekunden")
+- Kontext-unabhängige Formeln
+
+Extrahiere nur Prinzipien!""",
             temperature=0.3
         )
         
@@ -185,34 +226,75 @@ Antworte als JSON:
         - Transformation Patterns (wie wird gekürzt)
         - Hook Extraction Techniques
         - Cutting Principles
+        
+        Sucht zuerst nach vorhandenen restructure_analysis_*.json Dateien.
+        Falls keine gefunden, analysiert Paare aus pairs_config.json.
         """
         # Load existing restructure analyses
         existing_analyses = list(self.learnings_dir.glob("restructure_analysis_*.json"))
         
-        if not existing_analyses:
-            print("   ⚠️ Keine Restructure-Analysen gefunden")
-            return {"patterns": [], "source": "none"}
-        
-        print(f"   Gefunden: {len(existing_analyses)} Pair-Analysen")
-        
-        # Collect patterns from existing analyses
-        all_patterns = []
-        for analysis_file in existing_analyses:
-            try:
-                with open(analysis_file) as f:
-                    analysis = json.load(f)
+        if existing_analyses:
+            print(f"   Gefunden: {len(existing_analyses)} vorhandene Pair-Analysen")
+            all_patterns = []
+            for analysis_file in existing_analyses:
+                try:
+                    with open(analysis_file) as f:
+                        analysis = json.load(f)
+                    
+                    if "composition_principles" in analysis:
+                        all_patterns.append({
+                            "source": analysis_file.name,
+                            "principles": analysis["composition_principles"]
+                        })
+                except:
+                    continue
+        else:
+            # Keine vorhandenen Analysen - analysiere Paare aus Config
+            print("   ⚠️ Keine vorhandenen Analysen gefunden")
+            print("   📋 Analysiere Paare aus pairs_config.json...")
+            
+            pairs_config = self.training_dir / "pairs_config.json"
+            transcripts_dir = self.data_dir / "cache" / "transcripts"
+            
+            if not pairs_config.exists():
+                print(f"   ❌ pairs_config.json nicht gefunden: {pairs_config}")
+                return {"patterns": [], "source": "none"}
+            
+            with open(pairs_config) as f:
+                config = json.load(f)
+            
+            all_patterns = []
+            for pair in config.get("pairs", []):
+                longform_file = transcripts_dir / pair["longform"]
+                clip_file = transcripts_dir / pair["clip"]
                 
-                if "composition_principles" in analysis:
-                    all_patterns.append({
-                        "source": analysis_file.name,
-                        "principles": analysis["composition_principles"]
-                    })
-            except:
-                continue
+                if not longform_file.exists():
+                    print(f"   ⚠️ Longform nicht gefunden: {pair['longform']}")
+                    continue
+                if not clip_file.exists():
+                    print(f"   ⚠️ Clip nicht gefunden: {pair['clip']}")
+                    continue
+                
+                # Lade Transkripte
+                with open(longform_file) as f:
+                    longform = json.load(f)
+                with open(clip_file) as f:
+                    clip = json.load(f)
+                
+                # Analysiere Transformation
+                pattern = await self._analyze_single_pair(
+                    pair_id=pair["id"],
+                    longform=longform,
+                    clip=clip,
+                    expected_pattern=pair.get("pattern", "unknown")
+                )
+                
+                if pattern:
+                    all_patterns.append(pattern)
         
         composition_patterns = {
             "patterns": all_patterns,
-            "source": "restructure_analyses",
+            "source": "restructure_analyses" if existing_analyses else "pairs_config.json",
             "pairs_analyzed": len(all_patterns),
             "analyzed_at": datetime.now().isoformat()
         }
@@ -224,6 +306,100 @@ Antworte als JSON:
         print(f"   ✅ Gespeichert: {self.composition_patterns_file.name}")
         
         return composition_patterns
+    
+    async def _analyze_single_pair(
+        self,
+        pair_id: str,
+        longform: Dict,
+        clip: Dict,
+        expected_pattern: str
+    ) -> Optional[Dict]:
+        """
+        Analysiere ein einzelnes Longform→Clip Paar.
+        
+        Returns:
+            Dict mit composition_principles oder None
+        """
+        from models.base import get_model
+        
+        model = get_model("anthropic", tier="sonnet")
+        
+        longform_text = longform.get("text", "")[:2000]  # Truncate
+        clip_text = clip.get("text", "")
+        clip_hook = clip.get("segments", [{}])[0].get("text", "")[:200]
+        
+        prompt = f"""Analysiere diese Longform→Clip Transformation und extrahiere PRINZIPIEN:
+
+LONGFORM (Ausschnitt):
+{longform_text}
+
+VIRAL CLIP:
+Hook: {clip_hook}
+Volltext: {clip_text[:1000]}
+
+Erwartetes Pattern: {expected_pattern}
+
+WICHTIG: Extrahiere PRINZIPIEN, nicht Regeln!
+
+❌ KEINE Regeln wie:
+- "Hook muss immer vom Ende kommen"
+- "Clip muss immer 60 Sekunden sein"
+- "Muss immer Segment X vor Segment Y"
+
+✅ STATTDESSEN Prinzipien wie:
+- "Wenn der Payoff stärker ist als der native Hook, ziehe den Payoff nach vorne"
+- "Clips sollten so lang sein wie nötig, um die Story zu erzählen"
+- "Segment-Reihenfolge sollte der emotionalen Journey folgen"
+
+Extrahiere:
+1. Hook-Transformations-Prinzip: WARUM wurde der Hook so transformiert? (Nicht: Was wurde gemacht)
+2. Cutting-Prinzipien: Welche übergeordneten Prinzipien stecken hinter den Cuts? (Nicht: Welche Wörter wurden entfernt)
+3. Erfolgs-Prinzipien: WARUM funktioniert diese Transformation? (Nicht: Was ist das Ergebnis)
+
+Antworte als JSON:
+{{
+    "transformation_type": "hook_extraction|clean_extraction|cross_moment",
+    "hook_origin": "native|extracted|cross_moment",
+    "cutting_principles": [
+        {{
+            "principle": "Übergeordnetes Prinzip (z.B. 'Jedes Wort muss einen Grund haben')",
+            "why": "Warum funktioniert dieses Prinzip?",
+            "application": "Wie kann man es flexibel anwenden?"
+        }}
+    ],
+    "success_principles": [
+        {{
+            "principle": "Prinzip das den Erfolg erklärt",
+            "why": "Warum funktioniert es?",
+            "application": "Wie anwenden?"
+        }}
+    ],
+    "composition_principles": {{
+        "hook_strategy": "Prinzip-basierte Hook-Strategie (nicht Regel!)",
+        "pacing": "Prinzip-basiertes Pacing (nicht feste Sekunden!)",
+        "structure": "Prinzip-basierte Struktur (nicht Template!)"
+    }}
+}}"""
+        
+        try:
+            response = await model.generate(
+                prompt=prompt,
+                system="Du bist ein Expert für Video-Content-Transformation. Analysiere wie Longform zu viralen Clips transformiert wird.",
+                temperature=0.3
+            )
+            
+            import re
+            json_match = re.search(r'\{[\s\S]*\}', response.content)
+            if json_match:
+                analysis = json.loads(json_match.group())
+                return {
+                    "source": f"pair_{pair_id}",
+                    "principles": analysis.get("composition_principles", {})
+                }
+        except Exception as e:
+            print(f"   ⚠️ Fehler bei Analyse von {pair_id}: {e}")
+        
+        return None
     
     async def _synthesize_principles(
         self, 
@@ -239,38 +415,62 @@ Antworte als JSON:
             with open(self.principles_file) as f:
                 current_principles = json.load(f)
         
-        model = ClaudeModel("claude-sonnet-4-5-20250929")
+        from models.base import get_model
+        model = get_model("anthropic", tier="sonnet")
         
         synthesis_prompt = f"""
-Du hast zwei Datenquellen für virale Content-Patterns:
+Du hast zwei Datenquellen für virale Content-PRINZIPIEN:
 
-1. ISOLATED PATTERNS (aus {isolated.get('clips_analyzed', 0)} erfolgreichen Clips):
-{json.dumps(isolated.get('hook_patterns', [])[:5], indent=2, ensure_ascii=False)}
+1. ISOLATED PRINCIPLES (aus {isolated.get('clips_analyzed', 0)} erfolgreichen Clips):
+{json.dumps(isolated.get('hook_principles', isolated.get('hook_patterns', []))[:5], indent=2, ensure_ascii=False)}
 
-2. COMPOSITION PATTERNS (aus {composition.get('pairs_analyzed', 0)} Longform→Clip Transformationen):
+2. COMPOSITION PRINCIPLES (aus {composition.get('pairs_analyzed', 0)} Longform→Clip Transformationen):
 {json.dumps([p.get('principles', {}) for p in composition.get('patterns', [])[:3]], indent=2, ensure_ascii=False)}
 
 3. AKTUELLE PRINCIPLES (Basis):
 {json.dumps({k: v for k, v in current_principles.items() if k.startswith('hook_') or k.startswith('cutting_')}, indent=2, ensure_ascii=False)}
 
 TASK:
-Synthetisiere diese zu MASTER PRINCIPLES die beide Perspektiven vereinen:
-- WAS macht einen Clip viral (aus Isolated Analysis)
-- WIE transformiert man Longform zu viral (aus Pair Analysis)
+Synthetisiere diese zu MASTER PRINCIPLES die beide Perspektiven vereinen.
 
-WICHTIG: Behalte das MASTER PRINCIPLE bei:
+WICHTIG: 
+- Extrahiere PRINZIPIEN, nicht Regeln!
+- Prinzipien erklären WARUM etwas funktioniert, nicht WAS es ist
+- Prinzipien sind flexibel und kontextabhängig anwendbar
+- Keine starren Regeln wie "muss immer X enthalten" oder "muss genau Y Sekunden sein"
+
+MASTER PRINCIPLE (immer beibehalten):
 "Make a video so good that people cannot physically scroll past"
 
 Antworte als JSON mit:
-- hook_patterns (merged)
-- transformation_patterns (merged)  
-- cutting_principles (merged)
-- synthesis_insights (neue Erkenntnisse)
+- hook_principles (merged, prinzipienbasiert)
+- transformation_principles (merged, prinzipienbasiert)  
+- cutting_principles (merged, prinzipienbasiert)
+- synthesis_insights (neue Prinzipien-Erkenntnisse)
+
+Jedes Prinzip sollte haben:
+- "principle": "Das übergeordnete Prinzip"
+- "why": "Warum funktioniert es?"
+- "application": "Wie kann man es flexibel anwenden?"
 """
 
         response = await model.generate(
             prompt=synthesis_prompt,
-            system="Du bist ein Pattern-Synthesizer. Kombiniere Patterns zu Master Principles.",
+            system="""Du bist ein Prinzipien-Synthesizer. 
+
+WICHTIG: Du synthetisierst PRINZIPIEN, nicht Regeln!
+
+Prinzipien:
+- Erklären WARUM etwas funktioniert
+- Sind flexibel und kontextabhängig anwendbar
+- Können auf verschiedene Situationen angewendet werden
+
+Regeln (NICHT extrahieren!):
+- Starre Vorschriften ("muss immer X")
+- Feste Templates ("immer Y Sekunden")
+- Kontext-unabhängige Formeln
+
+Kombiniere die Inputs zu übergeordneten Master Principles.""",
             temperature=0.3
         )
         
