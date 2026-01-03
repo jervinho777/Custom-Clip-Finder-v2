@@ -86,3 +86,4 @@ Wenn neue Models released werden:
 - DeepSeek: https://api-docs.deepseek.com/
 - Gemini: https://ai.google.dev/gemini-api/docs/models
 
+

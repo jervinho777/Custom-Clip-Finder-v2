@@ -177,3 +177,4 @@ class ConsensusResult(BaseModel):
     final_decision: bool
     merged_reasoning: str
 
+

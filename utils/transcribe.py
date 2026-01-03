@@ -128,3 +128,4 @@ def transcribe_video_sync(
     import asyncio
     return asyncio.run(transcribe_video(video_path, language))
 
+

@@ -36,3 +36,4 @@ Nach dem Push kannst du:
 - Branches für Features erstellen
 - Pull Requests für Reviews
 
+

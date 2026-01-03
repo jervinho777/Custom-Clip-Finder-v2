@@ -171,3 +171,4 @@ def get_video_path(input_path: str) -> Tuple[Path, bool]:
             raise FileNotFoundError(f"Video not found: {input_path}")
         return path, False
 
+

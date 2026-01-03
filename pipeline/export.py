@@ -8,12 +8,59 @@ Generate final outputs:
 """
 
 import json
+import subprocess
+import tempfile
 from pathlib import Path
 from typing import Dict, List, Optional
 from dataclasses import dataclass
 from datetime import datetime
 
 from utils import generate_premiere_xml, extract_clip
+
+
+def _concat_clips(clip_paths: List[Path], output_path: Path) -> bool:
+    """
+    Concatenate multiple video clips into one using ffmpeg.
+    
+    Args:
+        clip_paths: List of paths to clips to concatenate
+        output_path: Path for output file
+        
+    Returns:
+        True if successful, False otherwise
+    """
+    if not clip_paths:
+        return False
+        
+    # Create concat list file
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.txt', delete=False) as f:
+        for clip in clip_paths:
+            f.write(f"file '{clip}'\n")
+        concat_list = f.name
+    
+    try:
+        cmd = [
+            'ffmpeg', '-y',
+            '-f', 'concat',
+            '-safe', '0',
+            '-i', concat_list,
+            '-c', 'copy',
+            str(output_path)
+        ]
+        
+        result = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            check=True
+        )
+        return output_path.exists()
+    except subprocess.CalledProcessError as e:
+        print(f"Concat error: {e.stderr}")
+        return False
+    finally:
+        # Cleanup concat list file
+        Path(concat_list).unlink(missing_ok=True)
 
 
 @dataclass
@@ -81,8 +128,14 @@ async def export_clip(
         if "mp4" in formats:
             mp4_path = output_path / f"{clip_id}.mp4"
             
-            # For simple clips, extract directly
+            # Check if segments are chronological (simple case)
+            is_chronological = all(
+                segments[i].get("end", 0) <= segments[i+1].get("start", 0)
+                for i in range(len(segments) - 1)
+            ) if len(segments) > 1 else True
+            
             if len(segments) == 1:
+                # Single segment - direct extraction
                 seg = segments[0]
                 extracted = extract_clip(
                     source_video_path,
@@ -92,18 +145,45 @@ async def export_clip(
                 )
                 if extracted:
                     result.mp4_path = mp4_path
-            else:
-                # For complex clips, we'd need to concat
-                # For now, export first segment as preview
-                seg = segments[0]
+                    
+            elif is_chronological:
+                # Chronological segments - extract from first start to last end
                 extracted = extract_clip(
                     source_video_path,
                     mp4_path,
-                    seg.get("start", 0),
+                    segments[0].get("start", 0),
                     segments[-1].get("end", 0)
                 )
                 if extracted:
                     result.mp4_path = mp4_path
+                    
+            else:
+                # Non-chronological/reordered segments - extract each and concat
+                temp_clips = []
+                temp_path = output_path / f"_temp_{clip_id}"
+                temp_path.mkdir(parents=True, exist_ok=True)
+                
+                # Sort segments by their position in final clip (original order)
+                for idx, seg in enumerate(segments):
+                    temp_clip = temp_path / f"seg_{idx:03d}.mp4"
+                    extracted = extract_clip(
+                        source_video_path,
+                        temp_clip,
+                        seg.get("start", 0),
+                        seg.get("end", 0)
+                    )
+                    if extracted:
+                        temp_clips.append(temp_clip)
+                
+                if temp_clips:
+                    # Concat temp clips
+                    concat_success = _concat_clips(temp_clips, mp4_path)
+                    if concat_success:
+                        result.mp4_path = mp4_path
+                    
+                    # Cleanup temp files
+                    import shutil
+                    shutil.rmtree(temp_path, ignore_errors=True)
         
         # Export XML
         if "xml" in formats:
@@ -236,4 +316,5 @@ def generate_export_report(
         json.dump(report, f, indent=2)
     
     return report_path
+
 

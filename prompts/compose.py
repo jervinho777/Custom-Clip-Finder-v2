@@ -64,68 +64,76 @@ def build_compose_prompt(
         
         segment_text += f"{marker} [{i}] [{seg_start:.1f}s] {text}\n"
     
-    # Build composition context from BRAIN principles - PRINCIPLE-BASED, NO RIGID RULES
+    # Build composition context from BRAIN principles - PRINCIPLE-BASED
+    # Identify the moment's core theme for thematic coherence
+    moment_text = moment.get('content', '') or moment.get('description', '')
+    
     composition_context = f"""
-[PRINZIPIEN-BASIERTE KOMPOSITION - KEINE STARREN REGELN!]
+[PRINZIPIEN-BASIERTE KOMPOSITION]
 
 📺 VIDEO-KONTEXT
    Gesamtdauer: {total_duration:.0f}s ({total_duration/60:.1f} Minuten)
-   Der gefundene Moment (>>> markiert) ist nur der CONTENT-KERN.
-   Der beste HOOK kann von ÜBERALL im Video kommen!
+   Der gefundene Moment (>>> markiert) ist der CONTENT-KERN.
 
-🎯 EINZIGES ZIEL: WATCHTIME MAXIMIEREN
-   - Welcher Satz im GESAMTEN Video würde Menschen zum Weiterschauen zwingen?
-   - Welche Struktur hält Menschen bis zum Ende?
-   - Was macht im Gesamtkontext Sinn?
+🎯 WICHTIGSTES PRINZIP: THEMATISCHE KOHÄRENZ
 
-🔥 TRANSFORMATION PATTERNS (aus echten Viral-Daten):
+   ⚠️ KRITISCH: Der Hook MUSS thematisch zum Content-Kern passen!
+   
+   FALSCH: Einen starken Hook von einem ANDEREN Thema nehmen
+   - Beispiel: "Arbeite niemals für Geld" als Hook für eine Tee-Zeremonie Story
+   - Das macht KEINEN Sinn, auch wenn der Hook stark ist
+   
+   RICHTIG: Einen Hook finden der ZUM THEMA des Moments passt
+   - Geld-Story → Geld-Hook
+   - Tee-Zeremonie Story → Lernen/Offenheit-Hook  
+   - Talent-Story → Selbstakzeptanz-Hook
+   
+   Frage: Was ist das THEMA dieses spezifischen Moments?
+   → Der Hook muss aus demselben thematischen Cluster kommen!
 
-   HOOK EXTRACTION (340% höhere Completion!)
-   - "Arbeite niemals für Geld" kam bei 653s (NACH der Geschichte bei 564s)
-   - Im viralen Clip: Dieser Satz wurde an Position 0 gestellt
-   - PRINZIP: Der Payoff einer Geschichte kann der Hook einer anderen sein
+🔥 TRANSFORMATION PATTERNS (als Prinzipien, nicht Beispiele):
+
+   HOOK EXTRACTION
+   - WANN: Der Payoff ist stärker als der natürliche Anfang
+   - WIE: Payoff nach vorne ziehen, dann Story, dann Auflösung
+   - WICHTIG: Payoff und Story müssen DASSELBE THEMA haben!
    
    BELIEFBREAKER
-   - "Hört bitte auf am Wochenende auszuschlafen"
-   - PRINZIP: Was 99% glauben widersprechen = instant Attention
-   
-   METAPHOR HOOK
-   - "Schlafen ist wie Fußball spielen"
-   - PRINZIP: Komplexes mit Alltäglichem verbinden
+   - WANN: Der Content widerspricht einer Annahme
+   - WIE: Führe mit der kontraintuitiven Aussage
    
    CLEAN EXTRACTION
-   - Nur wenn der natürliche Hook bereits 8+/10 ist
-   - PRINZIP: Nicht optimieren was schon perfekt ist
+   - WANN: Der natürliche Hook ist bereits stark (8+/10)
+   - WIE: Extrahiere mit minimalen Änderungen
 
-⚠️ KEINE STARREN REGELN:
-   - KEIN "Hook muss innerhalb von X Sekunden sein"
-   - KEIN "Story muss chronologisch sein"
-   - KEINE festen Strukturen
-   
-   STATTDESSEN: Was würde DICH zum Weiterschauen zwingen?
-   Denke wie ein Zuschauer, der durch den Feed scrollt.
+🔒 HARTE REGEL: 
+   Der Hook und der Content MÜSSEN thematisch zusammengehören.
+   Ein thematisch passender 6/10 Hook schlägt einen thematisch falschen 9/10 Hook.
 """
     
     # Build round-specific instructions
     if round_num == 1:
         round_instruction = """
-RUNDE 1: PRINZIPIEN-BASIERTE ANALYSE
+RUNDE 1: THEMATISCHE ANALYSE
 
-SCHRITT 1: Verstehe den CONTENT-KERN (>>> markierte Segmente)
-- Was ist die Kernaussage/Geschichte?
-- Warum hat DISCOVER diesen Moment als viral-fähig identifiziert?
+SCHRITT 1: Identifiziere das THEMA des Moments (>>> markierte Segmente)
+- Was ist das zentrale Thema? (z.B. Geld, Beziehungen, Talent, Lernen, Gesundheit)
+- Schreibe das Thema in einem Wort auf: ___________
 
-SCHRITT 2: Scanne das GESAMTE Transcript nach dem perfekten HOOK
-- Der beste Hook kann von ÜBERALL kommen (nicht nur nahe dem Moment!)
-- Frage: Welcher einzelne Satz würde Menschen zum Stoppen bringen?
-- Muss thematisch zum Content-Kern passen
+SCHRITT 2: Finde den besten Hook FÜR DIESES THEMA
+- Suche NUR nach Hooks die zu diesem Thema passen!
+- Ein Geld-Hook passt NICHT zu einer Lern-Story
+- Ein Beziehungs-Hook passt NICHT zu einer Talent-Story
+- Der Hook muss den Content EINFÜHREN, nicht verwirren
 
-SCHRITT 3: Strukturiere für MAXIMALE WATCHTIME
-- Hook: Der Satz der zum Stoppen zwingt (kann von überall sein)
-- Story/Content: Der eigentliche Moment (>>> Segmente)
-- Payoff: Befriedigung die zum Fertigschauen motiviert
+SCHRITT 3: Baue einen kohärenten Clip
+- Hook: Thematisch passend, Aufmerksamkeit erregend
+- Content: Der >>> markierte Moment (der eigentliche Wert)
+- Payoff: Auflösung die das Thema abschließt
 
-KEINE STARREN REGELN - nutze dein Urteil basierend auf den Prinzipien!
+⚠️ SELBSTTEST: 
+Würde ein Zuschauer verstehen, warum der Hook zum Content führt?
+Wenn nicht → falscher Hook!
 """
     elif round_num == 2:
         prev_proposals_text = "\n".join([
@@ -185,13 +193,16 @@ Viral Potential: {moment.get('viral_potential', 5)}/10
 
 WICHTIG:
 • segment_indices verweisen auf die Segmente oben [0], [1], etc.
-• Du KANNST Segmente von ÜBERALL im Video verwenden!
-• KEINE Zeitlimits - wenn ein Satz von Minute 25 perfekt passt, nutze ihn
-• Einzige Bedingung: Es muss thematisch Sinn machen und Watchtime maximieren
+• THEMATISCHE KOHÄRENZ ist Pflicht - Hook MUSS zum Content-Thema passen!
+• Du kannst Segmente von überall nutzen, aber NUR wenn sie thematisch passen
 • Hook muss in ersten 3 Sekunden Aufmerksamkeit fangen
 • Achte auf saubere Satzgrenzen
-• Frage dich: "Würde ICH bei diesem ersten Satz weiterschauen?"
-• Frage dich: "Macht dieser Clip als Ganzes Sinn?"
+
+SELBSTTEST (Alle müssen "ja" sein):
+✓ Passt der Hook thematisch zum Content?
+✓ Würde ein Zuschauer die Verbindung verstehen?
+✓ Macht der Clip als eigenständiges Stück Sinn?
+✓ Würde ICH bei diesem Hook weiterschauen?
 """
     
     return system, user_prompt.strip()
