@@ -69,7 +69,10 @@ Hook: "{composed_clip.get('hook_text', 'N/A')}"
 Segmente:
 """
     for seg in composed_clip.get('segments', []):
-        clip_info += f"  • {seg.get('role', 'unknown')}: {seg.get('start', 0):.1f}s - {seg.get('end', 0):.1f}s\n"
+        start = seg.get('start', 0)
+        end = seg.get('end', 0)
+        duration = end - start
+        clip_info += f"  • {seg.get('role', 'unknown')}: {duration:.1f}s (Video: {start:.1f}s-{end:.1f}s)\n"
     
     clip_info += f"\nBegründung: {composed_clip.get('reasoning', 'N/A')}"
     
@@ -119,9 +122,9 @@ Vergleiche mit ähnlichen erfolgreichen Clips.
 ```
 
 ENTSCHEIDUNGSKRITERIEN:
-• approve: Clip ist bereit für Export
-• refine: Gutes Potential, braucht Anpassungen
-• reject: Kein ausreichendes Viral-Potential
+• approve: Clip ist bereit für Export (Hook 7+/10, gute Struktur)
+• refine: Potential vorhanden, könnte verbessert werden (Hook 5+/10) - BEVORZUGE DIESES VERDICT!
+• reject: NUR wenn komplett hoffnungslos (Hook unter 4/10, kein klarer Payoff, 100% Filler)
 """
     
     return system, user_prompt.strip()
