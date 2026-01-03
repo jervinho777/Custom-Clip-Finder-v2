@@ -11,6 +11,10 @@ Usage:
     python main.py test-apis
 """
 
+import os
+# Suppress harmless huggingface tokenizers warning (caused by asyncio fork)
+os.environ.setdefault("TOKENIZERS_PARALLELISM", "false")
+
 import asyncio
 from pathlib import Path
 from typing import Optional
