@@ -90,10 +90,11 @@ async def _process_video(
     cache = Cache()
     
     # Step 1: Transcribe
+    # ALWAYS use transcript cache if available (transcription is expensive and deterministic)
     console.print("[bold]STEP 1: Transcription[/bold]")
     
     cached_transcript = cache.get_transcript(video_path)
-    if cached_transcript and use_cache:
+    if cached_transcript:
         console.print("  Using cached transcript")
         transcript = cached_transcript.get("transcript", {})
     else:
@@ -107,6 +108,8 @@ async def _process_video(
     console.print(f"  Duration: {transcript.get('duration', 0):.1f}s\n")
     
     # Step 2: Discover
+    # NOTE: use_cache only affects DISCOVER/COMPOSE/VALIDATE, not transcript
+    # Transcript is always cached if available (it's expensive and deterministic)
     console.print("[bold]STEP 2: DISCOVER[/bold]")
     
     from pipeline.discover import discover_moments
@@ -114,7 +117,7 @@ async def _process_video(
     moments = await discover_moments(
         transcript_segments=segments,
         video_path=str(video_path),
-        use_cache=use_cache
+        use_cache=use_cache  # Skip DISCOVER cache if --skip-cache
     )
     
     console.print(f"  Found: {len(moments)} potential moments\n")
@@ -158,6 +161,10 @@ async def _process_video(
     ]
     
     validated = await validate_batch(clip_dicts)
+    
+    # Debug: Show verdicts
+    verdicts = [v.validation.verdict for v in validated]
+    console.print(f"  Verdicts: {verdicts}")
     
     approved = [v for v in validated if v.validation.verdict in ["approve", "refine"]]
     console.print(f"  Approved: {len(approved)}/{len(validated)}\n")
