@@ -31,80 +31,101 @@ def build_compose_prompt(
     """
     system = VIRAL_ARCHITECT
     
-    # Get segments around the moment
+    # Get the moment boundaries
     start, end = moment['start'], moment['end']
     
-    # Include 90s before and 60s after for context
-    # CRITICAL: Best hooks often come AFTER the story (payoff-as-hook pattern)
-    context_start = max(0, start - 90)
-    context_end = end + 60
+    # PRINCIPLE-BASED: Give AI the FULL transcript context
+    # The best hook could come from ANYWHERE in the video
+    # No arbitrary time limits - let the AI decide based on principles
+    relevant_segments = transcript_segments  # Full transcript
     
-    relevant_segments = [
-        seg for seg in transcript_segments
-        if context_start <= seg.get('start', 0) <= context_end
-    ]
-    
-    # Format segments with timestamps
-    segment_text = ""
+    # Mark which segments are in the discovered moment
+    moment_segment_indices = set()
     for i, seg in enumerate(relevant_segments):
         seg_start = seg.get('start', 0)
-        in_moment = start <= seg_start <= end
-        marker = ">>>" if in_moment else "   "
-        segment_text += f"{marker} [{i}] [{seg_start:.1f}s] {seg.get('text', '')}\n"
+        if start <= seg_start <= end:
+            moment_segment_indices.add(i)
     
-    # Build composition context from BRAIN principles
-    composition_context = ""
-    if composition_patterns:
-        composition_context = """
-[COMPOSITION PATTERNS AUS BRAIN - LIES DIESE GENAU!]
+    # Format segments with timestamps
+    # For long transcripts, show full context but truncate individual segment text
+    segment_text = ""
+    total_duration = transcript_segments[-1].get('end', 0) if transcript_segments else 0
+    
+    for i, seg in enumerate(relevant_segments):
+        seg_start = seg.get('start', 0)
+        in_moment = i in moment_segment_indices
+        marker = ">>>" if in_moment else "   "
+        
+        # Show full text for segments in/near moment, abbreviated for distant ones
+        text = seg.get('text', '')
+        if not in_moment and abs(seg_start - start) > 120:
+            # Distant segments: show first 80 chars to save tokens but maintain context
+            text = text[:80] + "..." if len(text) > 80 else text
+        
+        segment_text += f"{marker} [{i}] [{seg_start:.1f}s] {text}\n"
+    
+    # Build composition context from BRAIN principles - PRINCIPLE-BASED, NO RIGID RULES
+    composition_context = f"""
+[PRINZIPIEN-BASIERTE KOMPOSITION - KEINE STARREN REGELN!]
 
-🔥 HOOK EXTRACTION (340% höhere Completion Rate!)
-   WANN: Wenn der natürliche Hook schwach ist, aber der Payoff stark
-   WIE: Nimm den Payoff-Satz und stelle ihn an den ANFANG
+📺 VIDEO-KONTEXT
+   Gesamtdauer: {total_duration:.0f}s ({total_duration/60:.1f} Minuten)
+   Der gefundene Moment (>>> markiert) ist nur der CONTENT-KERN.
+   Der beste HOOK kann von ÜBERALL im Video kommen!
+
+🎯 EINZIGES ZIEL: WATCHTIME MAXIMIEREN
+   - Welcher Satz im GESAMTEN Video würde Menschen zum Weiterschauen zwingen?
+   - Welche Struktur hält Menschen bis zum Ende?
+   - Was macht im Gesamtkontext Sinn?
+
+🔥 TRANSFORMATION PATTERNS (aus echten Viral-Daten):
+
+   HOOK EXTRACTION (340% höhere Completion!)
+   - "Arbeite niemals für Geld" kam bei 653s (NACH der Geschichte bei 564s)
+   - Im viralen Clip: Dieser Satz wurde an Position 0 gestellt
+   - PRINZIP: Der Payoff einer Geschichte kann der Hook einer anderen sein
    
-   BEISPIEL (aus echten Viral-Daten):
-   - "Arbeite niemals für Geld" kam bei 653s im Original (NACH der Geschichte)
-   - Im viralen Clip: Dieser Satz wurde an den ANFANG gestellt
-   - Dann folgt die Geschichte (Kinder ärgern Geschichte)
-   - Dann der Rest des Payoffs
+   BELIEFBREAKER
+   - "Hört bitte auf am Wochenende auszuschlafen"
+   - PRINZIP: Was 99% glauben widersprechen = instant Attention
    
-   WICHTIG: Schau auch NACH dem Moment-Fenster nach starken Hooks!
-   Der beste Hook kommt oft 10-30 Sekunden NACH der Geschichte.
+   METAPHOR HOOK
+   - "Schlafen ist wie Fußball spielen"
+   - PRINZIP: Komplexes mit Alltäglichem verbinden
+   
+   CLEAN EXTRACTION
+   - Nur wenn der natürliche Hook bereits 8+/10 ist
+   - PRINZIP: Nicht optimieren was schon perfekt ist
 
-🎯 CLEAN EXTRACTION
-   WANN: Wenn der natürliche Hook bereits stark ist (8+/10)
-   WIE: Extrahiere mit minimalen Cuts, bewahre den natürlichen Flow
-
-🧠 BELIEFBREAKER
-   WANN: Speaker widerspricht einer Annahme die 99% glauben
-   WIE: Führe mit dem kontraintuitiven Statement
-   BEISPIEL: "Hört bitte auf am Wochenende auszuschlafen"
-
-💡 METAPHOR HOOK
-   WANN: Speaker nutzt starken Vergleich/Analogie
-   WIE: Extrahiere den Vergleich als Hook
-   BEISPIEL: "Schlafen ist wie Fußball spielen"
-
-PRINZIP: Suche im GESAMTEN Kontext (auch NACH dem Moment!) nach dem Satz,
-der am meisten Neugier erzeugt und zum Weiterschauen zwingt.
+⚠️ KEINE STARREN REGELN:
+   - KEIN "Hook muss innerhalb von X Sekunden sein"
+   - KEIN "Story muss chronologisch sein"
+   - KEINE festen Strukturen
+   
+   STATTDESSEN: Was würde DICH zum Weiterschauen zwingen?
+   Denke wie ein Zuschauer, der durch den Feed scrollt.
 """
     
     # Build round-specific instructions
     if round_num == 1:
         round_instruction = """
-RUNDE 1: HOOK-SCAN + INITIAL PROPOSAL
+RUNDE 1: PRINZIPIEN-BASIERTE ANALYSE
 
-SCHRITT 1: Scanne ALLE Sätze im Kontext (auch die NACH >>> dem Moment <<<)
-- Welcher Satz erzeugt am meisten Neugier?
-- Welcher Satz ist kurz, provokant, und macht Lust weiterzuschauen?
-- Achte besonders auf Sätze die 10-60s NACH dem Moment kommen!
+SCHRITT 1: Verstehe den CONTENT-KERN (>>> markierte Segmente)
+- Was ist die Kernaussage/Geschichte?
+- Warum hat DISCOVER diesen Moment als viral-fähig identifiziert?
 
-SCHRITT 2: Entscheide welcher Ansatz am besten passt:
-- Clean Extraction: Wenn der natürliche Hook schon stark ist (8+/10)
-- Hook Extraction: Wenn ein besserer Hook VOR oder NACH dem Moment existiert
-- Beliefbreaker: Wenn ein kontraintuitiver Satz existiert
+SCHRITT 2: Scanne das GESAMTE Transcript nach dem perfekten HOOK
+- Der beste Hook kann von ÜBERALL kommen (nicht nur nahe dem Moment!)
+- Frage: Welcher einzelne Satz würde Menschen zum Stoppen bringen?
+- Muss thematisch zum Content-Kern passen
 
-SCHRITT 3: Erstelle die Clip-Struktur mit dem stärksten Hook an Position 0
+SCHRITT 3: Strukturiere für MAXIMALE WATCHTIME
+- Hook: Der Satz der zum Stoppen zwingt (kann von überall sein)
+- Story/Content: Der eigentliche Moment (>>> Segmente)
+- Payoff: Befriedigung die zum Fertigschauen motiviert
+
+KEINE STARREN REGELN - nutze dein Urteil basierend auf den Prinzipien!
 """
     elif round_num == 2:
         prev_proposals_text = "\n".join([
@@ -164,12 +185,13 @@ Viral Potential: {moment.get('viral_potential', 5)}/10
 
 WICHTIG:
 • segment_indices verweisen auf die Segmente oben [0], [1], etc.
-• Du DARFST Segmente von AUSSERHALB des >>> Moments <<< verwenden!
-• Hook kann von VOR oder NACH dem Moment kommen
-• Der beste Hook ist oft der Payoff-Satz der NACH der Geschichte kommt
+• Du KANNST Segmente von ÜBERALL im Video verwenden!
+• KEINE Zeitlimits - wenn ein Satz von Minute 25 perfekt passt, nutze ihn
+• Einzige Bedingung: Es muss thematisch Sinn machen und Watchtime maximieren
 • Hook muss in ersten 3 Sekunden Aufmerksamkeit fangen
 • Achte auf saubere Satzgrenzen
 • Frage dich: "Würde ICH bei diesem ersten Satz weiterschauen?"
+• Frage dich: "Macht dieser Clip als Ganzes Sinn?"
 """
     
     return system, user_prompt.strip()
