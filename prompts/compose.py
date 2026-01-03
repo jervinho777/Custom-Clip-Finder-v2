@@ -34,9 +34,10 @@ def build_compose_prompt(
     # Get segments around the moment
     start, end = moment['start'], moment['end']
     
-    # Include 30s before and after for context
-    context_start = max(0, start - 30)
-    context_end = end + 30
+    # Include 90s before and 60s after for context
+    # CRITICAL: Best hooks often come AFTER the story (payoff-as-hook pattern)
+    context_start = max(0, start - 90)
+    context_end = end + 60
     
     relevant_segments = [
         seg for seg in transcript_segments
@@ -51,24 +52,59 @@ def build_compose_prompt(
         marker = ">>>" if in_moment else "   "
         segment_text += f"{marker} [{i}] [{seg_start:.1f}s] {seg.get('text', '')}\n"
     
-    # Build composition context
+    # Build composition context from BRAIN principles
     composition_context = ""
     if composition_patterns:
-        composition_context = "\n[COMPOSITION PATTERNS AUS BRAIN]\n"
-        if 'hook_extraction' in composition_patterns:
-            composition_context += f"• Hook Extraction: {composition_patterns['hook_extraction'].get('principle', '')}\n"
-        if 'cutting_principles' in composition_patterns:
-            composition_context += f"• Cutting: {composition_patterns['cutting_principles'].get('principle', '')}\n"
+        composition_context = """
+[COMPOSITION PATTERNS AUS BRAIN - LIES DIESE GENAU!]
+
+🔥 HOOK EXTRACTION (340% höhere Completion Rate!)
+   WANN: Wenn der natürliche Hook schwach ist, aber der Payoff stark
+   WIE: Nimm den Payoff-Satz und stelle ihn an den ANFANG
+   
+   BEISPIEL (aus echten Viral-Daten):
+   - "Arbeite niemals für Geld" kam bei 653s im Original (NACH der Geschichte)
+   - Im viralen Clip: Dieser Satz wurde an den ANFANG gestellt
+   - Dann folgt die Geschichte (Kinder ärgern Geschichte)
+   - Dann der Rest des Payoffs
+   
+   WICHTIG: Schau auch NACH dem Moment-Fenster nach starken Hooks!
+   Der beste Hook kommt oft 10-30 Sekunden NACH der Geschichte.
+
+🎯 CLEAN EXTRACTION
+   WANN: Wenn der natürliche Hook bereits stark ist (8+/10)
+   WIE: Extrahiere mit minimalen Cuts, bewahre den natürlichen Flow
+
+🧠 BELIEFBREAKER
+   WANN: Speaker widerspricht einer Annahme die 99% glauben
+   WIE: Führe mit dem kontraintuitiven Statement
+   BEISPIEL: "Hört bitte auf am Wochenende auszuschlafen"
+
+💡 METAPHOR HOOK
+   WANN: Speaker nutzt starken Vergleich/Analogie
+   WIE: Extrahiere den Vergleich als Hook
+   BEISPIEL: "Schlafen ist wie Fußball spielen"
+
+PRINZIP: Suche im GESAMTEN Kontext (auch NACH dem Moment!) nach dem Satz,
+der am meisten Neugier erzeugt und zum Weiterschauen zwingt.
+"""
     
     # Build round-specific instructions
     if round_num == 1:
         round_instruction = """
-RUNDE 1: INITIAL PROPOSAL
-Erstelle deinen ersten Vorschlag für die Clip-Struktur.
-Denke über verschiedene Ansätze nach:
-- Clean Extraction (wenn Hook natürlich stark ist)
-- Hook Extraction (wenn Payoff als Hook besser wäre)
-- Reihenfolge ändern (wenn Story-Flow verbessert werden kann)
+RUNDE 1: HOOK-SCAN + INITIAL PROPOSAL
+
+SCHRITT 1: Scanne ALLE Sätze im Kontext (auch die NACH >>> dem Moment <<<)
+- Welcher Satz erzeugt am meisten Neugier?
+- Welcher Satz ist kurz, provokant, und macht Lust weiterzuschauen?
+- Achte besonders auf Sätze die 10-60s NACH dem Moment kommen!
+
+SCHRITT 2: Entscheide welcher Ansatz am besten passt:
+- Clean Extraction: Wenn der natürliche Hook schon stark ist (8+/10)
+- Hook Extraction: Wenn ein besserer Hook VOR oder NACH dem Moment existiert
+- Beliefbreaker: Wenn ein kontraintuitiver Satz existiert
+
+SCHRITT 3: Erstelle die Clip-Struktur mit dem stärksten Hook an Position 0
 """
     elif round_num == 2:
         prev_proposals_text = "\n".join([
@@ -128,9 +164,12 @@ Viral Potential: {moment.get('viral_potential', 5)}/10
 
 WICHTIG:
 • segment_indices verweisen auf die Segmente oben [0], [1], etc.
-• Jedes Segment braucht start/end Timestamps
+• Du DARFST Segmente von AUSSERHALB des >>> Moments <<< verwenden!
+• Hook kann von VOR oder NACH dem Moment kommen
+• Der beste Hook ist oft der Payoff-Satz der NACH der Geschichte kommt
 • Hook muss in ersten 3 Sekunden Aufmerksamkeit fangen
 • Achte auf saubere Satzgrenzen
+• Frage dich: "Würde ICH bei diesem ersten Satz weiterschauen?"
 """
     
     return system, user_prompt.strip()
