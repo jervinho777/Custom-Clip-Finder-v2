@@ -145,15 +145,14 @@ async def _process_video(
     
     from pipeline.validate import validate_batch, rank_clips
     
+    # Pass clip data directly (not wrapped in "clip" key)
     clip_dicts = [
         {
-            "clip": {
-                "structure_type": c.structure_type,
-                "segments": c.segments,
-                "total_duration": c.total_duration,
-                "hook_text": c.hook_text,
-                "reasoning": c.reasoning
-            }
+            "structure_type": c.structure_type,
+            "segments": c.segments,
+            "total_duration": c.total_duration,
+            "hook_text": c.hook_text,
+            "reasoning": c.reasoning
         }
         for c in composed
     ]

@@ -33,10 +33,25 @@ def build_validate_prompt(
     if similar_clips:
         brain_context += "\n[ÄHNLICHE CLIPS AUS BRAIN]\n"
         for i, clip in enumerate(similar_clips[:5], 1):
-            views = clip.get('views', 0)
-            completion = clip.get('completion_rate', 0)
-            brain_context += f"{i}. {views:,} Views | {completion:.0%} Completion\n"
-            brain_context += f"   Hook: \"{clip.get('hook', '')[:80]}...\"\n"
+            # Views can be in metadata (from vector store) or top-level
+            metadata = clip.get('metadata', {})
+            views = metadata.get('views') or clip.get('views', 0)
+            completion = metadata.get('completion_rate') or clip.get('completion_rate', 0)
+            hook = metadata.get('hook') or clip.get('hook') or clip.get('text', '')[:80]
+            
+            # Format views and completion safely (could be 'N/A' string)
+            if isinstance(views, (int, float)):
+                views_str = f"{int(views):,}"
+            else:
+                views_str = str(views)
+            
+            if isinstance(completion, (int, float)):
+                completion_str = f"{completion:.0%}"
+            else:
+                completion_str = str(completion) if completion else "N/A"
+            
+            brain_context += f"{i}. {views_str} Views | {completion_str} Completion\n"
+            brain_context += f"   Hook: \"{hook[:80]}...\"\n"
     
     if quality_signals:
         brain_context += "\n[QUALITY SIGNALS]\n"
