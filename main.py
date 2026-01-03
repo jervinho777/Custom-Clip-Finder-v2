@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# MUST be first - suppress huggingface tokenizers warning before any imports
+import os
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
 """
 Custom Clip Finder v2
 
@@ -10,10 +14,6 @@ Usage:
     python main.py init-brain
     python main.py test-apis
 """
-
-import os
-# Suppress harmless huggingface tokenizers warning (caused by asyncio fork)
-os.environ.setdefault("TOKENIZERS_PARALLELISM", "false")
 
 import asyncio
 from pathlib import Path
