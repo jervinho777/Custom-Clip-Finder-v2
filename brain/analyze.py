@@ -73,8 +73,21 @@ class BrainAnalyzer:
         print("\n" + "="*70)
         print("✅ ANALYSIS COMPLETE")
         print("="*70)
-        print(f"   Isolated Patterns: {len(isolated_patterns.get('patterns', []))}")
-        print(f"   Composition Patterns: {len(composition_patterns.get('patterns', []))}")
+        
+        # Count isolated principles
+        isolated_count = (
+            len(isolated_patterns.get('HOOK_PRINZIPIEN', [])) +
+            len(isolated_patterns.get('hook_principles', [])) +
+            len(isolated_patterns.get('CONTENT_PRINZIPIEN', [])) +
+            len(isolated_patterns.get('content_principles', [])) +
+            len(isolated_patterns.get('STRUKTURELLE_PRINZIPIEN', [])) +
+            len(isolated_patterns.get('structural_principles', []))
+        )
+        
+        composition_count = len(composition_patterns.get('patterns', []))
+        
+        print(f"   Isolated Principles: {isolated_count} (aus {isolated_patterns.get('clips_analyzed', 0)} Clips)")
+        print(f"   Composition Patterns: {composition_count} Paare")
         print(f"   Output: {self.principles_file}")
         
         return {
