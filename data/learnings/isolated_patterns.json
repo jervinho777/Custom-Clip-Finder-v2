@@ -1,6 +1,322 @@
 {
-  "raw_response": "```json\n{\n  \"hook_principles\": [\n    {\n      \"principle\": \"Kontraintuitive Behauptungen erzeugen kognitive Dissonanz\",\n      \"why_works\": \"Das Gehirn ist darauf programmiert, Widersprüche zu lösen. Wenn eine Aussage dem Alltagswissen widerspricht, entsteht ein 'Information Gap', den der Zuschauer schließen möchte. Dies aktiviert das dopaminerge Belohnungssystem.\",\n      \"examples\": [\n        \"Menschen, die überall einschlafen können, als problematisch darstellen (Clip 3)\",\n        \"Am Wochenende ausschlafen als schädlich bezeichnen (Clips 6, 7)\",\n        \"Männer haben ein 'Nichts-Kästchen' im Gehirn (Clip 12)\"\n      ],\n      \"application\": \"Identifiziere weit verbreitete Annahmen in deinem Thema und präsentiere eine wissenschaftlich fundierte, aber überraschende Gegenperspektive. Die Dissonanz muss stark genug sein, um Neugier zu wecken, aber glaubwürdig genug, um ernst genommen zu werden.\",\n      \"frequency\": \"45%\"\n    },\n    {\n      \"principle\": \"Direktive Imperative schaffen unmittelbare Relevanz\",\n      \"why_works\": \"Befehle ('Kauft', 'Schlaft', 'Vermeidet') aktivieren das Handlungszentrum im präfrontalen Kortex und signalisieren: 'Diese Information betrifft dich JETZT'. Sie überspringen die rationale Bewertungsphase und erzeugen sofortige Aufmerksamkeit durch wahrgenommene Dringlichkeit.\",\n      \"examples\": [\n        \"'Kauft Lebensmittel, die keine Zutatenliste tragen' (Clip 13)\",\n        \"'Schlaft immer in den...' (Clip 2)\",\n        \"'Vermeidet am Wochenende auszuschlafen' (Clips 6, 7)\"\n      ],\n      \"application\": \"Formuliere Hooks als direkte Handlungsanweisungen, wenn du praktisches Wissen vermittelst. Die Direktive muss spezifisch genug sein, um umsetzbar zu wirken, aber breit genug, um viele Menschen zu betreffen.\",\n      \"frequency\": \"35%\"\n    },\n    {\n      \"principle\": \"Metaphern und Analogien reduzieren kognitive Komplexität\",\n      \"why_works\": \"Das Gehirn verarbeitet bekannte Konzepte 60% schneller als abstrakte Informationen. Metaphern aktivieren multiple neuronale Netzwerke gleichzeitig (visuell, emotional, konzeptuell) und machen komplexe Ideen sofort zugänglich.\",\n      \"examples\": [\n        \"'Schlafen ist wie ein Fußballspiel' (Clip 2)\",\n        \"Sprache als 'verschiedene Sprachen sprechen' zwischen Geschlechtern (Clip 9)\"\n      ],\n      \"application\": \"Verknüpfe abstrakte oder komplexe Konzepte mit universell verständlichen, emotionalen oder visuellen Erfahrungen. Die Metapher sollte eine strukturelle Ähnlichkeit haben, nicht nur oberflächlich sein.\",\n      \"frequency\": \"25%\"\n    },\n    {\n      \"principle\": \"Narrative Hooks durch konkrete Szenen statt Abstraktionen\",\n      \"why_works\": \"Das menschliche Gehirn ist für Geschichten optimiert, nicht für Fakten. Konkrete Szenen aktivieren den 'Simulation Mode' - der Zuschauer erlebt die Situation mental mit, was emotionales Investment erzeugt.\",\n      \"examples\": [\n        \"'Kinder sitzen am Straßenrand gelangweilt' (Clip 4)\",\n        \"'Mann verklagt seinen Arzt' (Clip 20)\",\n        \"'Zweijähriger beim Spazierengehen braucht halbe Stunde für 100 Meter' (Clip 15)\"\n      ],\n      \"application\": \"Beginne mit einer spezifischen, visuell vorstellbaren Szene statt mit allgemeinen Aussagen. Die Szene sollte ein universelles Problem oder Phänomen verkörpern, das der Zuschauer kennt oder sich vorstellen kann.\",\n      \"frequency\": \"30%\"\n    },\n    {\n      \"principle\": \"Soziale Validierung durch 'Wir/Ihr'-Framing\",\n      \"why_works\": \"Menschen sind soziale Wesen mit starkem Bedürfnis nach Gruppenzugehörigkeit. 'Wir/Ihr'-Formulierungen aktivieren soziale Identitätsmechanismen und lassen den Zuschauer prüfen: 'Gehöre ich dazu?' Dies erzeugt persönliche Relevanz.\",\n      \"examples\": [\n        \"'Wie viele von euch kennen Menschen...' (Clip 8)\",\n        \"'Wir stellen zu viele Fragen...' (Clip 5)\",\n        \"'Wir erhöhen die Spritpreise...' (Clip 17)\"\n      ],\n      \"application\": \"Formuliere Hooks so, dass sie implizit eine Gruppe definieren. Der Zuschauer sollte sich entweder zugehörig fühlen oder neugierig sein, warum er nicht dazugehört. Funktioniert besonders bei Verhaltensmustern und sozialen Normen.\",\n      \"frequency\": \"25%\"\n    },\n    {\n      \"principle\": \"Quantifizierung schafft Konkretheit und Glaubwürdigkeit\",\n      \"why_works\": \"Zahlen aktivieren das analytische Denken und signalisieren Präzision. Sie machen abstrakte Konzepte greifbar und suggerieren wissenschaftliche Fundierung, was Autorität aufbaut.\",\n      \"examples\": [\n        \"'3,2 Milliarden Umsatz' (Clip 19)\",\n        \"'90 Minuten wie Fußballspiel' (Clip 2)\",\n        \"'100 Meter in halber Stunde' (Clip 15)\"\n      ],\n      \"application\": \"Nutze spezifische Zahlen, um Ausmaß, Dringlichkeit oder Präzision zu vermitteln. Die Zahl sollte überraschend genug sein, um Aufmerksamkeit zu erzeugen, aber nicht so extrem, dass sie unglaubwürdig wirkt.\",\n      \"frequency\": \"20%\"\n    }\n  ],\n  \"content_principles\": [\n    {\n      \"principle\": \"Alltagsrelevanz durch universelle Erfahrungen\",\n      \"why_works\": \"Content wird viral, wenn er ein gemeinsames menschliches Erleben anspricht. Je mehr Menschen sich wiedererkennen, desto höher die Share-Wahrscheinlichkeit. Dies aktiviert den 'Social Currency'-Mechanismus: Menschen teilen, was sie selbst klug oder informiert erscheinen lässt.\",\n      \"characteristics\": [\n        \"Themen betreffen grundlegende Lebensbereiche (Schlaf, Ernährung, Beziehungen, Erziehung)\",\n        \"Situationen sind kulturübergreifend erkennbar\",\n        \"Content löst 'Das kenne ich!'-Momente aus\",\n        \"Praktische Anwendbarkeit ist sofort ersichtlich\"\n      ],\n      \"application\": \"Wähle Themen, die mindestens 70% deiner Zielgruppe persönlich betreffen. Teste durch die Frage: 'Würde jemand das mit einem Freund teilen, weil es auf dessen Situation zutrifft?' Der Content sollte ein Problem lösen oder eine Erkenntnis bieten, die sofort umsetzbar ist.\"\n    },\n    {\n      \"principle\": \"Autoritäts-Paradox: Expertise vermitteln durch Vereinfachung, nicht Komplexität\",\n      \"why_works\": \"Wahre Expertise zeigt sich in der Fähigkeit, Komplexes einfach zu machen. Dies aktiviert das 'Aha-Erlebnis' - der Zuschauer fühlt sich plötzlich kompetent. Komplizierte Erklärungen erzeugen Distanz, einfache Erklärungen erzeugen Verbindung und Vertrauen.\",\n      \"characteristics\": [\n        \"Wissenschaftliche Konzepte werden durch Alltagssprache zugänglich\",\n        \"Komplexe Zusammenhänge werden auf ein Kernprinzip reduziert\",\n        \"Praktische Handlungsanweisungen statt theoretischer Abhandlungen\",\n        \"Experte positioniert sich als 'Übersetzer', nicht als 'Gatekeeper'\"\n      ],\n      \"application\": \"Identifiziere das eine Kernprinzip hinter einem komplexen Thema. Eliminiere Fachjargon oder erkläre ihn sofort. Frage dich: 'Kann ein 12-Jähriger das Kernkonzept verstehen?' Wenn nein, vereinfache weiter. Autorität entsteht durch Klarheit, nicht durch Komplexität.\"\n    },\n    {\n      \"principle\": \"Kontroverse als Engagement-Katalysator\",\n      \"why_works\": \"Kontroverse aktiviert das limbische System stärker als neutrale Information. Menschen engagieren sich (kommentieren, teilen) besonders bei Inhalten, die ihre Weltanschauung herausfordern oder bestätigen. Dies erzeugt sowohl Zustimmung als auch Widerspruch - beides steigert Reichweite.\",\n      \"characteristics\": [\n        \"Infragestellung etablierter Normen oder Verhaltensweisen\",\n        \"Polarisierende Aussagen, die Positionierung erfordern\",\n        \"Themen, bei denen Menschen starke Meinungen haben\",\n        \"Balance zwischen provokant und glaubwürdig\"\n      ],\n      \"application\": \"Identifiziere weit verbreitete Praktiken oder Überzeugungen in deinem Themenbereich. Präsentiere eine evidenzbasierte Gegenperspektive. Die Kontroverse sollte konstruktiv sein - nicht provozieren um der Provokation willen, sondern um echten Mehrwert zu bieten. Rechne mit Gegenwind und bereite dich darauf vor.\"\n    },\n    {\n      \"principle\": \"Praktische Umsetzbarkeit als Wertversprechen\",\n      \"why_works\": \"Menschen konsumieren Content nicht nur zur Unterhaltung, sondern zur Selbstoptimierung. Umsetzbare Ratschläge aktivieren das Belohnungssystem, weil sie Kontrolle und Handlungsfähigkeit vermitteln. 'Ich kann das ändern' ist ein mächtiger psychologischer Trigger.\",\n      \"characteristics\": [\n        \"Klare, spezifische Handlungsanweisungen\",\n        \"Niedrige Einstiegshürden (sofort umsetzbar)\",\n        \"Konkreter Nutzen ist ersichtlich\",\n        \"Einfache Prinzipien statt komplexer Systeme\"\n      ],\n      \"application\": \"Jeder Content sollte mit einer klaren Antwort auf 'Was kann ich jetzt tun?' enden. Die Handlung sollte so einfach sein, dass sie nicht aufgeschoben wird. Vermeide mehrstufige Prozesse - fokussiere auf eine Kernhandlung, die den größten Impact hat.\"\n    },\n    {\n      \"principle\": \"Emotionale Resonanz durch Identifikation\",\n      \"why_works\": \"Menschen teilen und konsumieren Content, der ihre eigene Identität oder Erfahrung widerspiegelt. Dies aktiviert Spiegelneuronen und erzeugt emotionale Verbindung. 'Das bin ich' oder 'Das kenne ich' sind die stärksten Engagement-Treiber.\",\n      \"characteristics\": [\n        \"Beschreibung von Situationen, die viele erleben aber selten artikulieren\",\n        \"Validierung von Gefühlen oder Verhaltensweisen\",\n        \"Humor durch Wiedererkennung\",\n        \"Probleme benennen, die Menschen haben aber nicht aussprechen\"\n      ],\n      \"application\": \"Beobachte und dokumentiere spezifische Alltagssituationen in deinem Themenbereich. Je spezifischer die Beschreibung, desto universeller die Resonanz (Paradox der Spezifität). Frage dich: 'Welche Erfahrung haben viele, aber niemand spricht darüber?' Das ist dein Content-Gold.\"\n    }\n  ],\n  \"structural_principles\": [\n    {\n      \"principle\": \"Frontloading: Maximale Information in minimaler Zeit\",\n      \"why_works\": \"Die ersten 3 Sekunden entscheiden über Engagement. Das Gehirn bewertet in Millisekunden, ob Content relevant ist. Frontloading nutzt die 'Peak-End-Rule' - der stärkste Moment sollte am Anfang sein, um den Zuschauer zu 'committen'.\",\n      \"application\": \"Beginne mit der interessantesten, überraschendsten oder wertvollsten Information. Keine Einleitungen, kein Kontext-Setting, keine Vorstellung. Die Hook IST der Content. Kontext kann später nachgeliefert werden, wenn Attention gesichert ist. Frage: 'Was ist das Überraschendste an diesem Thema?' - Starte damit.\"\n    },\n    {\n      \"principle\": \"Information Gap Management: Öffnen und kontrolliert schließen\",\n      \"why_works\": \"Neugier entsteht durch Wissenslücken. Das Gehirn empfindet offene Fragen als unangenehm (Zeigarnik-Effekt) und ist motiviert, sie zu schließen. Zu früh schließen = kein Engagement. Zu spät schließen = Frustration. Die Kunst liegt im Timing.\",\n      \"application\": \"Öffne eine spezifische Wissenslücke im Hook ('Warum ist X eigentlich Y?'). Halte die Spannung durch Teilinformationen aufrecht. Schließe die Lücke bevor Frustration entsteht, aber nicht so schnell, dass kein Investment entsteht. Bei 27-38% Completion Rate: Die Lücke wird in den ersten 30-40% geschlossen, der Rest vertieft.\"\n    },\n    {\n      \"principle\": \"Rhythmische Variation statt monotoner Linearität\",\n      \"why_works\": \"Das Gehirn gewöhnt sich an gleichförmige Stimuli (Habituation). Variation in Tempo, Tonalität und Informationsdichte hält das Aufmerksamkeitssystem aktiv. Dies verhindert 'Scroll-Reflex' und erhöht Completion Rate.\",\n      \"application\": \"Wechsle zwischen verschiedenen Content-Modi: Behauptung → Beispiel → Erklärung → Anwendung. Variiere Satzlänge und Sprechgeschwindigkeit. Nutze Pausen strategisch vor wichtigen Punkten. Keine gleichförmige Informationsabgabe - schaffe Peaks und Valleys in der Informationsdichte.\"\n    },\n    {\n      \"principle\": \"Konzeptuelle Geschlossenheit: Ein Kerngedanke pro Clip\",\n      \"why_works\": \"Kognitive Belastung ist der Feind von Viralität. Ein klar definiertes Konzept kann vollständig verarbeitet und erinnert werden. Multiple Konzepte verwässern die Message und reduzieren Share-Wahrscheinlichkeit. 'Eine Sache gut' schlägt 'viele Sachen oberflächlich'.\",\n      \"application\": \"Identifiziere das eine Kernprinzip oder die eine Erkenntnis, die du vermitteln willst. Alle Beispiele, Erklärungen und Anwen",
+  "HOOK_PRINZIPIEN": [
+    {
+      "principle": "Kognitive Dissonanz erzeugen",
+      "why_works": "Das Gehirn kann Widersprüche nicht ignorieren und muss sie auflösen - evolutionär überlebenswichtig",
+      "examples": [
+        "Schlafen ist wie Fußballspielen",
+        "Arbeite niemals für Geld",
+        "Alkohol ist die einzige Droge für die du dich rechtfertigen musst"
+      ],
+      "frequency": "45%",
+      "key_elements": [
+        "Paradoxe Aussagen",
+        "Unerwartete Vergleiche",
+        "Kontraintuitive Behauptungen"
+      ]
+    },
+    {
+      "principle": "Unvollständige Narrative (Zeigarnik-Effekt)",
+      "why_works": "Das Gehirn hasst offene Loops und muss Geschichten vervollständigen - unerledigte Aufgaben bleiben im Gedächtnis",
+      "examples": [
+        "Der Jüngere arbeitet in einem Supermarkt. Eines Tages...",
+        "Das sind fünf Zeichen, dass du...",
+        "Aber was war dieser Rauch?"
+      ],
+      "frequency": "40%",
+      "key_elements": [
+        "Mittendrin beginnen",
+        "Sätze unvollendet lassen",
+        "Cliffhanger"
+      ]
+    },
+    {
+      "principle": "Konkrete Zahlen als Glaubwürdigkeitsanker",
+      "why_works": "Spezifische Zahlen signalisieren Kompetenz und schaffen mentale Referenzpunkte - das Gehirn vertraut Präzision",
+      "examples": [
+        "440 Milliarden Euro Schaden",
+        "3,2 Milliarden Menschen",
+        "0,0,0,4 Prozent"
+      ],
+      "frequency": "35%",
+      "key_elements": [
+        "Überraschende Statistiken",
+        "Präzise Beträge",
+        "Unerwartete Größenordnungen"
+      ]
+    },
+    {
+      "principle": "Persönliche Vulnerabilität als Vertrauensbrücke",
+      "why_works": "Authentische, verletzliche Momente aktivieren Spiegelneuronen und schaffen sofortige emotionale Verbindung",
+      "examples": [
+        "Gestern früh kommt mein Sohn zu mir",
+        "Sechs Wochen nach meinem schweren Unfall",
+        "Ich wollte als Kind Lehrer werden"
+      ],
+      "frequency": "30%",
+      "key_elements": [
+        "Persönliche Anekdoten",
+        "Familienbezug",
+        "Eigene Schwächen"
+      ]
+    },
+    {
+      "principle": "Universelle Schmerzpunkte aktivieren",
+      "why_works": "Menschen reagieren 2x stärker auf potenzielle Verluste als auf Gewinne (Loss Aversion) - Ängste sind mächtige Aufmerksamkeitstrigger",
+      "examples": [
+        "Krebsrisiko durch alltägliche Gewohnheiten",
+        "Warum du doppelt zahlst ohne es zu merken",
+        "Was du am letzten Tag bereuen wirst"
+      ],
+      "frequency": "25%",
+      "key_elements": [
+        "Gesundheitsängste",
+        "Finanzielle Verluste",
+        "Verpasste Chancen"
+      ]
+    },
+    {
+      "principle": "Direkte Betroffenheit erzeugen",
+      "why_works": "Das Gehirn priorisiert Informationen, die das eigene Überleben oder Wohlergehen betreffen",
+      "examples": [
+        "Warum DU die ganze Zeit doppelt zahlst",
+        "Das passiert in DEINEM Körper wenn...",
+        "Deine Kinder werden dich dafür hassen"
+      ],
+      "frequency": "25%",
+      "key_elements": [
+        "Du-Ansprache",
+        "Persönliche Relevanz",
+        "Direkte Konsequenzen"
+      ]
+    },
+    {
+      "principle": "Tabubruch als Aufmerksamkeitsmagnet",
+      "why_works": "Tabus aktivieren das limbische System - die Mischung aus Schock und Neugier überwindet jeden Scroll-Reflex",
+      "examples": [
+        "400 Kilo schweres Tier versucht...",
+        "Du kannst als Mann einer Frau kein Kompliment machen",
+        "Warum Prollies eigentlich lesen"
+      ],
+      "frequency": "20%",
+      "key_elements": [
+        "Sexuelle Anspielungen",
+        "Gesellschaftliche Tabus",
+        "Provokante Aussagen"
+      ]
+    },
+    {
+      "principle": "Insider-Wissen versprechen",
+      "why_works": "Menschen wollen sich überlegen fühlen - das Versprechen von exklusivem Wissen triggert das Belohnungssystem",
+      "examples": [
+        "Was dir niemand über GmbHs sagt",
+        "Der Trick den alle Millionäre kennen",
+        "Was Ärzte dir verschweigen"
+      ],
+      "frequency": "20%",
+      "key_elements": [
+        "Geheimwissen",
+        "Versteckte Wahrheiten",
+        "System-Hacks"
+      ]
+    },
+    {
+      "principle": "Emotionale Wahrheiten enthüllen",
+      "why_works": "Menschen kaufen Emotionen, nicht Produkte - diese psychologische Einsicht triggert Selbstreflexion",
+      "examples": [
+        "Eine Frau kauft keinen Lippenstift, sie kauft Hoffnung",
+        "Du arbeitest nicht für Geld, sondern für Anerkennung",
+        "Niemand kauft ein iPhone, sie kaufen Status"
+      ],
+      "frequency": "15%",
+      "key_elements": [
+        "Versteckte Motivationen",
+        "Emotionale Bedürfnisse",
+        "Unbewusste Treiber"
+      ]
+    },
+    {
+      "principle": "Zeitliche Dringlichkeit erzeugen",
+      "why_works": "Die Konfrontation mit der eigenen Endlichkeit aktiviert den Überlebensinstinkt",
+      "examples": [
+        "Irgendwann ist es zu spät",
+        "In 10 Jahren wirst du es bereuen",
+        "Der letzte Tag kommt schneller als du denkst"
+      ],
+      "frequency": "10%",
+      "key_elements": [
+        "Vergänglichkeit",
+        "Verpasste Chancen",
+        "Zeitdruck"
+      ]
+    }
+  ],
+  "CONTENT_PRINZIPIEN": [
+    {
+      "principle": "Transformation von Alltäglichem in Außergewöhnliches",
+      "why_works": "Das Gehirn sucht nach Mustern und Anomalien - gewöhnliche Situationen mit unerwarteten Wendungen aktivieren Dopamin",
+      "characteristics": [
+        "Bekannte Ausgangssituation",
+        "Überraschende Perspektive",
+        "Neue Erkenntnis über Vertrautes"
+      ],
+      "frequency": "40%"
+    },
+    {
+      "principle": "Emotionale Resonanz durch universelle Erfahrungen",
+      "why_works": "Menschen teilen Content, der ihre eigenen Erfahrungen spiegelt und validiert - Spiegelneuronen schaffen Verbindung",
+      "characteristics": [
+        "Alltagsprobleme (Müdigkeit, Geldsorgen)",
+        "Gemeinsame Frustrationen",
+        "Geteilte Hoffnungen und Ängste"
+      ],
+      "frequency": "35%"
+    },
+    {
+      "principle": "Kontraintuitive Wahrheiten als Soziale Währung",
+      "why_works": "Menschen teilen Inhalte, die sie klüger erscheinen lassen - überraschendes Wissen erhöht den sozialen Status",
+      "characteristics": [
+        "Widerspricht gängiger Meinung",
+        "Wissenschaftlich/logisch begründbar",
+        "Einfach zu merken und weiterzuerzählen"
+      ],
+      "frequency": "30%"
+    },
+    {
+      "principle": "Praktische Lebensweisheit in Story-Form",
+      "why_works": "Menschen suchen Lösungen, wollen aber unterhalten werden - Geschichten mit Nutzen befriedigen beide Bedürfnisse",
+      "characteristics": [
+        "Sofort anwendbare Tipps",
+        "Persönliche Erfahrungsberichte",
+        "Transformation durch einfache Änderung"
+      ],
+      "frequency": "30%"
+    },
+    {
+      "principle": "Wissenslücken als Engagement-Motor",
+      "why_works": "Das Gehirn hasst offene Loops - unvollständige Informationen erzeugen einen Zwang zur Vervollständigung",
+      "characteristics": [
+        "Teaser ohne sofortige Auflösung",
+        "Paradoxe Aussagen",
+        "Versteckte Zusammenhänge"
+      ],
+      "frequency": "25%"
+    },
+    {
+      "principle": "Status-Dynamiken als viraler Treibstoff",
+      "why_works": "Menschen sind hypersensibel für Hierarchien - Content über Erfolg/Misserfolg triggert Vergleichsmechanismen",
+      "characteristics": [
+        "Luxus vs. Normalität",
+        "Erfolgsgeschichten",
+        "Soziale Ungerechtigkeit"
+      ],
+      "frequency": "25%"
+    },
+    {
+      "principle": "Identifikation durch geteilte Struggles",
+      "why_works": "Menschen fühlen sich verstanden, wenn ihre privaten Kämpfe öffentlich validiert werden",
+      "characteristics": [
+        "Finanzielle Sorgen",
+        "Beziehungsprobleme",
+        "Karrierezweifel"
+      ],
+      "frequency": "20%"
+    },
+    {
+      "principle": "Kontrast zwischen Schein und Sein",
+      "why_works": "Die Enthüllung verborgener Wahrheiten befriedigt das Bedürfnis nach tieferem Verständnis",
+      "characteristics": [
+        "Was Menschen wirklich kaufen",
+        "Versteckte Mechanismen",
+        "Illusionen entlarven"
+      ],
+      "frequency": "20%"
+    },
+    {
+      "principle": "Tabubruch mit Lerneffekt",
+      "why_works": "Tabus aktivieren das limbische System - kombiniert mit nützlicher Information bleibt der Content im Gedächtnis",
+      "characteristics": [
+        "Gesellschaftliche Grenzüberschreitungen",
+        "Unausgesprochene Wahrheiten",
+        "Provokation mit Substanz"
+      ],
+      "frequency": "15%"
+    },
+    {
+      "principle": "Autorität durch Spezifität",
+      "why_works": "Detailliertes Wissen signalisiert Expertise - präzise Informationen schaffen Vertrauen",
+      "characteristics": [
+        "Exakte Zahlen und Daten",
+        "Insider-Terminologie",
+        "Konkrete Fallbeispiele"
+      ],
+      "frequency": "15%"
+    }
+  ],
+  "STRUKTURELLE_PRINZIPIEN": [
+    {
+      "principle": "Mikro-Narrativ mit komplettem Story-Arc",
+      "why_works": "Das Gehirn braucht abgeschlossene Erfahrungen - komplette Stories in 30-60 Sekunden befriedigen dieses Bedürfnis",
+      "application": "Problem → Konflikt → Wendung → Auflösung in Rekordzeit",
+      "frequency": "45%"
+    },
+    {
+      "principle": "Offene Loops als Retention-Mechanik",
+      "why_works": "Unvollständige Informationen erzeugen mentale Spannung, die nach Auflösung verlangt",
+      "application": "Hook ohne Auflösung → Kontext → verzögerte Auflösung",
+      "frequency": "40%"
+    },
+    {
+      "principle": "Informationsdichte-Gradient",
+      "why_works": "Hohe Dichte am Anfang hält Aufmerksamkeit, graduelle Reduktion verhindert Überforderung",
+      "application": "Komplexer Hook → Kernaussage → Vereinfachung → Call-to-Action",
+      "frequency": "35%"
+    },
+    {
+      "principle": "Konversationaler Einstieg",
+      "why_works": "Direkter Sprechstil aktiviert soziale Gehirnareale - der Zuschauer fühlt sich angesprochen, nicht belehrt",
+      "application": "Mittendrin beginnen, Du-Ansprache, informeller Ton",
+      "frequency": "30%"
+    },
+    {
+      "principle": "Rhythmische Disruption",
+      "why_works": "Tempowechsel brechen Erwartungsmuster und halten die Aufmerksamkeit durch ständige Neuorientierung",
+      "application": "Satzlängen variieren, Pausen setzen, Geschwindigkeit wechseln",
+      "frequency": "25%"
+    },
+    {
+      "principle": "Emotionale Eskalation",
+      "why_works": "Steigende emotionale Intensität hält das Dopamin-System aktiv und verhindert Absprung",
+      "application": "Neutral → Neugier → Spannung → emotionaler Peak",
+      "frequency": "25%"
+    },
+    {
+      "principle": "Mikro-Belohnungen alle 3-5 Sekunden",
+      "why_works": "Regelmäßige kleine Aha-Momente halten Dopamin-Level konstant hoch",
+      "application": "Neue Information, Wendung oder Erkenntnis in kurzen Intervallen",
+      "frequency": "20%"
+    },
+    {
+      "principle": "Konkretes vor Abstraktem",
+      "why_works": "Das Gehirn verarbeitet spezifische Beispiele schneller als allgemeine Konzepte",
+      "application": "Spezifische Situation → universelles Prinzip → praktische Anwendung",
+      "frequency": "20%"
+    },
+    {
+      "principle": "Fragmentierte Kohärenz",
+      "why_works": "Unvollständige Sätze zwingen zur aktiven mentalen Rekonstruktion - das erhöht Engagement",
+      "application": "Bewusst unperfekte Sprache, authentische Versprecher",
+      "frequency": "15%"
+    },
+    {
+      "principle": "Pattern Interrupt",
+      "why_works": "Durchbrechen erwarteter Muster reaktiviert Aufmerksamkeit",
+      "application": "Wechsel zwischen Fakten → Story → Frage → Emotion",
+      "frequency": "15%"
+    }
+  ],
   "source": "goat_training_data.json",
-  "clips_analyzed": 50,
-  "analyzed_at": "2026-01-03T00:16:22.961946"
+  "clips_analyzed": 972,
+  "batches_processed": 49,
+  "analyzed_at": "2026-01-03T01:12:33.656909"
 }

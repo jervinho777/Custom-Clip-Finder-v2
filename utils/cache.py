@@ -56,12 +56,28 @@ class Cache:
         Returns:
             Transcript dict or None if not cached
         """
-        key = self._file_hash(Path(video_path))
+        video_path = Path(video_path)
+        
+        # Strategy 1: Check hash-based cache (new format)
+        key = self._file_hash(video_path)
         cache_file = self.cache_dir / "transcripts" / f"{key}.json"
         
         if cache_file.exists():
             with open(cache_file) as f:
                 return json.load(f)
+        
+        # Strategy 2: Check name-based cache (old format from V1)
+        # e.g. "Dieter Lange.mp4" → "Dieter Lange_transcript.json"
+        name_based = self.cache_dir / "transcripts" / f"{video_path.stem}_transcript.json"
+        if name_based.exists():
+            with open(name_based) as f:
+                data = json.load(f)
+                # Convert old format to new format
+                if "transcript" not in data:
+                    # Old format: transcript is the root object
+                    return {"transcript": data, "video_path": str(video_path)}
+                return data
+        
         return None
     
     def set_transcript(self, video_path: str | Path, transcript: dict) -> Path:

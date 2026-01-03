@@ -73,8 +73,7 @@ async def discover_moments(
     system_prompt, user_prompt = build_discover_prompt(
         transcript_segments=transcript_segments,
         similar_clips=similar_clips,
-        principles=principles,
-        num_moments=15
+        principles=principles
     )
     
     print("Running DISCOVER with 5-AI ensemble...")
