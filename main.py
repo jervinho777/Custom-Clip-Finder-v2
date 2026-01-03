@@ -66,7 +66,7 @@ async def _process_video(
 ):
     """Run the full pipeline."""
     from utils import Cache
-    from utils.transcribe import transcribe_video_sync
+    from utils.transcribe import transcribe_video
     from utils.download import is_url, get_video_path
     
     console.print(f"\n[bold blue]Custom Clip Finder v2[/bold blue]")
@@ -97,14 +97,10 @@ async def _process_video(
         console.print("  Using cached transcript")
         transcript = cached_transcript.get("transcript", {})
     else:
-        with Progress(
-            SpinnerColumn(),
-            TextColumn("[progress.description]{task.description}"),
-            console=console
-        ) as progress:
-            progress.add_task("Transcribing video...", total=None)
-            transcript = transcribe_video_sync(str(video_path))
-            cache.set_transcript(video_path, transcript)
+        console.print("  Transcribing video (this may take a few minutes)...")
+        transcript = await transcribe_video(str(video_path))
+        cache.set_transcript(video_path, transcript)
+        console.print("  ✅ Transcription complete")
     
     segments = transcript.get("segments", [])
     console.print(f"  Segments: {len(segments)}")
