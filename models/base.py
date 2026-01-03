@@ -231,23 +231,32 @@ class OpenAIModel(AIModel):
         
         start = time.time()
         
+        # GPT-5.2 uses max_completion_tokens, older models use max_tokens
+        api_params = {
+            "model": self.model,
+            "messages": messages,
+            "temperature": temperature,
+        }
+        
+        # Check if model requires max_completion_tokens (GPT-5.2+)
+        if self.model.startswith("gpt-5") or self.model.startswith("o1"):
+            api_params["max_completion_tokens"] = max_tokens
+        else:
+            api_params["max_tokens"] = max_tokens
+        
         try:
-            response = await client.chat.completions.create(
-                model=self.model,
-                messages=messages,
-                temperature=temperature,
-                max_tokens=max_tokens
-            )
+            response = await client.chat.completions.create(**api_params)
         except Exception as e:
             # Fallback to GPT-4o if GPT-5.2 fails
-            if self.model == "gpt-5.2":
-                print(f"   ⚠️ GPT-5.2 failed, falling back to GPT-4o: {e}")
-                response = await client.chat.completions.create(
-                    model="gpt-4o",
-                    messages=messages,
-                    temperature=temperature,
-                    max_tokens=max_tokens
-                )
+            if self.model == "gpt-5.2" or self.model.startswith("gpt-5"):
+                print(f"   ⚠️ {self.model} failed, falling back to GPT-4o: {e}")
+                fallback_params = {
+                    "model": "gpt-4o",
+                    "messages": messages,
+                    "temperature": temperature,
+                    "max_tokens": max_tokens
+                }
+                response = await client.chat.completions.create(**fallback_params)
             else:
                 raise
         
