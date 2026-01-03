@@ -36,9 +36,18 @@ def build_discover_prompt(
     if similar_clips:
         context += "\n[KONTEXT AUS BRAIN - Ähnliche erfolgreiche Clips]\n"
         for i, clip in enumerate(similar_clips[:5], 1):
-            views = clip.get('views', 'N/A')
-            hook = clip.get('hook', clip.get('text', '')[:100])
-            context += f"{i}. {views:,} Views: \"{hook}...\"\n"
+            # Views can be in metadata (from vector store) or top-level
+            metadata = clip.get('metadata', {})
+            views = metadata.get('views') or clip.get('views', 0)
+            hook = metadata.get('hook') or clip.get('hook') or clip.get('text', '')[:100]
+            
+            # Format views safely
+            if isinstance(views, (int, float)) and views > 0:
+                views_str = f"{int(views):,}"
+            else:
+                views_str = "N/A"
+            
+            context += f"{i}. {views_str} Views: \"{hook[:100]}...\"\n"
     
     if principles:
         context += "\n[KERN-PRINZIPIEN]\n"
