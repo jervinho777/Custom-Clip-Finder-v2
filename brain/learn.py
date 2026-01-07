@@ -1,7 +1,9 @@
 """
-BRAIN Learning System
+BRAIN Learning System V2
 
-Loads principles and provides similarity search.
+Loads hierarchical principles and provides principle-based guidance.
+
+WICHTIG: Arbeitet NUR mit Prinzipien (WARUM), nicht mit Regeln (WAS).
 """
 
 import json
@@ -10,70 +12,83 @@ from typing import Dict, List, Optional
 
 
 BRAIN_DIR = Path(__file__).parent
-PRINCIPLES_PATH = BRAIN_DIR / "PRINCIPLES.json"
+PRINCIPLES_PATH = BRAIN_DIR / "BRAIN_PRINCIPLES.json"
+LEGACY_PRINCIPLES_PATH = BRAIN_DIR / "PRINCIPLES.json"  # Fallback
 
 
 def load_principles() -> Dict:
     """
-    Load PRINCIPLES.json.
+    Load BRAIN_PRINCIPLES.json (oder legacy PRINCIPLES.json als Fallback).
     
     Returns:
-        Dict with all principles
+        Dict with hierarchical principles
     """
-    if not PRINCIPLES_PATH.exists():
-        return {}
-    
-    with open(PRINCIPLES_PATH) as f:
-        return json.load(f)
+    if PRINCIPLES_PATH.exists():
+        with open(PRINCIPLES_PATH) as f:
+            return json.load(f)
+    elif LEGACY_PRINCIPLES_PATH.exists():
+        print("⚠️ Using legacy PRINCIPLES.json - run brain analysis to update!")
+        with open(LEGACY_PRINCIPLES_PATH) as f:
+            return json.load(f)
+    return {}
 
 
-def get_hook_patterns() -> List[Dict]:
+def get_core_principles() -> List[Dict]:
     """
-    Get hook patterns from PRINCIPLES.
+    Get the fundamental core principles.
     
     Returns:
-        List of hook pattern dicts
+        List of core principle dicts with principle, why_works, application
     """
     principles = load_principles()
-    hook_patterns = principles.get("hook_patterns", {})
-    
-    return [
-        {"type": key, **value}
-        for key, value in hook_patterns.items()
-    ]
+    return principles.get("core_principles", [])
 
 
-def get_transformation_patterns() -> Dict:
+def get_hook_principles() -> List[Dict]:
     """
-    Get transformation patterns for COMPOSE stage.
+    Get hook creation principles.
     
     Returns:
-        Dict with transformation patterns
+        List of hook principle dicts
     """
     principles = load_principles()
-    return principles.get("transformation_patterns", {})
+    return principles.get("hook_principles", [])
 
 
-def get_cutting_principles() -> Dict:
+def get_transformation_principles() -> List[Dict]:
     """
-    Get cutting principles for COMPOSE stage.
+    Get transformation principles for COMPOSE stage.
     
     Returns:
-        Dict with cutting principles
+        List of transformation principle dicts
     """
     principles = load_principles()
-    return principles.get("cutting_principles", {})
+    return principles.get("transformation_principles", [])
 
 
-def get_quality_signals() -> Dict:
+def get_quality_principles() -> List[Dict]:
     """
-    Get quality signals for VALIDATE stage.
+    Get quality principles for VALIDATE stage.
     
     Returns:
-        Dict with quality signals
+        List of quality principle dicts
     """
     principles = load_principles()
-    return principles.get("quality_signals", {})
+    return principles.get("quality_principles", [])
+
+
+def get_master_principle() -> str:
+    """
+    Get the master principle.
+    
+    Returns:
+        The master principle string
+    """
+    principles = load_principles()
+    return principles.get(
+        "master_principle", 
+        "Make a video so good that people cannot physically scroll past"
+    )
 
 
 async def get_similar_clips(
@@ -110,34 +125,92 @@ async def get_similar_clips(
     return filtered[:n_results]
 
 
-def get_principle_summary() -> str:
+def get_principle_context_for_prompt() -> str:
     """
-    Get a summary of key principles for prompts.
+    Get a formatted context string with all principles for AI prompts.
+    
+    This is used to inject the learned principles into the pipeline prompts.
     
     Returns:
-        Formatted string summary
+        Formatted string with all relevant principles
     """
     principles = load_principles()
     
-    summary = "KEY PRINCIPLES:\n"
+    # Master principle
+    master = principles.get("master_principle", "Maximize watchtime")
     
-    # Algorithm understanding
-    algo = principles.get("algorithm_understanding", {})
-    summary += f"• Core: {algo.get('core_principle', 'N/A')}\n"
+    # Core principles
+    core = principles.get("core_principles", [])
     
-    # Top hook patterns
-    hooks = principles.get("hook_patterns", {})
-    summary += "• Top Hook Patterns:\n"
-    for name, pattern in list(hooks.items())[:3]:
-        freq = pattern.get("frequency_in_top", "N/A")
-        summary += f"  - {name}: {freq} of top performers\n"
+    # Hook principles
+    hooks = principles.get("hook_principles", [])
     
-    # Anti-patterns
-    anti = principles.get("anti_patterns", [])[:3]
-    summary += "• Avoid:\n"
-    for a in anti:
-        summary += f"  - {a}\n"
+    # Transformation principles
+    transforms = principles.get("transformation_principles", [])
+    
+    context = f"""
+[BRAIN PRINCIPLES - Learned from {principles.get('data_sources', {}).get('isolated_clips', 0)} viral clips]
+
+🎯 MASTER PRINCIPLE:
+{master}
+
+📍 CORE PRINCIPLES (Fundamental truths about viral content):
+"""
+    
+    for i, p in enumerate(core[:5], 1):
+        context += f"""
+{i}. {p.get('principle', 'N/A')}
+   WARUM: {p.get('why_works', 'N/A')}
+   ANWENDUNG: {p.get('application', 'N/A')}
+"""
+    
+    context += """
+🔥 HOOK PRINCIPLES (Why hooks work):
+"""
+    
+    for i, p in enumerate(hooks[:5], 1):
+        freq = p.get('frequency', 'N/A')
+        context += f"""
+{i}. {p.get('principle', 'N/A')} ({freq})
+   WARUM: {p.get('why_works', 'N/A')}
+   WANN ANWENDEN: {p.get('when_to_apply', 'N/A')}
+"""
+    
+    context += """
+🔄 TRANSFORMATION PRINCIPLES (How to restructure content):
+"""
+    
+    for i, p in enumerate(transforms[:5], 1):
+        context += f"""
+{i}. {p.get('principle', 'N/A')}
+   WARUM: {p.get('why_works', 'N/A')}
+   WANN ANWENDEN: {p.get('when_to_apply', 'N/A')}
+"""
+    
+    context += """
+⚠️ KEINE STARREN REGELN:
+- Keine festen Zeitangaben ("Hook muss in 3 Sekunden sein")
+- Keine Template-Strukturen ("Immer Hook→Story→Payoff")
+- Nur Prinzipien anwenden, die zum KONTEXT passen!
+"""
+    
+    return context
+
+
+def get_principle_summary() -> str:
+    """
+    Get a brief summary of key principles for prompts.
+    
+    Returns:
+        Short formatted string summary
+    """
+    principles = load_principles()
+    
+    summary = f"MASTER: {principles.get('master_principle', 'Maximize watchtime')}\n"
+    
+    # Top 3 core principles
+    core = principles.get("core_principles", [])[:3]
+    for i, p in enumerate(core, 1):
+        summary += f"CORE {i}: {p.get('principle', 'N/A')}\n"
     
     return summary
-
-

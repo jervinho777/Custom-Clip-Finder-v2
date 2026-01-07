@@ -1,0 +1,371 @@
+{
+  "total_clips": 972,
+  "batches_processed": 39,
+  "analyzed_at": "2026-01-03T20:08:05.791685",
+  "hook_principles": [
+    {
+      "principle": "Kognitive Dissonanz durch Kontrast",
+      "why_works": "Das Gehirn ist evolutionär darauf programmiert, Widersprüche sofort zu erkennen und aufzulösen - dies erzeugt unwillkürliche Aufmerksamkeit",
+      "when_to_apply": "Wenn etablierte Überzeugungen oder Erwartungen herausgefordert werden können",
+      "how_to_recognize": "Der Content enthält Negationen, Widersprüche oder kontraintuitive Aussagen",
+      "frequency": "9%",
+      "occurrences": 14
+    },
+    {
+      "principle": "Curiosity Gap",
+      "why_works": "Offene Fragen aktivieren das Default Mode Network im Gehirn - wir können nicht anders als nach Antworten zu suchen",
+      "when_to_apply": "Wenn komplexe Konzepte vereinfacht werden sollen",
+      "how_to_recognize": "Eine Frage wird gestellt, deren Antwort nicht offensichtlich ist",
+      "frequency": "9%",
+      "occurrences": 13
+    },
+    {
+      "principle": "Kontrast-Aktivierung",
+      "why_works": "Das Gehirn ist evolutionär darauf programmiert, Widersprüche und Negationen sofort zu verarbeiten - sie signalisieren potenzielle Gefahr oder wichtige Information",
+      "when_to_apply": "Wenn etablierte Überzeugungen oder Erwartungen herausgefordert werden können",
+      "how_to_recognize": "Der Content enthält gegensätzliche Konzepte oder widerspricht gängigen Annahmen",
+      "frequency": "8%",
+      "occurrences": 12
+    },
+    {
+      "principle": "Pattern Interrupt",
+      "why_works": "Unerwartete Elemente durchbrechen die Habituation und zwingen zur bewussten Verarbeitung",
+      "when_to_apply": "Wenn Aufmerksamkeit in übersättigten Feeds gewonnen werden muss",
+      "how_to_recognize": "Metaphern oder ungewöhnliche Vergleiche werden eingesetzt",
+      "frequency": "5%",
+      "occurrences": 8
+    },
+    {
+      "principle": "Konkretisierung durch Zahlen",
+      "why_works": "Spezifische Daten aktivieren das analytische Denken und erhöhen Glaubwürdigkeit",
+      "when_to_apply": "Wenn du abstrakte Konzepte greifbar machen willst",
+      "how_to_recognize": "Du hast messbare Fakten, die deine Aussage untermauern",
+      "frequency": "5%",
+      "occurrences": 8
+    },
+    {
+      "principle": "Numerische Anker",
+      "why_works": "Zahlen aktivieren das analytische Denken und suggerieren Präzision und Glaubwürdigkeit - das Gehirn vertraut konkreten Daten mehr als abstrakten Aussagen",
+      "when_to_apply": "Wenn überraschende oder extreme Datenpunkte verfügbar sind",
+      "how_to_recognize": "Statistiken oder Zahlen können einen emotionalen Kontrast zur Erwartung erzeugen",
+      "frequency": "5%",
+      "occurrences": 8
+    },
+    {
+      "principle": "Metaphorische Brücken",
+      "why_works": "Bekannte Konzepte als Anker reduzieren kognitive Belastung - das Gehirn verarbeitet Neues durch Verknüpfung mit Bekanntem",
+      "when_to_apply": "Wenn komplexe oder abstrakte Ideen vermittelt werden",
+      "how_to_recognize": "Zielgruppe hat wenig Vorwissen zum eigentlichen Thema",
+      "frequency": "5%",
+      "occurrences": 7
+    },
+    {
+      "principle": "Zahlen-Autorität",
+      "why_works": "Konkrete Zahlen signalisieren Kompetenz und Spezifität - das Gehirn vertraut messbaren Fakten",
+      "when_to_apply": "Wenn du überraschende Statistiken oder Metriken hast",
+      "how_to_recognize": "Deine Kernaussage lässt sich quantifizieren",
+      "frequency": "5%",
+      "occurrences": 7
+    },
+    {
+      "principle": "Kontrast-Trigger",
+      "why_works": "Negationen und Gegensätze zwingen das Gehirn zur Neubewertung - der präfrontale Kortex muss aktiv werden, um Widersprüche aufzulösen",
+      "when_to_apply": "Wenn etablierte Überzeugungen herausgefordert oder Aufmerksamkeit erzwungen werden soll",
+      "how_to_recognize": "Die Message enthält 'nicht', 'aber', 'trotzdem' oder stellt Gegensätze gegenüber",
+      "frequency": "5%",
+      "occurrences": 7
+    },
+    {
+      "principle": "Curiosity Gap durch Fragen",
+      "why_works": "Offene Fragen aktivieren das Default Mode Network im Gehirn - wir können nicht anders, als nach Antworten zu suchen",
+      "when_to_apply": "Wenn ein universelles Problem oder eine gemeinsame Erfahrung angesprochen wird",
+      "how_to_recognize": "Das Thema betrifft eine Unsicherheit oder Frustration der Zielgruppe",
+      "frequency": "3%",
+      "occurrences": 5
+    },
+    {
+      "principle": "Zahlen-Anker",
+      "why_works": "Konkrete Zahlen aktivieren das analytische Denken und schaffen sofortige Glaubwürdigkeit durch Spezifität",
+      "when_to_apply": "Wenn du überraschende Fakten oder Vergleiche hast",
+      "how_to_recognize": "Du hast Statistiken oder Daten, die eine Geschichte untermauern",
+      "frequency": "3%",
+      "occurrences": 5
+    },
+    {
+      "principle": "Kognitive Dissonanz",
+      "why_works": "Das Gehirn kann Widersprüche nicht ignorieren - evolutionär überlebenswichtig, da Inkonsistenzen auf Gefahr hindeuten könnten",
+      "when_to_apply": "Wenn etablierte Überzeugungen herausgefordert werden sollen",
+      "how_to_recognize": "Content beginnt mit Aussage, die dem gesunden Menschenverstand widerspricht",
+      "frequency": "3%",
+      "occurrences": 4
+    },
+    {
+      "principle": "Zahlen als Anker",
+      "why_works": "Konkrete Zahlen aktivieren das analytische Denken und verleihen sofortige Glaubwürdigkeit durch Spezifität",
+      "when_to_apply": "Wenn überraschende oder extreme Datenpunkte verfügbar sind",
+      "how_to_recognize": "Die Statistik oder Zahl ist unerwartet, extrem oder widerspricht Erwartungen",
+      "frequency": "3%",
+      "occurrences": 4
+    },
+    {
+      "principle": "Metaphorische Brücke",
+      "why_works": "Metaphern verbinden Unbekanntes mit Bekanntem - das Gehirn nutzt vorhandene neuronale Pfade, um neue Konzepte zu verstehen",
+      "when_to_apply": "Wenn abstrakte oder komplexe Ideen vermittelt werden müssen",
+      "how_to_recognize": "Der Content lässt sich durch Vergleiche oder Analogien verständlicher machen",
+      "frequency": "3%",
+      "occurrences": 4
+    },
+    {
+      "principle": "Offene Loops durch Fragen",
+      "why_works": "Der Zeigarnik-Effekt zwingt das Gehirn, unvollständige Informationen zu vervollständigen - offene Fragen erzeugen mentale Spannung",
+      "when_to_apply": "Wenn das Thema universelle Neugier oder persönliche Relevanz hat",
+      "how_to_recognize": "Die Zielgruppe hat vermutlich selbst schon über diese Frage nachgedacht",
+      "frequency": "2%",
+      "occurrences": 3
+    }
+  ],
+  "content_principles": [
+    {
+      "principle": "Emotionale Eskalation",
+      "why_works": "Steigende emotionale Intensität hält die Dopamin-Ausschüttung aufrecht und verhindert Absprung",
+      "when_to_apply": "Bei persönlichen oder kontroversen Themen",
+      "how_to_recognize": "Die emotionale Ladung nimmt im Verlauf zu, nicht ab",
+      "frequency": "9%",
+      "occurrences": 12
+    },
+    {
+      "principle": "Optimale kognitive Belastung",
+      "why_works": "100-150 Wörter entsprechen der idealen Verarbeitungskapazität für neue Informationen ohne Überforderung",
+      "when_to_apply": "Bei komplexen Themen, die Erklärung benötigen",
+      "how_to_recognize": "Das Konzept braucht Kontext, aber keine ausführliche Analyse",
+      "frequency": "8%",
+      "occurrences": 10
+    },
+    {
+      "principle": "Kognitive Effizienz",
+      "why_works": "Kurze, prägnante Inhalte respektieren die begrenzte Aufmerksamkeitsspanne - das Gehirn bevorzugt energieeffiziente Informationsverarbeitung",
+      "when_to_apply": "Immer - aber besonders bei komplexen Themen, die vereinfacht werden müssen",
+      "how_to_recognize": "Die Kernbotschaft lässt sich in wenigen Sätzen zusammenfassen",
+      "frequency": "8%",
+      "occurrences": 10
+    },
+    {
+      "principle": "Emotionale Resonanz",
+      "why_works": "Emotionen werden schneller verarbeitet als Logik und schaffen stärkere Erinnerungen durch Amygdala-Aktivierung",
+      "when_to_apply": "Wenn dein Content persönliche Erfahrungen oder universelle Gefühle anspricht",
+      "how_to_recognize": "Menschen können sich mit der Situation identifizieren",
+      "frequency": "5%",
+      "occurrences": 6
+    },
+    {
+      "principle": "Relevanz-Resonanz",
+      "why_works": "Das Gehirn priorisiert Informationen, die das eigene Überleben/Erfolg betreffen",
+      "when_to_apply": "Wenn du universelle menschliche Bedürfnisse oder Ängste ansprichst",
+      "how_to_recognize": "Dein Content adressiert fundamentale Lebensfragen",
+      "frequency": "4%",
+      "occurrences": 5
+    },
+    {
+      "principle": "Kontrast-Verstärkung",
+      "why_works": "Gegensätze schaffen mentale Spannung, die nach Auflösung verlangt",
+      "when_to_apply": "Wenn du zwei scheinbar unvereinbare Wahrheiten verbinden kannst",
+      "how_to_recognize": "Du zeigst Paradoxe oder überraschende Verbindungen auf",
+      "frequency": "4%",
+      "occurrences": 5
+    },
+    {
+      "principle": "Praktische Anwendbarkeit",
+      "why_works": "Das Gehirn bevorzugt Informationen mit unmittelbarem Nutzen - Dopamin-Ausschüttung bei erkanntem Wert",
+      "when_to_apply": "Wenn theoretische Konzepte in konkrete Handlungen übersetzt werden können",
+      "how_to_recognize": "Der Zuschauer kann sofort etwas mit der Information anfangen",
+      "frequency": "4%",
+      "occurrences": 5
+    },
+    {
+      "principle": "Metaphorische Verankerung",
+      "why_works": "Metaphern ermöglichen dem Gehirn, komplexe Konzepte durch bekannte Muster zu verstehen - reduziert kognitive Belastung",
+      "when_to_apply": "Wenn abstrakte Ideen greifbar gemacht werden müssen",
+      "how_to_recognize": "Bildhafte Sprache oder Analogien dominieren die Erklärung",
+      "frequency": "3%",
+      "occurrences": 4
+    },
+    {
+      "principle": "Pattern Interrupt",
+      "why_works": "Unerwartete Wendungen durchbrechen die Vorhersage-Engine des Gehirns und erzwingen Aufmerksamkeit",
+      "when_to_apply": "Wenn das Publikum glaubt, den Verlauf vorhersehen zu können",
+      "how_to_recognize": "Der Content nimmt eine überraschende Richtung oder enthüllt unerwartete Zusammenhänge",
+      "frequency": "3%",
+      "occurrences": 4
+    },
+    {
+      "principle": "Informationsdichte-Optimierung",
+      "why_works": "Mittlere Wortanzahl hält Balance zwischen Substanz und Aufmerksamkeitsspanne - zu wenig langweilt, zu viel überfordert",
+      "when_to_apply": "Bei erklärungsbedürftigen Themen mit breiter Zielgruppe",
+      "how_to_recognize": "Content hat mehrere Ebenen oder Aspekte zu vermitteln",
+      "frequency": "2%",
+      "occurrences": 3
+    },
+    {
+      "principle": "Universelle Relevanz",
+      "why_works": "Themen die jeden betreffen könnten, aktivieren das Selbsterhaltungssystem - persönliche Betroffenheit maximiert Engagement",
+      "when_to_apply": "Wenn breite Viralität angestrebt wird",
+      "how_to_recognize": "Content berührt grundlegende menschliche Bedürfnisse oder Ängste",
+      "frequency": "2%",
+      "occurrences": 3
+    },
+    {
+      "principle": "Optimale Informationsdichte",
+      "why_works": "Zu wenig Information langweilt, zu viel überfordert - die richtige Balance hält die kognitive Belastung im Flow-Bereich",
+      "when_to_apply": "Bei komplexen Themen, die vereinfacht werden müssen",
+      "how_to_recognize": "Mehrschichtige Konzepte können in verdauliche Häppchen zerlegt werden",
+      "frequency": "2%",
+      "occurrences": 3
+    },
+    {
+      "principle": "Konkretisierung des Abstrakten",
+      "why_works": "Das Gehirn verarbeitet konkrete Beispiele 6x schneller als abstrakte Konzepte",
+      "when_to_apply": "Bei komplexen oder philosophischen Themen",
+      "how_to_recognize": "Abstrakte Ideen werden durch greifbare Szenarien illustriert",
+      "frequency": "2%",
+      "occurrences": 2
+    },
+    {
+      "principle": "Kognitive Ökonomie",
+      "why_works": "Das Gehirn bevorzugt kompakte, verdauliche Informationseinheiten - zu viel Information führt zu kognitiver Überlastung und Abbruch",
+      "when_to_apply": "Bei komplexen Themen, die vereinfacht werden müssen",
+      "how_to_recognize": "Die Kernbotschaft lässt sich in wenigen Sätzen zusammenfassen",
+      "frequency": "2%",
+      "occurrences": 2
+    },
+    {
+      "principle": "Autorität durch Spezifität",
+      "why_works": "Konkrete Details und Zahlen signalisieren Expertise - das Gehirn interpretiert Präzision als Kompetenz",
+      "when_to_apply": "Wenn glaubwürdige Expertise etabliert werden muss",
+      "how_to_recognize": "Spezifische Daten oder unerwartete Details sind verfügbar",
+      "frequency": "2%",
+      "occurrences": 2
+    }
+  ],
+  "structure_principles": [
+    {
+      "principle": "Progressive Enthüllung",
+      "why_works": "Schrittweise Informationsgabe hält den Zeigarnik-Effekt aktiv - unvollständige Aufgaben bleiben im Gedächtnis",
+      "when_to_apply": "Wenn eine Kernaussage mehrere Ebenen hat",
+      "how_to_recognize": "Die Information lässt sich in logische Stufen unterteilen",
+      "frequency": "7%",
+      "occurrences": 10
+    },
+    {
+      "principle": "Rhythmische Variation",
+      "why_works": "Wechselnde Satzlängen und Tempi verhindern monotone Trance und halten wach",
+      "when_to_apply": "Bei allen Clips über 30 Sekunden",
+      "how_to_recognize": "Kurze, punchy Aussagen wechseln mit längeren Erklärungen",
+      "frequency": "6%",
+      "occurrences": 8
+    },
+    {
+      "principle": "Emotionale Eskalation",
+      "why_works": "Steigende emotionale Intensität hält die Dopamin-Ausschüttung aufrecht - das Gehirn bleibt engagiert",
+      "when_to_apply": "Wenn der Content emotionale Reaktionen hervorrufen kann",
+      "how_to_recognize": "Die Information hat persönliche oder gesellschaftliche Relevanz",
+      "frequency": "5%",
+      "occurrences": 7
+    },
+    {
+      "principle": "Kompression ohne Verlust",
+      "why_works": "Hohe Informationsdichte respektiert die knappe Aufmerksamkeit und signalisiert Wert",
+      "when_to_apply": "Immer - besonders bei edukativen Inhalten",
+      "how_to_recognize": "Jeder Satz trägt neue Information, keine Füllwörter",
+      "frequency": "4%",
+      "occurrences": 6
+    },
+    {
+      "principle": "Completion-Rate-Optimierung",
+      "why_works": "Höhere Completion bei kürzerem Content zeigt perfekte Informationsdichte",
+      "when_to_apply": "Wenn eine einzelne kraftvolle Idee vermittelt wird",
+      "how_to_recognize": "Message ist in sich abgeschlossen und braucht keine Elaboration",
+      "frequency": "4%",
+      "occurrences": 5
+    },
+    {
+      "principle": "Spiralförmige Vertiefung",
+      "why_works": "Wiederholung mit progressiver Komplexität nutzt das Spacing-Prinzip für bessere Retention",
+      "when_to_apply": "Wenn du ein zentrales Konzept aus verschiedenen Blickwinkeln beleuchten willst",
+      "how_to_recognize": "Du kommst zum Kernthema zurück, aber mit neuen Layern",
+      "frequency": "2%",
+      "occurrences": 3
+    },
+    {
+      "principle": "Zyklische Verstärkung",
+      "why_works": "Wiederholung des Kernkonzepts in verschiedenen Formen verstärkt die neuronale Verankerung",
+      "when_to_apply": "Bei abstrakten oder kontraintuitiven Ideen",
+      "how_to_recognize": "Das Konzept braucht mehrere Anläufe zum Verständnis",
+      "frequency": "2%",
+      "occurrences": 3
+    },
+    {
+      "principle": "Multi-Element-Synergie",
+      "why_works": "Kombinationen verschiedener Elemente (Fragen + Zahlen + Kontraste) aktivieren multiple Gehirnregionen gleichzeitig",
+      "when_to_apply": "Wenn das Thema verschiedene Aspekte oder Perspektiven erlaubt",
+      "how_to_recognize": "Mehrere Hook-Elemente verstärken sich gegenseitig",
+      "frequency": "2%",
+      "occurrences": 3
+    },
+    {
+      "principle": "Erwartungs-Management",
+      "why_works": "Klare Signale am Anfang programmieren Gehirn auf bestimmte Verarbeitungsweise",
+      "when_to_apply": "Immer - jeder Content braucht klare Richtung",
+      "how_to_recognize": "Erste Sekunden etablieren Ton und Erwartung",
+      "frequency": "2%",
+      "occurrences": 3
+    },
+    {
+      "principle": "Optimale Informationsdichte",
+      "why_works": "Balance zwischen Unter- und Überforderung hält das Gehirn im Flow-Zustand",
+      "when_to_apply": "Bei der Strukturierung von Informationsfluss",
+      "how_to_recognize": "Weder zu viel noch zu wenig Information pro Zeiteinheit",
+      "frequency": "2%",
+      "occurrences": 3
+    },
+    {
+      "principle": "Informationsdichte-Gradient",
+      "why_works": "Hohe Anfangsdichte hält Aufmerksamkeit, während das Gehirn noch frisch ist",
+      "when_to_apply": "Bei jedem Content, der schnell überzeugen muss",
+      "how_to_recognize": "Du hast mehrere wichtige Punkte zu vermitteln",
+      "frequency": "2%",
+      "occurrences": 3
+    },
+    {
+      "principle": "Informationsdichte-Optimierung",
+      "why_works": "Das Verhältnis von Wert zu Zeit bestimmt die Retention - zu wenig Information langweilt, zu viel überfordert",
+      "when_to_apply": "Bei allen Inhalten, die um Aufmerksamkeit konkurrieren",
+      "how_to_recognize": "Jeder Satz trägt zur Kernbotschaft bei, nichts ist redundant",
+      "frequency": "1%",
+      "occurrences": 2
+    },
+    {
+      "principle": "Zeigarnik-Effekt durch offene Loops",
+      "why_works": "Unvollständige Aufgaben bleiben im Gedächtnis aktiv - das Gehirn kann nicht aufhören, bis die Geschichte abgeschlossen ist",
+      "when_to_apply": "Wenn mehrere zusammenhängende Punkte vermittelt werden",
+      "how_to_recognize": "Fragen werden aufgeworfen bevor sie beantwortet werden",
+      "frequency": "1%",
+      "occurrences": 2
+    },
+    {
+      "principle": "Completion-Rate-Paradox",
+      "why_works": "Moderate Completion-Rates signalisieren optimale Spannung - zu hoch bedeutet zu einfach, zu niedrig bedeutet zu komplex",
+      "when_to_apply": "Bei der Strukturierung des Spannungsbogens",
+      "how_to_recognize": "Content hat natürliche Höhe- und Wendepunkte",
+      "frequency": "1%",
+      "occurrences": 2
+    },
+    {
+      "principle": "Kognitive Lastverteilung",
+      "why_works": "Wechsel zwischen einfachen und komplexen Elementen verhindert mentale Ermüdung - hält Aufmerksamkeit konstant",
+      "when_to_apply": "Bei informationsdichten Themen",
+      "how_to_recognize": "Mehrere wichtige Punkte müssen vermittelt werden",
+      "frequency": "1%",
+      "occurrences": 2
+    }
+  ]
+}

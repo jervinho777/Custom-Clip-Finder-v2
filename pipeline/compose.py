@@ -9,7 +9,7 @@ from typing import List, Dict, Optional
 from dataclasses import dataclass, field
 
 from models.base import ClaudeModel
-from brain import load_principles
+from brain.learn import load_principles, get_principle_context_for_prompt
 from prompts.compose import build_compose_prompt, build_debate_synthesis_prompt
 
 
@@ -47,9 +47,12 @@ async def compose_clip(
     """
     print(f"Composing clip for moment {moment.get('start', 0):.1f}s - {moment.get('end', 0):.1f}s")
     
-    # Load composition patterns
+    # Load composition patterns from BRAIN
     principles = load_principles()
-    composition_patterns = principles.get("transformation_patterns", {})
+    composition_patterns = principles.get("transformation_principles", [])
+    
+    # Get principle context for prompts (if available)
+    principle_context = get_principle_context_for_prompt()
     
     # Use Claude Sonnet for debate (dynamic detection)
     from models.base import get_model

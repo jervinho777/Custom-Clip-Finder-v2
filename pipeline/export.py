@@ -33,19 +33,39 @@ def _concat_clips(clip_paths: List[Path], output_path: Path) -> bool:
         return False
         
     # Create concat list file
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.txt', delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False) as f:
         for clip in clip_paths:
-            f.write(f"file '{clip}'\n")
+            # Use absolute paths because the concat list file lives in a temp directory.
+            # Relative paths would be resolved relative to that temp dir and break.
+            f.write(f"file '{clip.resolve()}'\n")
         concat_list = f.name
     
     try:
+        # Re-encode during concat for robustness:
+        # - avoids stream-copy concat pitfalls (timestamp drift, differing stream params)
+        # - ensures output duration matches sum of segments
         cmd = [
-            'ffmpeg', '-y',
-            '-f', 'concat',
-            '-safe', '0',
-            '-i', concat_list,
-            '-c', 'copy',
-            str(output_path)
+            "ffmpeg",
+            "-y",
+            "-f",
+            "concat",
+            "-safe",
+            "0",
+            "-i",
+            concat_list,
+            "-c:v",
+            "libx264",
+            "-preset",
+            "veryfast",
+            "-crf",
+            "18",
+            "-c:a",
+            "aac",
+            "-b:a",
+            "192k",
+            "-movflags",
+            "+faststart",
+            str(output_path),
         ]
         
         result = subprocess.run(
@@ -127,13 +147,7 @@ async def export_clip(
         # Export MP4
         if "mp4" in formats:
             mp4_path = output_path / f"{clip_id}.mp4"
-            
-            # Check if segments are chronological (simple case)
-            is_chronological = all(
-                segments[i].get("end", 0) <= segments[i+1].get("start", 0)
-                for i in range(len(segments) - 1)
-            ) if len(segments) > 1 else True
-            
+
             if len(segments) == 1:
                 # Single segment - direct extraction
                 seg = segments[0]
@@ -141,49 +155,45 @@ async def export_clip(
                     source_video_path,
                     mp4_path,
                     seg.get("start", 0),
-                    seg.get("end", 0)
+                    seg.get("end", 0),
+                    codec="libx264",
+                    audio_codec="aac",
                 )
                 if extracted:
                     result.mp4_path = mp4_path
-                    
-            elif is_chronological:
-                # Chronological segments - extract from first start to last end
-                extracted = extract_clip(
-                    source_video_path,
-                    mp4_path,
-                    segments[0].get("start", 0),
-                    segments[-1].get("end", 0)
-                )
-                if extracted:
-                    result.mp4_path = mp4_path
-                    
             else:
-                # Non-chronological/reordered segments - extract each and concat
-                temp_clips = []
+                # Multi-segment clip (chronological OR reordered):
+                # Always extract each segment individually and concatenate.
+                # This is REQUIRED to actually perform cuts.
+                temp_clips: List[Path] = []
                 temp_path = output_path / f"_temp_{clip_id}"
                 temp_path.mkdir(parents=True, exist_ok=True)
-                
-                # Sort segments by their position in final clip (original order)
+
                 for idx, seg in enumerate(segments):
                     temp_clip = temp_path / f"seg_{idx:03d}.mp4"
                     extracted = extract_clip(
                         source_video_path,
                         temp_clip,
                         seg.get("start", 0),
-                        seg.get("end", 0)
+                        seg.get("end", 0),
+                        codec="libx264",
+                        audio_codec="aac",
                     )
                     if extracted:
                         temp_clips.append(temp_clip)
-                
-                if temp_clips:
-                    # Concat temp clips
-                    concat_success = _concat_clips(temp_clips, mp4_path)
-                    if concat_success:
-                        result.mp4_path = mp4_path
-                    
-                    # Cleanup temp files
-                    import shutil
-                    shutil.rmtree(temp_path, ignore_errors=True)
+                    else:
+                        raise Exception(f"Failed to extract segment {idx} for {clip_id}")
+
+                concat_success = _concat_clips(temp_clips, mp4_path)
+                if concat_success:
+                    result.mp4_path = mp4_path
+                else:
+                    raise Exception(f"Failed to concatenate segments for {clip_id}")
+
+                # Cleanup temp files
+                import shutil
+
+                shutil.rmtree(temp_path, ignore_errors=True)
         
         # Export XML
         if "xml" in formats:
@@ -199,6 +209,16 @@ async def export_clip(
         # Export JSON metadata
         if "json" in formats:
             json_path = output_path / f"{clip_id}.json"
+
+            # Compute accurate duration from segments (do not trust model output)
+            computed_total_duration = 0.0
+            for seg in segments:
+                try:
+                    computed_total_duration += float(seg.get("end", 0)) - float(
+                        seg.get("start", 0)
+                    )
+                except Exception:
+                    continue
             
             metadata = {
                 "clip_id": clip_id,
@@ -206,7 +226,7 @@ async def export_clip(
                 "source_video": str(source_video_path),
                 "structure_type": clip_data.get("structure_type", "unknown"),
                 "segments": segments,
-                "total_duration": clip_data.get("total_duration", 0),
+                "total_duration": round(computed_total_duration, 2),
                 "hook_text": clip_data.get("hook_text", ""),
                 "reasoning": clip_data.get("reasoning", ""),
                 "validation": validated_clip.get("validation", {}),

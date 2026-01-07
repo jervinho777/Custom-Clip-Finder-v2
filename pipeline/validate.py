@@ -155,7 +155,118 @@ async def rank_clips(
     if not approved:
         return []
     
-    # Build ranking prompt
+    # ---------------------------------------------------------------------
+    # Deduplicate / enforce diversity BEFORE LLM ranking
+    #
+    # Problem we observed:
+    # - Multiple clips can be near-identical (same story, same hook) and all get approved.
+    # - Ranking prompt doesn't see segments, so it can select duplicates.
+    #
+    # Solution:
+    # - Greedy dedupe by source-time overlap of segments.
+    # - Keep the strongest candidate among near-duplicates.
+    # ---------------------------------------------------------------------
+
+    def _parse_completion_range(value: object) -> float:
+        """
+        Parse predicted completion rate strings like '32-38%' or '25-30%'.
+        Returns midpoint as 0..1 float, or 0.0 if unknown.
+        """
+        import re
+        if not isinstance(value, str):
+            return 0.0
+        nums = re.findall(r"(\d+(?:\.\d+)?)", value)
+        if not nums:
+            return 0.0
+        floats = [float(n) for n in nums[:2]]
+        if len(floats) == 1:
+            return floats[0] / 100.0
+        return ((floats[0] + floats[1]) / 2.0) / 100.0
+
+    def _merged_intervals(segments: List[Dict]) -> List[tuple[float, float]]:
+        """Merge overlapping intervals from segment start/end times (source timeline)."""
+        intervals = []
+        for s in segments:
+            try:
+                a = float(s.get("start", 0))
+                b = float(s.get("end", 0))
+                if b > a:
+                    intervals.append((a, b))
+            except Exception:
+                continue
+        if not intervals:
+            return []
+        intervals.sort(key=lambda x: x[0])
+        merged = [intervals[0]]
+        for a, b in intervals[1:]:
+            la, lb = merged[-1]
+            if a <= lb:
+                merged[-1] = (la, max(lb, b))
+            else:
+                merged.append((a, b))
+        return merged
+
+    def _overlap_duration(a: List[tuple[float, float]], b: List[tuple[float, float]]) -> float:
+        """Compute overlap duration between two merged interval lists."""
+        i = j = 0
+        total = 0.0
+        while i < len(a) and j < len(b):
+            a0, a1 = a[i]
+            b0, b1 = b[j]
+            start = max(a0, b0)
+            end = min(a1, b1)
+            if end > start:
+                total += end - start
+            if a1 <= b1:
+                i += 1
+            else:
+                j += 1
+        return total
+
+    def _interval_total(intervals: List[tuple[float, float]]) -> float:
+        return sum((b - a) for a, b in intervals)
+
+    def _clip_score(vc: ValidatedClip) -> float:
+        """Heuristic score for selecting among duplicates."""
+        pred = vc.validation.predicted_performance or {}
+        completion = _parse_completion_range(pred.get("completion_rate", ""))
+        conf = float(vc.validation.confidence or 0.0)
+        return completion * 0.7 + conf * 0.3
+
+    # Sort by best-first and keep diverse set
+    candidates = sorted(approved, key=_clip_score, reverse=True)
+    diverse: List[ValidatedClip] = []
+    diverse_intervals: List[List[tuple[float, float]]] = []
+
+    OVERLAP_THRESHOLD = 0.65  # if two clips overlap >65% on source timeline, treat as duplicates
+
+    for vc in candidates:
+        segs = vc.clip.get("segments", [])
+        intervals = _merged_intervals(segs)
+        if not intervals:
+            diverse.append(vc)
+            diverse_intervals.append([])
+            continue
+
+        is_dup = False
+        vc_total = _interval_total(intervals) or 1e-9
+        for existing_intervals in diverse_intervals:
+            if not existing_intervals:
+                continue
+            ov = _overlap_duration(intervals, existing_intervals)
+            ex_total = _interval_total(existing_intervals) or 1e-9
+            ratio = ov / min(vc_total, ex_total)
+            if ratio >= OVERLAP_THRESHOLD:
+                is_dup = True
+                break
+
+        if not is_dup:
+            diverse.append(vc)
+            diverse_intervals.append(intervals)
+
+    approved = diverse
+
+    # Build ranking prompt (metadata-only; segments handled by dedupe above)
     clips_data = [
         {
             "hook_text": vc.clip.get("hook_text", ""),

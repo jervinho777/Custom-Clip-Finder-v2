@@ -80,13 +80,14 @@ def build_compose_prompt(
    ⚠️ KRITISCH: Der Hook MUSS thematisch zum Content-Kern passen!
    
    FALSCH: Einen starken Hook von einem ANDEREN Thema nehmen
-   - Beispiel: "Arbeite niemals für Geld" als Hook für eine Tee-Zeremonie Story
+   - Beispiel: Ein kontraintuitiver Hook über Thema A als Einstieg für eine Story über Thema B
    - Das macht KEINEN Sinn, auch wenn der Hook stark ist
+   - Der Zuschauer wird verwirrt und springt ab
    
    RICHTIG: Einen Hook finden der ZUM THEMA des Moments passt
-   - Geld-Story → Geld-Hook
-   - Tee-Zeremonie Story → Lernen/Offenheit-Hook  
-   - Talent-Story → Selbstakzeptanz-Hook
+   - Das Thema des Moments bestimmt das Thema des Hooks
+   - Hook und Content müssen eine logische Verbindung haben
+   - Der Zuschauer muss verstehen WARUM der Hook zum Content führt
    
    Frage: Was ist das THEMA dieses spezifischen Moments?
    → Der Hook muss aus demselben thematischen Cluster kommen!

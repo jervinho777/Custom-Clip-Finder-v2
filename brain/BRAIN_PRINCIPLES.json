@@ -1,0 +1,110 @@
+{
+  "version": "3.0",
+  "master_principle": "Make a video so good that people cannot physically scroll past",
+  "core_principles": [
+    {
+      "principle": "Neurochemische Zwangsaktivierung",
+      "why_works": "Das Gehirn ist evolutionär darauf programmiert, auf Überlebenssignale zu reagieren - Widersprüche, offene Fragen und emotionale Intensität simulieren diese Signale und erzwingen unwillkürliche Aufmerksamkeit",
+      "application": "Jeder Moment muss das Belohnungssystem aktivieren - durch Dissonanz, Emotion oder Relevanz"
+    },
+    {
+      "principle": "Kognitive Effizienz-Maximierung",
+      "why_works": "Das Gehirn bevorzugt energieeffiziente Informationsverarbeitung - hochverdichtete, relevante Information wird priorisiert verarbeitet und erinnert",
+      "application": "Maximale Bedeutungsdichte bei minimaler kognitiver Belastung schaffen"
+    },
+    {
+      "principle": "Zeigarnik-Dominanz",
+      "why_works": "Unvollständige Aufgaben bleiben im Arbeitsgedächtnis aktiv - offene Loops erzeugen mentales Unbehagen, das nur durch Vervollständigung gelöst werden kann",
+      "application": "Multiple offene Fragen oder Spannungsbögen erzeugen, die sequenziell aufgelöst werden"
+    }
+  ],
+  "hook_principles": [
+    {
+      "principle": "Kognitive Dissonanz als Aufmerksamkeitsmagnet",
+      "why_works": "Widersprüche aktivieren sofort das Default Mode Network - das Gehirn kann nicht anders als zu versuchen, die Inkonsistenz aufzulösen",
+      "when_to_apply": "Wenn etablierte Überzeugungen herausgefordert oder paradoxe Wahrheiten präsentiert werden können",
+      "how_to_recognize": "Die Aussage löst sofortiges mentales 'Das kann nicht stimmen' aus"
+    },
+    {
+      "principle": "Curiosity Gap Aktivierung",
+      "why_works": "Offene Fragen erzeugen neurologisches Unbehagen - das Gehirn sucht zwanghaft nach Mustern und Antworten",
+      "when_to_apply": "Wenn komplexe Phänomene eine nicht-offensichtliche Erklärung haben",
+      "how_to_recognize": "Eine Frage wird gestellt, deren Antwort Mehrwert verspricht"
+    },
+    {
+      "principle": "Pattern Interrupt durch Unerwartetes",
+      "why_works": "Durchbrechung der Habituation zwingt zur bewussten Verarbeitung - das Gehirn muss aus dem Autopilot-Modus wechseln",
+      "when_to_apply": "In übersättigten Aufmerksamkeitsumgebungen",
+      "how_to_recognize": "Ungewöhnliche Metaphern oder Vergleiche brechen Erwartungsmuster"
+    },
+    {
+      "principle": "Authentizitäts-Resonanz",
+      "why_works": "Das Gehirn erkennt echte emotionale Signale sofort - Authentizität aktiviert Spiegelneuronen und schafft Vertrauen",
+      "when_to_apply": "Wenn natürliche emotionale Intensität bereits vorhanden ist",
+      "how_to_recognize": "Der Moment wirkt ohne Kontext oder Verstärkung"
+    },
+    {
+      "principle": "Alltags-Mysterium als Relevanz-Anker",
+      "why_works": "Persönliche Erfahrungen aktivieren episodisches Gedächtnis - das Gehirn priorisiert Information mit Selbstbezug",
+      "when_to_apply": "Bei universellen Phänomenen, die jeder kennt aber nicht versteht",
+      "how_to_recognize": "Sofortiges 'Das kenne ich auch'-Gefühl entsteht"
+    }
+  ],
+  "transformation_principles": [
+    {
+      "principle": "Essenz-Extraktion durch Hyper-Kompression",
+      "why_works": "Extreme Verdichtung filtert nur die stärksten kognitiven und emotionalen Trigger - das Gehirn verarbeitet konzentrierte Stimuli intensiver",
+      "when_to_apply": "Bei der Transformation von Langform zu Kurzform",
+      "how_to_recognize": "Nur Momente mit außergewöhnlicher Intensität überleben die Kompression"
+    },
+    {
+      "principle": "Kontext-Elimination zur Intensivierung",
+      "why_works": "Weniger Kontext bedeutet mehr Fokus auf emotionale Kernmomente - das Gehirn füllt Lücken mit eigenen, oft intensiveren Interpretationen",
+      "when_to_apply": "Wenn emotionale Höhepunkte durch Erklärungen verdünnt werden",
+      "how_to_recognize": "Starke Momente sind von weniger intensiven Passagen umgeben"
+    },
+    {
+      "principle": "Stimulationsdichte ohne Atempausen",
+      "why_works": "Konstante Aktivierung macht Abschalten psychologisch 'teurer' als Weiterschauen - jede Sekunde muss neuen Wert liefern",
+      "when_to_apply": "Bei der Strukturierung kurzer Clips",
+      "how_to_recognize": "Jeder Moment eliminiert potenzielle Ausstiegspunkte"
+    },
+    {
+      "principle": "Original-Dramaturgie als Kompressionsfilter",
+      "why_works": "Bestehende Narrative fungieren als bewährte emotionale Blaupausen - das Gehirn erkennt Muster und ergänzt fehlende Teile",
+      "when_to_apply": "Wenn das Original klare Spannungsbögen aufweist",
+      "how_to_recognize": "Natürliche dramaturgische Höhepunkte sind erkennbar"
+    }
+  ],
+  "quality_principles": [
+    {
+      "principle": "Emotionale Eskalations-Kurve",
+      "why_works": "Steigende Intensität hält Dopamin-Ausschüttung aufrecht - das Gehirn bleibt in Erwartung des nächsten Peaks engagiert",
+      "when_to_apply": "Als Qualitätsindikator für Watchtime",
+      "how_to_recognize": "Emotionale Ladung nimmt zu, nicht ab"
+    },
+    {
+      "principle": "Kognitive Auflösungsdringlichkeit",
+      "why_works": "Unaufgelöste Spannung erzeugt fast physisches Unbehagen - das Gehirn kann nicht wegschalten bis zur Auflösung",
+      "when_to_apply": "Als Indikator für Hook-Stärke",
+      "how_to_recognize": "Multiple offene Loops erzeugen zwanghaften Schließungsdrang"
+    },
+    {
+      "principle": "Optimale Investitions-Ertrags-Balance",
+      "why_works": "Menschen bewerten Content nach erwartetem ROI ihrer Zeit - kurze Clips mit hohem Mehrwert maximieren dieses Verhältnis",
+      "when_to_apply": "Als Qualitätsmetrik für Clip-Länge",
+      "how_to_recognize": "Kernbotschaft rechtfertigt die investierte Zeit"
+    },
+    {
+      "principle": "Relevanz-Resonanz-Faktor",
+      "why_works": "Das Gehirn priorisiert Information mit Überlebens- oder Erfolgsrelevanz - fundamentale Bedürfnisse aktivieren tiefere Verarbeitung",
+      "when_to_apply": "Als Indikator für virales Potenzial",
+      "how_to_recognize": "Content adressiert universelle menschliche Themen"
+    }
+  ],
+  "last_updated": "2026-01-03T20:12:54.090259",
+  "data_sources": {
+    "isolated_clips": 972,
+    "transformation_pairs": 9
+  }
+}
