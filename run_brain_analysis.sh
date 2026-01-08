@@ -57,3 +57,4 @@ echo "Nächster Schritt: Teste mit einem Video:"
 echo "   python main.py process path/to/video.mp4"
 
 
+

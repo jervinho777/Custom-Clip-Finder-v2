@@ -1,0 +1,122 @@
+{
+  "Greator": {
+    "username": "Greator",
+    "followers": 340000,
+    "avg_views": 365483,
+    "baseline": 9219.96,
+    "clip_count": 395,
+    "total_views": 144366081
+  },
+  "Chris Surel": {
+    "username": "Chris Surel",
+    "followers": 8000,
+    "avg_views": 1075590,
+    "baseline": 307.45,
+    "clip_count": 10,
+    "total_views": 10755900
+  },
+  "Robert Marc Lehmann": {
+    "username": "Robert Marc Lehmann",
+    "followers": 700000,
+    "avg_views": 751212,
+    "baseline": 17963.77,
+    "clip_count": 14,
+    "total_views": 10516975
+  },
+  "Meet Your Master": {
+    "username": "Meet Your Master",
+    "followers": 30000,
+    "avg_views": 251784,
+    "baseline": 1005.11,
+    "clip_count": 119,
+    "total_views": 29962298
+  },
+  "Fuat & Marta": {
+    "username": "Fuat & Marta",
+    "followers": 20000,
+    "avg_views": 318522,
+    "baseline": 697.51,
+    "clip_count": 163,
+    "total_views": 51919100
+  },
+  "Felix Thönnessen": {
+    "username": "Felix Thönnessen",
+    "followers": 30000,
+    "avg_views": 1400000,
+    "baseline": 1005.11,
+    "clip_count": 1,
+    "total_views": 1400000
+  },
+  "Johannes Hartl": {
+    "username": "Johannes Hartl",
+    "followers": 110000,
+    "avg_views": 1200000,
+    "baseline": 3272.91,
+    "clip_count": 1,
+    "total_views": 1200000
+  },
+  "Gereon Jörn": {
+    "username": "Gereon Jörn",
+    "followers": 13000,
+    "avg_views": 198704,
+    "baseline": 474.0,
+    "clip_count": 22,
+    "total_views": 4371500
+  },
+  "Rafael Bettencourt": {
+    "username": "Rafael Bettencourt",
+    "followers": 25000,
+    "avg_views": 204282,
+    "baseline": 852.67,
+    "clip_count": 36,
+    "total_views": 7354153
+  },
+  "Leander Greitemann": {
+    "username": "Leander Greitemann",
+    "followers": 10000,
+    "avg_views": 466500,
+    "baseline": 375.0,
+    "clip_count": 2,
+    "total_views": 933000
+  },
+  "Finanzfluss": {
+    "username": "Finanzfluss",
+    "followers": 600000,
+    "avg_views": 157934,
+    "baseline": 15575.92,
+    "clip_count": 173,
+    "total_views": 27322738
+  },
+  "Matthias Langwasser": {
+    "username": "Matthias Langwasser",
+    "followers": 2000,
+    "avg_views": 698677,
+    "baseline": 90.88,
+    "clip_count": 3,
+    "total_views": 2096031
+  },
+  "Lea Ernst": {
+    "username": "Lea Ernst",
+    "followers": 30000,
+    "avg_views": 213375,
+    "baseline": 1005.11,
+    "clip_count": 4,
+    "total_views": 853500
+  },
+  "Silke Schäfer": {
+    "username": "Silke Schäfer",
+    "followers": 80000,
+    "avg_views": 107432,
+    "baseline": 2447.44,
+    "clip_count": 28,
+    "total_views": 3008100
+  },
+  "Ten More In": {
+    "username": "Ten More In",
+    "followers": 25000,
+    "avg_views": 52200,
+    "baseline": 852.67,
+    "clip_count": 1,
+    "total_views": 52200
+  }
+}

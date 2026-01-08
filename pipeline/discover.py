@@ -1,162 +1,682 @@
 """
-STAGE 1: DISCOVER
+STAGE 1: DISCOVER (V5 - Global Hook Hunting Edition)
 
-Find viral moments in video transcripts.
-Uses 5-AI ensemble with Algorithm Whisperer identity.
+"Content First, Hook Second" - Aber OHNE Zeitgrenzen!
+
+Der Hook kann 30 Minuten nach dem Body kommen.
+Wie Dieter Lange: Story bei 09:00, Fazit bei 12:00.
+
+═══════════════════════════════════════════════════════════════
+3-PHASEN-PROZESS:
+═══════════════════════════════════════════════════════════════
+
+PHASE 1: CONTENT SCOUTING ("Das Sichten")
+- Scanne nach zusammenhängenden Inhalts-Blöcken
+- Finde nur den "Body" (Rohdiamant)
+- Ignoriere erstmal ob der Anfang gut ist
+
+PHASE 2: GLOBAL HOOK HUNTING ("Die Suche")
+- Für jeden Body: Suche im GESAMTEN Transkript
+- KEINE Zeitgrenzen! Der Hook kann überall sein
+- Nutze Vector Store für semantische Ähnlichkeit
+- Nutze LLM für finale Auswahl
+
+PHASE 3: BLUEPRINT ASSEMBLY ("Der Schnitt")
+- Wende das passende Pattern an
+- Erstelle die Segment-Liste
+- Generiere Editing-Anweisungen
+
+═══════════════════════════════════════════════════════════════
 """
 
-from typing import List, Dict, Optional
-from dataclasses import dataclass
+from typing import List, Dict, Optional, Tuple
+from dataclasses import dataclass, field
+import asyncio
+import time
 
-from models import AIEnsemble
-from brain import load_principles, get_similar_clips
-from prompts.discover import build_discover_prompt, parse_discover_response
+from models.base import get_model
+from models.schemas import (
+    Segment, SegmentRole, ContentBody, FoundHook, 
+    Moment, Archetype, DiscoveryResult
+)
+from brain.analyze import (
+    load_learned_patterns, 
+    get_hook_hunting_rule,
+    ARCHETYPE_DEFINITIONS
+)
+from brain.vector_store import (
+    VectorStore,
+    GlobalHookCandidate,
+    find_global_hooks
+)
+from prompts.discover import (
+    build_content_scouting_prompt,
+    build_global_hook_hunting_prompt,
+    build_assembly_prompt,
+    parse_content_scouting_response,
+    parse_global_hook_response,
+    parse_assembly_response,
+    DEFAULT_FEW_SHOT_EXAMPLES
+)
 from utils import Cache
 
 
-@dataclass
-class Moment:
-    """A potential viral moment."""
-    start: float
-    end: float
-    content_type: str
-    hook_strength: int
-    viral_potential: int
-    reasoning: str
-    similar_pattern: str
-    votes: int = 0
-    confidence: float = 0.0
+# =============================================================================
+# Configuration - KEINE ZEITGRENZEN MEHR!
+# =============================================================================
 
+# Alte Konstante entfernt:
+# HOOK_SEARCH_RADIUS = 180  # ❌ GELÖSCHT - Keine Zeitgrenzen!
+
+# Mindest-/Maximaldauer für Content Bodies
+MIN_BODY_DURATION = 20
+MAX_BODY_DURATION = 180
+
+# Mindestdauer für finalen Clip
+MIN_CLIP_DURATION = 15
+MAX_CLIP_DURATION = 120
+
+# Wie viele Hook-Kandidaten pro Body prüfen wir?
+MAX_HOOK_CANDIDATES = 10
+
+
+# =============================================================================
+# Helper: Transcript Formatting
+# =============================================================================
+
+def format_transcript_with_timestamps(segments: List[Dict]) -> str:
+    """Formatiert Transkript-Segmente mit Zeitstempeln."""
+    lines = []
+    for seg in segments:
+        start = seg.get('start', 0)
+        text = seg.get('text', '')
+        speaker = seg.get('speaker', '')
+        
+        if speaker:
+            lines.append(f"[{start:.1f}s] [{speaker}] {text}")
+        else:
+            lines.append(f"[{start:.1f}s] {text}")
+    
+    return "\n".join(lines)
+
+
+def get_text_at_timerange(
+    segments: List[Dict], 
+    start: float, 
+    end: float
+) -> str:
+    """Extrahiert Text aus einem Zeitbereich."""
+    texts = []
+    for seg in segments:
+        seg_start = seg.get('start', 0)
+        seg_end = seg.get('end', seg_start + 1)
+        
+        if seg_start >= start and seg_end <= end:
+            texts.append(seg.get('text', ''))
+        elif seg_start < end and seg_end > start:
+            # Overlap
+            texts.append(seg.get('text', ''))
+    
+    return " ".join(texts)
+
+
+def get_video_duration(segments: List[Dict]) -> float:
+    """Berechnet die Gesamtlänge des Videos."""
+    if not segments:
+        return 0.0
+    return max(seg.get('end', seg.get('start', 0)) for seg in segments)
+
+
+# =============================================================================
+# PHASE 1: CONTENT SCOUTING (Find the Body)
+# =============================================================================
+
+async def phase1_content_scouting(
+    transcript_segments: List[Dict],
+    learned_patterns: Dict
+) -> List[ContentBody]:
+    """
+    Phase 1: Content Scouting - Finde die Rohdiamanten.
+    
+    Scannt das Transkript nach zusammenhängenden Inhaltsblöcken:
+    - Vollständige Geschichten
+    - Zusammenhängende Argumentationen
+    - Standalone Insights
+    
+    NOCH KEINE Hook-Bewertung! Nur Content finden.
+    
+    Args:
+        transcript_segments: Das vollständige Transkript
+        learned_patterns: Gelernte Muster aus dem Brain
+        
+    Returns:
+        Liste von ContentBody Objekten (Rohdiamanten)
+    """
+    print("\n" + "─"*50)
+    print("📍 PHASE 1: Content Scouting")
+    print("─"*50)
+    
+    # Formatiere Transkript
+    transcript_text = format_transcript_with_timestamps(transcript_segments)
+    video_duration = get_video_duration(transcript_segments)
+    
+    # Hole Archetypen für den Prompt
+    archetypes_info = []
+    for arch_id, arch_data in ARCHETYPE_DEFINITIONS.items():
+        archetypes_info.append({
+            "id": arch_id,
+            "name": arch_data["name"],
+            "markers": arch_data.get("markers", [])[:3]
+        })
+    
+    # Build Prompt
+    system_prompt, user_prompt = build_content_scouting_prompt(
+        transcript_text=transcript_text,
+        archetypes=archetypes_info,
+        min_duration=MIN_BODY_DURATION,
+        max_duration=MAX_BODY_DURATION,
+        video_duration_minutes=video_duration / 60 if video_duration else None
+    )
+    
+    # Schnelles Modell für Phase 1
+    try:
+        model = get_model("anthropic", tier="sonnet")
+    except ValueError:
+        try:
+            model = get_model("openai", tier="flagship")
+        except ValueError:
+            model = get_model("openai", tier="mini")
+    
+    print(f"   🔍 Scanning with {model.provider}...")
+    
+    response = await model.generate(
+        user_prompt,
+        system=system_prompt,
+        temperature=0.5,
+        max_tokens=4000
+    )
+    
+    # Parse Response
+    candidates = parse_content_scouting_response(response.content)
+    
+    # Konvertiere zu ContentBody Objekten
+    bodies = []
+    for c in candidates:
+        archetype_str = c.get('archetype', 'unknown')
+        
+        # Prüfe ob Hook native ist oder gesucht werden muss
+        has_native = c.get('has_native_hook', False)
+        
+        try:
+            archetype = Archetype(archetype_str)
+        except ValueError:
+            archetype = Archetype.UNKNOWN
+        
+        # Hole Text aus Transkript
+        body_text = get_text_at_timerange(
+            transcript_segments,
+            c.get('start', 0),
+            c.get('end', 0)
+        )
+        
+        bodies.append(ContentBody(
+            start=c.get('start', 0),
+            end=c.get('end', 0),
+            text=body_text[:500] if body_text else c.get('text', ''),
+            archetype=archetype,
+            topic_summary=c.get('summary', ''),
+            has_native_hook=has_native,
+            needs_hook_hunt=not has_native
+        ))
+    
+    print(f"   ✅ Found {len(bodies)} content bodies:")
+    for i, b in enumerate(bodies[:8]):
+        marker = "✓ native" if b.has_native_hook else "🔍 needs hunt"
+        print(f"      {i+1}. [{b.start:.0f}s-{b.end:.0f}s] {b.archetype.value} | {marker}")
+        print(f"         └─ {b.topic_summary[:50]}...")
+    
+    return bodies
+
+
+# =============================================================================
+# PHASE 2: GLOBAL HOOK HUNTING (NO TIME LIMITS!)
+# =============================================================================
+
+async def phase2_global_hook_hunting(
+    body: ContentBody,
+    transcript_segments: List[Dict],
+    learned_patterns: Dict
+) -> FoundHook:
+    """
+    Phase 2: Global Hook Hunting - KEINE ZEITGRENZEN!
+    
+    Sucht den besten Hook für einen Body im GESAMTEN Transkript.
+    Der Hook kann 30 Minuten nach dem Body kommen!
+    
+    Zwei-Stufen-Prozess:
+    1. Vector Store: Finde semantisch passende "punchy" Sätze
+    2. LLM: Wähle den besten Hook aus den Kandidaten
+    
+    Args:
+        body: Der Content Body für den wir einen Hook suchen
+        transcript_segments: Das KOMPLETTE Transkript (kein Truncation!)
+        learned_patterns: Gelernte Muster
+        
+    Returns:
+        FoundHook Objekt
+    """
+    # Wenn Native Hook, extrahiere vom Anfang
+    if body.has_native_hook:
+        native_text = get_text_at_timerange(
+            transcript_segments, 
+            body.start, 
+            min(body.start + 8, body.end)
+        )
+        return FoundHook(
+            start=body.start,
+            end=min(body.start + 8, body.end),
+            text=native_text[:200] if native_text else "Native hook",
+            source="native",
+            distance_from_body=0
+        )
+    
+    print(f"      🌍 Global Hook Hunt für: {body.topic_summary[:40]}...")
+    
+    # ===================
+    # Stufe 1: Vector Store Pre-Scan
+    # ===================
+    print(f"         Stage 1: Vector Store pre-scan...")
+    
+    # Hole Kandidaten aus dem gesamten Transkript
+    try:
+        hook_candidates = await find_global_hooks(
+            body_topic=body.topic_summary,
+            transcript_segments=transcript_segments,
+            top_k=MAX_HOOK_CANDIDATES
+        )
+    except Exception as e:
+        print(f"         ⚠️ Vector Store failed: {e}")
+        hook_candidates = []
+    
+    # Format Kandidaten für LLM
+    pre_scanned = []
+    if hook_candidates:
+        print(f"         Found {len(hook_candidates)} pre-scanned candidates")
+        for cand in hook_candidates[:5]:
+            pre_scanned.append({
+                "timestamp": cand.timestamp,
+                "text": cand.sentence,
+                "punch_score": cand.punch_score,
+                "semantic_score": cand.semantic_score,
+                "viral_match": cand.matched_viral_hook
+            })
+            print(f"            • [{cand.timestamp:.0f}s] {cand.sentence[:50]}... (punch: {cand.punch_score:.2f})")
+    
+    # ===================
+    # Stufe 2: LLM Final Selection
+    # ===================
+    print(f"         Stage 2: LLM final selection...")
+    
+    # Formatiere vollständiges Transkript
+    full_transcript_text = format_transcript_with_timestamps(transcript_segments)
+    
+    # Hole Named Patterns
+    named_patterns = learned_patterns.get('named_patterns', DEFAULT_FEW_SHOT_EXAMPLES)
+    
+    # Build Prompt
+    system_prompt, user_prompt = build_global_hook_hunting_prompt(
+        body_summary=body.topic_summary,
+        body_core_message=body.topic_summary,  # TODO: Könnte separates Feld sein
+        body_start=body.start,
+        body_end=body.end,
+        archetype=body.archetype.value,
+        full_transcript_text=full_transcript_text,
+        pre_scanned_candidates=pre_scanned,
+        named_patterns=named_patterns
+    )
+    
+    # Schnelles aber gutes Modell für Entscheidung
+    try:
+        model = get_model("anthropic", tier="sonnet")
+    except ValueError:
+        try:
+            model = get_model("openai", tier="flagship")
+        except ValueError:
+            model = get_model("openai", tier="mini")
+    
+    response = await model.generate(
+        user_prompt,
+        system=system_prompt,
+        temperature=0.3,
+        max_tokens=800
+    )
+    
+    # Parse Hook
+    hook_data = parse_global_hook_response(response.content)
+    
+    if hook_data and hook_data.get('hook_text'):
+        distance = hook_data.get('hook_timestamp', 0) - body.start
+        
+        # Bestimme Source basierend auf Distanz
+        if abs(distance) < 30:
+            source = "native"
+        elif distance > 0:
+            source = "from_later"  # Hook kommt nach dem Body
+        else:
+            source = "from_earlier"  # Hook kommt vor dem Body
+        
+        print(f"         ✅ Found hook: \"{hook_data['hook_text'][:50]}...\"")
+        print(f"            @ {hook_data['hook_timestamp']:.0f}s | Distance: {distance:.0f}s | Type: {hook_data.get('hook_type', 'unknown')}")
+        
+        return FoundHook(
+            start=hook_data.get('hook_timestamp', body.end),
+            end=hook_data.get('hook_end_timestamp', hook_data.get('hook_timestamp', body.end) + 5),
+            text=hook_data.get('hook_text', '')[:200],
+            source=source,
+            distance_from_body=distance
+        )
+    
+    # Fallback: Bester Vector Store Kandidat
+    if hook_candidates:
+        best = hook_candidates[0]
+        print(f"         ⚠️ LLM fallback to best vector match @ {best.timestamp:.0f}s")
+        return FoundHook(
+            start=best.timestamp,
+            end=best.end_timestamp,
+            text=best.sentence[:200],
+            source="from_vector_store",
+            distance_from_body=best.timestamp - body.start
+        )
+    
+    # Letzter Fallback: Native Hook
+    print(f"         ⚠️ Fallback to native hook")
+    native_text = get_text_at_timerange(
+        transcript_segments, 
+        body.start, 
+        min(body.start + 10, body.end)
+    )
+    return FoundHook(
+        start=body.start,
+        end=min(body.start + 10, body.end),
+        text=native_text[:200] if native_text else "Fallback hook",
+        source="native",
+        distance_from_body=0
+    )
+
+
+# =============================================================================
+# PHASE 3: BLUEPRINT ASSEMBLY (Der Schnitt)
+# =============================================================================
+
+def phase3_blueprint_assembly(
+    body: ContentBody,
+    hook: FoundHook,
+    transcript_segments: List[Dict],
+    learned_patterns: Dict
+) -> Moment:
+    """
+    Phase 3: Blueprint Assembly - Der finale Schnitt.
+    
+    Setzt Body + Hook zu einem fertigen Moment zusammen.
+    Wendet das passende Pattern an.
+    
+    Args:
+        body: Der Content Body
+        hook: Der gefundene Hook
+        transcript_segments: Für Text-Extraktion
+        learned_patterns: Gelernte Muster
+        
+    Returns:
+        Fertiges Moment Objekt
+    """
+    segments = []
+    requires_remix = hook.source != "native"
+    
+    # Segment 1: Hook (immer Position 0)
+    segments.append(Segment(
+        start=hook.start,
+        end=hook.end,
+        role=SegmentRole.HOOK,
+        text=hook.text
+    ))
+    
+    # Segment 2: Body
+    body_start = body.start
+    body_end = body.end
+    
+    # Wenn Hook vom Ende des Bodies kommt, adjust Body
+    if hook.source == "from_later" and hook.start > body.end:
+        # Hook ist NACH dem Body, also Body komplett abspielen
+        pass
+    elif hook.source == "from_later" and hook.start >= body.start and hook.start < body.end:
+        # Hook ist im Body, also Body bis Hook
+        body_end = min(body.end, hook.start)
+    
+    body_text = get_text_at_timerange(transcript_segments, body_start, body_end)
+    
+    segments.append(Segment(
+        start=body_start,
+        end=body_end,
+        role=SegmentRole.BODY,
+        text=body_text
+    ))
+    
+    # Optional: Payoff (wenn Hook vom Ende kam)
+    if hook.source in ["from_later", "from_body_end"] and hook.distance_from_body > 30:
+        # Der vollständige Payoff nach dem Hook
+        payoff_start = hook.start
+        payoff_end = hook.end + 10  # Etwas Kontext nach dem Hook
+        
+        payoff_text = get_text_at_timerange(transcript_segments, payoff_start, payoff_end)
+        if payoff_text:
+            segments.append(Segment(
+                start=payoff_start,
+                end=payoff_end,
+                role=SegmentRole.PAYOFF,
+                text=payoff_text
+            ))
+    
+    # Pattern Name basierend auf Archetyp und Hook-Source
+    if hook.source == "from_later" and body.archetype == Archetype.PARADOX_STORY:
+        pattern_name = "Dieter Lange Pattern"
+    elif hook.source == "from_later" and body.archetype == Archetype.CONTRARIAN_RANT:
+        pattern_name = "Frädrich Pattern"
+    elif hook.source == "from_later":
+        pattern_name = "Podcast Recap Pattern"
+    else:
+        pattern_name = f"Clean {body.archetype.value.title()}"
+    
+    # Editing Instruction
+    if requires_remix:
+        editing = f"REMIX: Hole Hook von {hook.start:.0f}s (Distance: {hook.distance_from_body:.0f}s), dann Body ab {body_start:.0f}s"
+    else:
+        editing = f"CLEAN CUT: {body_start:.0f}s bis {body_end:.0f}s"
+    
+    # Viral Potential Scoring
+    hook_strength = 8 if requires_remix else 6
+    if abs(hook.distance_from_body) > 120:  # > 2 Minuten Distanz
+        hook_strength += 1  # Bonus für kreative Remixe
+    
+    viral_potential = hook_strength
+    if body.archetype in [Archetype.PARADOX_STORY, Archetype.CONTRARIAN_RANT]:
+        viral_potential += 1
+    
+    return Moment(
+        segments=segments,
+        archetype=body.archetype,
+        pattern_name=pattern_name,
+        hook_text=hook.text,
+        body_summary=body.topic_summary,
+        full_text=body.text,
+        hook_strength=min(10, hook_strength),
+        viral_potential=min(10, viral_potential),
+        editing_instruction=editing,
+        requires_remix=requires_remix,
+        reasoning=f"Archetyp: {body.archetype.value}. Hook: {hook.source} @ {hook.start:.0f}s (Distance: {hook.distance_from_body:.0f}s)"
+    )
+
+
+# =============================================================================
+# Main Discovery Function (3-Phasen-Prozess)
+# =============================================================================
 
 async def discover_moments(
     transcript_segments: List[Dict],
     video_path: Optional[str] = None,
-    use_cache: bool = True,
-    min_consensus: int = 3
+    use_cache: bool = True
 ) -> List[Moment]:
     """
-    Discover viral moments in a transcript.
+    Hauptfunktion: Findet virale Momente mit dem 3-Phasen-Editor-Workflow.
     
-    Uses 5-AI ensemble to find and vote on moments.
+    ═══════════════════════════════════════════════════════════════
+    DER 3-PHASEN-PROZESS:
+    ═══════════════════════════════════════════════════════════════
+    
+    PHASE 1: CONTENT SCOUTING
+    - Scanne das Transkript nach Rohdiamanten
+    - Finde vollständige Stories, Rants, Insights
+    
+    PHASE 2: GLOBAL HOOK HUNTING (KEINE ZEITGRENZEN!)
+    - Für jeden Body: Suche im GESAMTEN Video nach dem Hook
+    - Vector Store Pre-Scan + LLM Final Selection
+    
+    PHASE 3: BLUEPRINT ASSEMBLY
+    - Wende das passende Pattern an
+    - Erstelle die Segment-Liste
     
     Args:
-        transcript_segments: List of transcript segments with start, end, text
-        video_path: Optional path for caching
-        use_cache: Whether to use cached results
-        min_consensus: Minimum votes for a moment to be included
+        transcript_segments: Das Transkript (VOLLSTÄNDIG!)
+        video_path: Für Caching
+        use_cache: Cache nutzen?
         
     Returns:
-        List of Moment objects sorted by viral potential
+        Liste von Moment Objekten, sortiert nach Viral Potential
     """
+    start_time = time.time()
     cache = Cache()
     
-    # Check cache
+    # Check Cache
     if use_cache and video_path:
-        cached = cache.get_pipeline_result(video_path, "discover")
+        cached = cache.get_pipeline_result(video_path, "discover_v5")
         if cached:
-            print("Using cached DISCOVER results")
-            return [Moment(**m) for m in cached.get("result", {}).get("moments", [])]
+            print("Using cached DISCOVER V5 results")
+            moments_data = cached.get("result", {}).get("moments", [])
+            return [Moment(**m) for m in moments_data]
     
-    # Load BRAIN context
-    principles = load_principles()
+    print("\n" + "═"*60)
+    print("🎬 DISCOVER V5 - Global Hook Hunting Edition")
+    print("═"*60)
+    print("   ⚠️  KEINE ZEITGRENZEN - Hooks können überall sein!")
     
-    # Get similar clips (if vector store initialized)
-    similar_clips = []
-    if transcript_segments:
-        sample_text = " ".join(s.get("text", "") for s in transcript_segments[:5])
-        try:
-            similar_clips = await get_similar_clips(sample_text, n_results=5)
-        except Exception:
-            pass
+    video_duration = get_video_duration(transcript_segments)
+    print(f"   📊 Video: {video_duration/60:.1f} Minuten | {len(transcript_segments)} Segmente")
     
-    # Build prompt
-    system_prompt, user_prompt = build_discover_prompt(
-        transcript_segments=transcript_segments,
-        similar_clips=similar_clips,
-        principles=principles
-    )
+    # Lade gelernte Patterns
+    print("\n📚 Loading patterns from Brain...")
+    learned_patterns = load_learned_patterns()
+    if learned_patterns:
+        print(f"   ✓ Loaded {len(learned_patterns.get('archetypes', {}))} archetypes")
+    else:
+        print("   ⚠️ No learned patterns found. Using defaults.")
+        learned_patterns = {}
     
-    print("Running DISCOVER with 5-AI ensemble...")
+    # ===================
+    # PHASE 1: Content Scouting
+    # ===================
+    bodies = await phase1_content_scouting(transcript_segments, learned_patterns)
     
-    # Run ensemble
-    ensemble = AIEnsemble()
-    response = await ensemble.generate(
-        prompt=user_prompt,
-        system=system_prompt,
-        temperature=0.7,
-        min_consensus=min_consensus
-    )
+    if not bodies:
+        print("\n   ❌ No content bodies found!")
+        return []
     
-    print(f"Ensemble confidence: {response.confidence:.0%}")
-    print(f"Total cost: ${response.total_cost:.4f}")
+    # ===================
+    # PHASE 2: Global Hook Hunting
+    # ===================
+    print("\n" + "─"*50)
+    print("🌍 PHASE 2: Global Hook Hunting")
+    print("─"*50)
+    print("   🔓 NO TIME LIMITS - Searching entire transcript!")
     
-    # Parse response
-    moments_data = parse_discover_response(response.consensus)
-    
-    # Convert to Moment objects
     moments = []
-    for m in moments_data:
-        moments.append(Moment(
-            start=m["start"],
-            end=m["end"],
-            content_type=m["content_type"],
-            hook_strength=m["hook_strength"],
-            viral_potential=m["viral_potential"],
-            reasoning=m["reasoning"],
-            similar_pattern=m["similar_pattern"],
-            confidence=response.confidence
-        ))
+    hooks_hunted = 0
+    global_hooks_found = 0
     
-    # Sort by viral potential
-    moments.sort(key=lambda x: x.viral_potential, reverse=True)
+    for i, body in enumerate(bodies):
+        print(f"\n   [{i+1}/{len(bodies)}] {body.archetype.value}: {body.topic_summary[:40]}...")
+        
+        # Global Hook Hunting
+        hook = await phase2_global_hook_hunting(
+            body, 
+            transcript_segments, 
+            learned_patterns
+        )
+        
+        if hook.source != "native":
+            hooks_hunted += 1
+            if abs(hook.distance_from_body) > 60:  # > 1 Minute
+                global_hooks_found += 1
+        
+        # ===================
+        # PHASE 3: Blueprint Assembly
+        # ===================
+        moment = phase3_blueprint_assembly(body, hook, transcript_segments, learned_patterns)
+        moments.append(moment)
     
-    # Cache results
+    # Sortiere nach Viral Potential
+    moments.sort(key=lambda m: m.viral_potential, reverse=True)
+    
+    # ===================
+    # Summary
+    # ===================
+    elapsed = time.time() - start_time
+    remixed_count = sum(1 for m in moments if m.requires_remix)
+    
+    print("\n" + "═"*60)
+    print("✅ DISCOVERY COMPLETE")
+    print("═"*60)
+    print(f"   📊 Total Moments: {len(moments)}")
+    print(f"   🔍 Hooks Hunted: {hooks_hunted}")
+    print(f"   🌍 Global Hooks (>1min distance): {global_hooks_found}")
+    print(f"   🔀 Requires Remix: {remixed_count}")
+    print(f"   ⏱️  Processing Time: {elapsed:.1f}s")
+    
+    print("\n   🏆 Top 5 Moments:")
+    for i, m in enumerate(moments[:5]):
+        remix = "🌍 REMIX" if m.requires_remix else "✂️ CLEAN"
+        print(f"      {i+1}. [{m.start:.0f}s-{m.end:.0f}s] {remix} | {m.archetype.value} | Potential: {m.viral_potential}/10")
+        if m.requires_remix:
+            print(f"         └─ {m.editing_instruction}")
+    
+    # Cache Results
     if video_path:
-        cache.set_pipeline_result(video_path, "discover", {
-            "moments": [
-                {
-                    "start": m.start,
-                    "end": m.end,
-                    "content_type": m.content_type,
-                    "hook_strength": m.hook_strength,
-                    "viral_potential": m.viral_potential,
-                    "reasoning": m.reasoning,
-                    "similar_pattern": m.similar_pattern,
-                    "confidence": m.confidence
-                }
-                for m in moments
-            ],
-            "ensemble_cost": response.total_cost,
-            "ensemble_confidence": response.confidence
+        cache.set_pipeline_result(video_path, "discover_v5", {
+            "moments": [m.model_dump() for m in moments],
+            "statistics": {
+                "total_bodies": len(bodies),
+                "hooks_hunted": hooks_hunted,
+                "global_hooks_found": global_hooks_found,
+                "remixed_count": remixed_count,
+                "processing_time": elapsed
+            }
         })
     
-    print(f"Discovered {len(moments)} moments")
     return moments
 
+
+# =============================================================================
+# Legacy Compatibility
+# =============================================================================
 
 async def discover_with_voting(
     transcript_segments: List[Dict],
     top_n: int = 10
 ) -> List[Moment]:
-    """
-    Discover moments with multi-round voting.
-    
-    Each AI votes independently, then moments with
-    highest consensus are selected.
-    
-    Args:
-        transcript_segments: Transcript segments
-        top_n: Number of top moments to return
-        
-    Returns:
-        List of top moments by consensus
-    """
-    # Run standard discovery
-    moments = await discover_moments(
-        transcript_segments=transcript_segments,
-        use_cache=False
-    )
-    
-    # Already sorted by potential, take top N
+    """Legacy function - redirects to main discover."""
+    moments = await discover_moments(transcript_segments, use_cache=False)
     return moments[:top_n]
 
+
+# Legacy names
+detect_content_bodies = phase1_content_scouting
+hunt_hook_for_body = phase2_global_hook_hunting
+assemble_moment = phase3_blueprint_assembly

@@ -132,3 +132,4 @@ data/
 4. **Regelmäßig updaten**: Nach 10-20 neuen Clips → Brain neu analysieren
 
 
+

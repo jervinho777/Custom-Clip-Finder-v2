@@ -1,7 +1,10 @@
 """
 Pydantic Response Schemas for Structured AI Outputs
 
-All AI responses must use these models for guaranteed schema compliance.
+V4: Editor Workflow Architecture
+- Simple, modular data structures
+- "Content First, Hook Second" paradigm
+- Clear Archetypen: Paradox Story, Contrarian Rant, Listicle, Insight
 """
 
 from pydantic import BaseModel, Field
@@ -10,171 +13,202 @@ from enum import Enum
 
 
 # ============================================================================
-# DISCOVER Stage Schemas
+# Enums - Die 4 Archetypen
 # ============================================================================
 
-class Timestamp(BaseModel):
-    """Timestamp range in a video."""
-    start: float = Field(description="Start time in seconds")
-    end: float = Field(description="End time in seconds")
+class Archetype(str, Enum):
+    """Die 4 viralen Archetypen (Struktur-basiert)."""
+    PARADOX_STORY = "paradox_story"  # Fazit als Hook -> Story -> Payoff
+    CONTRARIAN_RANT = "contrarian_rant"  # Provokante These -> Beweis
+    LISTICLE = "listicle"  # "Hier sind 3 Dinge..." -> 1, 2, 3
+    INSIGHT = "insight"  # Einzelner philosophischer Gedanke
+    TUTORIAL = "tutorial"  # How-To mit Ergebnis-Hook
+    EMOTIONAL = "emotional"  # Persönliche Story mit Peak
+    UNKNOWN = "unknown"
 
 
-class DiscoveredMoment(BaseModel):
-    """A potential viral moment discovered in the transcript."""
-    timestamps: Timestamp
-    hook_text: str = Field(description="The exact text that could be the hook (first 3 seconds)")
-    topic: str = Field(description="Main topic/theme of this moment")
-    content_type: Literal["story", "insight", "tutorial", "emotional", "paradox", "beliefbreaker"] = Field(
-        description="Type of content"
-    )
-    hook_strength: int = Field(ge=1, le=10, description="Hook quality score 1-10")
-    viral_potential: int = Field(ge=1, le=10, description="Predicted viral potential 1-10")
-    reasoning: str = Field(description="Why this moment has viral potential")
-    pattern_match: Optional[str] = Field(
-        default=None, 
-        description="Matching pattern from PRINCIPLES (e.g., 'paradox_statement', 'authority_curiosity')"
-    )
-
-
-class DiscoverResponse(BaseModel):
-    """Response from DISCOVER stage."""
-    moments: List[DiscoveredMoment] = Field(max_length=30)
-    total_duration_analyzed: float = Field(description="Total video duration in seconds")
-    ai_provider: str = Field(description="Which AI generated this response")
+class SegmentRole(str, Enum):
+    """Rolle eines Segments im finalen Clip."""
+    HOOK = "hook"      # Aufmerksamkeits-Grabber (erste 3 Sekunden)
+    SETUP = "setup"    # Kontext/Einleitung
+    BODY = "body"      # Hauptinhalt
+    PAYOFF = "payoff"  # Fazit/Punchline
 
 
 # ============================================================================
-# COMPOSE Stage Schemas
+# Core Data Structures
 # ============================================================================
 
-class SegmentEdit(BaseModel):
-    """A segment edit instruction for the clip."""
-    original_start: float = Field(description="Original start time in source video")
-    original_end: float = Field(description="Original end time in source video")
-    new_position: float = Field(description="New position in the composed clip timeline")
-    text: str = Field(description="The text content of this segment")
-    is_hook: bool = Field(default=False, description="Is this segment the hook?")
-
-
-class ComposedClip(BaseModel):
-    """A fully composed clip ready for validation."""
-    clip_id: str = Field(description="Unique identifier for this clip")
-    source_moment: Timestamp = Field(description="Original moment timestamps")
+class Segment(BaseModel):
+    """Ein einzelnes Segment im Clip."""
+    start: float = Field(description="Startzeit im Originalvideo (Sekunden)")
+    end: float = Field(description="Endzeit im Originalvideo (Sekunden)")
+    role: SegmentRole = Field(description="Rolle im finalen Clip")
+    text: str = Field(default="", description="Der Text dieses Segments")
     
-    # Structure
-    structure_type: Literal["clean_extraction", "hook_extraction", "cross_moment"] = Field(
-        description="How the clip was composed"
-    )
-    segments: List[SegmentEdit] = Field(description="Ordered list of segments")
+    @property
+    def duration(self) -> float:
+        return self.end - self.start
+
+
+class ContentBody(BaseModel):
+    """
+    Ein gefundener Inhalts-Block (Phase A: Candidate Detection).
     
-    # Hook
-    hook_text: str = Field(description="The hook text (first 3 seconds)")
-    hook_origin: Literal["native", "extracted", "cross_moment"] = Field(
-        description="Where the hook came from"
+    Das ist der "Rohdiamant" - ein zusammenhängender Inhaltsblock
+    BEVOR wir nach einem Hook suchen.
+    """
+    start: float
+    end: float
+    text: str
+    archetype: Archetype = Field(default=Archetype.UNKNOWN)
+    topic_summary: str = Field(default="", description="1-Satz Zusammenfassung")
+    has_native_hook: bool = Field(default=False, description="Hat der Anfang schon einen Hook?")
+    needs_hook_hunt: bool = Field(default=True, description="Müssen wir nach Hook suchen?")
+
+
+class FoundHook(BaseModel):
+    """
+    Ein gefundener Hook (Phase B: Hook Hunting).
+    
+    Kann aus dem Body selbst kommen oder aus dem Kontext.
+    """
+    start: float
+    end: float
+    text: str
+    source: Literal["native", "from_body_end", "from_context", "from_later"] = Field(
+        description="Woher der Hook kommt"
     )
+    distance_from_body: float = Field(
+        default=0,
+        description="Sekunden Entfernung vom Body (negativ=davor, positiv=danach)"
+    )
+
+
+class Moment(BaseModel):
+    """
+    Ein viraler Moment = ContentBody + FoundHook + Editing Instructions.
+    
+    Das ist das finale Ergebnis: Ein "Virtual Cut" der:
+    1. Den Body enthält (die Geschichte/der Inhalt)
+    2. Den Hook enthält (ggf. von woanders)
+    3. Editing-Anweisungen für den Zusammenbau
+    """
+    # Die Segment-Liste (non-linear!)
+    segments: List[Segment] = Field(
+        description="Geordnete Liste der Segmente für den finalen Clip"
+    )
+    
+    # Archetype & Pattern
+    archetype: Archetype
+    pattern_name: str = Field(
+        default="",
+        description="Name des verwendeten Patterns (z.B. 'Dieter Lange Pattern')"
+    )
+    
+    # Content
+    hook_text: str = Field(description="Der Hook-Text (erste 3 Sekunden)")
+    body_summary: str = Field(description="Zusammenfassung des Body")
+    full_text: str = Field(default="", description="Vollständiger Text des Clips")
+    
+    # Scores
+    hook_strength: int = Field(ge=1, le=10, default=5)
+    viral_potential: int = Field(ge=1, le=10, default=5)
+    
+    # Editing
+    editing_instruction: str = Field(
+        default="",
+        description="Menschenlesbare Schnittanweisung"
+    )
+    requires_remix: bool = Field(
+        default=False,
+        description="True wenn Segmente umgestellt werden müssen"
+    )
+    
+    # Reasoning
+    reasoning: str = Field(default="", description="Warum dieser Moment viral ist")
+    
+    # Computed properties for legacy compatibility
+    @property
+    def start(self) -> float:
+        """Frühester Zeitpunkt aller Segmente."""
+        if self.segments:
+            return min(s.start for s in self.segments)
+        return 0.0
+    
+    @property
+    def end(self) -> float:
+        """Spätester Zeitpunkt aller Segmente."""
+        if self.segments:
+            return max(s.end for s in self.segments)
+        return 0.0
+    
+    @property
+    def total_duration(self) -> float:
+        """Gesamtdauer des zusammengesetzten Clips."""
+        return sum(s.duration for s in self.segments)
+
+
+# ============================================================================
+# Archetypen-Templates (die "Schablonen")
+# ============================================================================
+
+class ArchetypeTemplate(BaseModel):
+    """
+    Ein gelerntes Struktur-Muster aus dem Brain.
+    
+    Beispiel: "Paradox Story"
+    - Struktur: [HOOK: Fazit] -> [BODY: Story] -> [PAYOFF: Fazit wiederholt]
+    - Beispiel: Dieter Lange "Arbeite niemals für Geld"
+    """
+    name: str = Field(description="Name des Archetyps")
+    archetype: Archetype
+    structure: List[SegmentRole] = Field(
+        description="Reihenfolge der Rollen im finalen Clip"
+    )
+    description: str = Field(description="Beschreibung des Musters")
+    hook_location: Literal["start", "middle", "end", "external"] = Field(
+        description="Wo der beste Hook typischerweise zu finden ist"
+    )
+    examples: List[str] = Field(
+        default_factory=list,
+        description="Beispiele dieses Patterns"
+    )
+    views_weighted_score: float = Field(
+        default=0.0,
+        description="Performance-Score basierend auf Views"
+    )
+
+
+# ============================================================================
+# Discovery Response
+# ============================================================================
+
+class DiscoveryResult(BaseModel):
+    """Ergebnis der Discovery Phase."""
+    # Gefundene Moments
+    moments: List[Moment] = Field(default_factory=list)
+    
+    # Statistiken
+    total_bodies_found: int = Field(default=0, description="Anzahl gefundener Content Bodies")
+    hooks_hunted: int = Field(default=0, description="Anzahl Hooks die gesucht werden mussten")
+    remixed_count: int = Field(default=0, description="Anzahl Moments die Remix brauchen")
     
     # Metadata
-    total_duration: float = Field(ge=15, le=600, description="Total clip duration in seconds")
-    caption_suggestion: str = Field(description="Suggested caption for the clip")
-    reasoning: str = Field(description="Why this composition was chosen")
-
-
-class ComposeResponse(BaseModel):
-    """Response from COMPOSE stage."""
-    clips: List[ComposedClip] = Field(max_length=20)
-    debate_rounds: int = Field(description="Number of debate rounds completed")
-    ai_consensus: float = Field(ge=0, le=1, description="Consensus level 0-1")
+    video_duration: float = Field(default=0)
+    processing_time_seconds: float = Field(default=0)
 
 
 # ============================================================================
-# VALIDATE Stage Schemas
+# Legacy Compatibility
 # ============================================================================
 
-class ScoreBreakdown(BaseModel):
-    """Detailed score breakdown."""
-    hook_quality: int = Field(ge=0, le=10, description="Hook quality score")
-    content_engagement: int = Field(ge=0, le=10, description="Content engagement score")
-    pacing: int = Field(ge=0, le=10, description="Pacing and flow score")
-    emotional_impact: int = Field(ge=0, le=10, description="Emotional resonance score")
-    shareability: int = Field(ge=0, le=10, description="Likelihood of sharing score")
+# Alte Namen als Aliase
+VideoSegment = Segment
+NonLinearMoment = Moment
+ViralArchetype = Archetype
 
-
-class ValidationResult(BaseModel):
-    """Validation result for a single clip."""
-    clip_id: str
-    overall_score: int = Field(ge=0, le=50, description="Total score (sum of breakdown)")
-    breakdown: ScoreBreakdown
-    verdict: Literal["approve", "refine", "reject"] = Field(
-        description="Final verdict"
-    )
-    predicted_performance: Literal["viral", "good", "average", "weak"] = Field(
-        description="Predicted performance level"
-    )
-    improvement_suggestions: List[str] = Field(
-        max_length=5,
-        description="Specific improvements if verdict is 'refine'"
-    )
-    assessment: str = Field(description="Detailed assessment explanation")
-
-
-class ValidateResponse(BaseModel):
-    """Response from VALIDATE stage."""
-    results: List[ValidationResult]
-    clips_approved: int
-    clips_to_refine: int
-    clips_rejected: int
-
-
-# ============================================================================
-# GODMODE Stage Schemas
-# ============================================================================
-
-class GodmodeVerdict(str, Enum):
-    VIRAL = "viral"
-    STRONG = "strong"
-    GOOD = "good"
-    WEAK = "weak"
-    REJECT = "reject"
-
-
-class GodmodeResult(BaseModel):
-    """Godmode evaluation result."""
-    clip_id: str
-    verdict: GodmodeVerdict
-    score: int = Field(ge=0, le=50, description="Final Godmode score")
-    rank: int = Field(ge=1, description="Rank among all clips")
-    reasoning: str = Field(description="Detailed Godmode reasoning")
-    final_hook: str = Field(description="Confirmed or refined hook")
-    export_ready: bool = Field(description="Ready for export without changes")
-
-
-class GodmodeResponse(BaseModel):
-    """Response from GODMODE evaluation."""
-    results: List[GodmodeResult]
-    total_clips: int
-    export_ready_count: int
-    top_performer: Optional[str] = Field(description="Clip ID of best performer")
-
-
-# ============================================================================
-# Consensus Building Schema
-# ============================================================================
-
-class AIVote(BaseModel):
-    """A single AI's vote on a moment/clip."""
-    provider: str
-    supports: bool
-    confidence: float = Field(ge=0, le=1)
-    reasoning: str
-
-
-class ConsensusResult(BaseModel):
-    """Result of multi-AI consensus."""
-    item_id: str
-    votes: List[AIVote]
-    consensus_reached: bool
-    support_ratio: float = Field(ge=0, le=1, description="Ratio of AIs that support")
-    final_decision: bool
-    merged_reasoning: str
-
-
+class Timestamp(BaseModel):
+    """Legacy Timestamp (für alte Funktionen)."""
+    start: float
+    end: float
