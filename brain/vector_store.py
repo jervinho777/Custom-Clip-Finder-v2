@@ -20,6 +20,7 @@ import json
 import hashlib
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
+import math
 from dataclasses import dataclass
 
 
@@ -396,8 +397,47 @@ class VectorStore:
         return added
     
     # =========================================================================
-    # SEARCH FUNCTIONS (NVI-WEIGHTED!)
+    # HYBRID SEARCH (Semantic + Quality Reranking)
     # =========================================================================
+    
+    def _calculate_hybrid_score(
+        self,
+        similarity: float,
+        nvi: float,
+        engagement_rate: float = 0
+    ) -> Tuple[float, float]:
+        """
+        Berechnet den Hybrid-Score für Quality-Boosted Ranking.
+        
+        FORMEL:
+            nvi_boost = 1 + log10(max(nvi, 1))
+            hybrid_score = similarity * nvi_boost
+        
+        Logarithmische Dämpfung verhindert dass Outlier alles dominieren,
+        aber NVI 7000 wird trotzdem stark bevorzugt.
+        
+        Beispiele:
+            NVI 1    → boost 1.0  → similarity bleibt gleich
+            NVI 10   → boost 2.0  → similarity * 2
+            NVI 100  → boost 3.0  → similarity * 3
+            NVI 1000 → boost 4.0  → similarity * 4
+            NVI 7000 → boost 4.85 → similarity * 4.85
+        
+        Args:
+            similarity: Semantische Ähnlichkeit (0-1)
+            nvi: Normalized Viral Index
+            engagement_rate: Optional, für zukünftige Erweiterungen
+            
+        Returns:
+            Tuple von (hybrid_score, nvi_boost)
+        """
+        # NVI Boost (logarithmisch gedämpft)
+        nvi_boost = 1.0 + math.log10(max(nvi, 1.0))
+        
+        # Hybrid Score
+        hybrid_score = similarity * nvi_boost
+        
+        return hybrid_score, nvi_boost
     
     async def search_hooks(
         self,
@@ -405,26 +445,31 @@ class VectorStore:
         n_results: int = 5,
         min_views: int = 0,
         min_nvi: float = 0,
-        use_nvi_ranking: bool = True
+        use_hybrid_ranking: bool = True
     ) -> List[HookMatch]:
         """
-        Search for similar hooks with NVI-weighted ranking.
+        HYBRID SEARCH: Semantische Suche + Quality Reranking.
         
-        WICHTIG: Wenn use_nvi_ranking=True, werden Ergebnisse nach
-        kombiniertem Score (similarity * NVI-weight) gerankt.
+        ABLAUF:
+        1. OVER-FETCHING: Hole top_k * 5 Kandidaten rein semantisch
+        2. RERANKING: Berechne hybrid_score = similarity * nvi_boost
+        3. SORT & SLICE: Sortiere nach hybrid_score, gib top_k zurück
         
-        Matthias Langwasser (NVI 7000) wird dadurch viel höher gerankt
-        als Greator (NVI 40), selbst wenn die Similarity ähnlich ist.
+        EFFEKT:
+        Bei Suche nach 'Business Tipps':
+        - Matthias Langwasser (NVI 7000, similarity 0.7) → hybrid 3.4
+        - Langweiliger Clip (NVI 10, similarity 0.8) → hybrid 1.6
+        → Matthias Langwasser gewinnt trotz niedrigerer Similarity!
         
         Args:
-            query: Text to compare
-            n_results: Number of results
-            min_views: Minimum views filter
-            min_nvi: Minimum NVI filter (z.B. 10 für nur virale Clips)
-            use_nvi_ranking: Ob NVI ins Ranking einfließen soll
+            query: Suchtext
+            n_results: Anzahl gewünschter Ergebnisse
+            min_views: Minimum Views Filter
+            min_nvi: Minimum NVI Filter
+            use_hybrid_ranking: Hybrid-Ranking aktivieren (default: True)
             
         Returns:
-            List of HookMatch objects with similarity scores
+            List of HookMatch objects, sortiert nach hybrid_score
         """
         collection = self._get_collection(self.HOOKS_COLLECTION)
         
@@ -445,8 +490,8 @@ class VectorStore:
             else:
                 where_filter = {"$and": conditions}
         
-        # Get more results if we're re-ranking
-        fetch_n = n_results * 3 if use_nvi_ranking else n_results
+        # STEP 1: OVER-FETCHING (5x mehr Kandidaten)
+        fetch_n = n_results * 5 if use_hybrid_ranking else n_results
         
         results = collection.query(
             query_texts=[query],
@@ -465,36 +510,35 @@ class VectorStore:
                 
                 # Hole NVI (default 1.0 für alte Daten ohne NVI)
                 nvi = metadata.get("nvi", 1.0)
+                engagement_rate = metadata.get("engagement_rate", 0)
                 
-                # Berechne NVI-Gewicht (log-skaliert)
-                # NVI 1 → weight 1.0, NVI 10 → weight 2.0, NVI 100 → weight 3.0
-                import math
-                if nvi <= 1:
-                    nvi_weight = 1.0
+                # STEP 2: RERANKING - Calculate hybrid score
+                if use_hybrid_ranking:
+                    hybrid_score, nvi_boost = self._calculate_hybrid_score(
+                        similarity, nvi, engagement_rate
+                    )
                 else:
-                    nvi_weight = 1.0 + math.log10(nvi)
-                
-                # Kombinierter Score für Ranking
-                combined_score = similarity * nvi_weight if use_nvi_ranking else similarity
+                    hybrid_score = similarity
+                    nvi_boost = 1.0
                 
                 matches.append({
                     "hook_text": results["documents"][0][i] if results.get("documents") else "",
                     "similarity": round(similarity, 3),
                     "nvi": round(nvi, 2),
-                    "nvi_weight": round(nvi_weight, 2),
-                    "combined_score": round(combined_score, 3),
+                    "nvi_boost": round(nvi_boost, 2),
+                    "hybrid_score": round(hybrid_score, 3),
                     "views": metadata.get("views", 0),
                     "source_clip_id": metadata.get("source_clip_id", ""),
                     "hook_type": metadata.get("hook_type", ""),
                     "account": metadata.get("account", ""),
-                    "engagement_rate": metadata.get("engagement_rate", 0)
+                    "engagement_rate": round(engagement_rate, 4)
                 })
         
-        # Re-rank by combined score if NVI ranking is enabled
-        if use_nvi_ranking:
-            matches.sort(key=lambda x: x["combined_score"], reverse=True)
+        # STEP 3: SORT & SLICE
+        if use_hybrid_ranking:
+            matches.sort(key=lambda x: x["hybrid_score"], reverse=True)
         
-        # Convert to HookMatch objects and limit
+        # Convert to HookMatch objects and limit to top_k
         result = []
         for m in matches[:n_results]:
             result.append(HookMatch(
@@ -512,18 +556,25 @@ class VectorStore:
         self,
         query: str,
         n_results: int = 5,
-        min_views: int = 0
+        min_views: int = 0,
+        use_hybrid_ranking: bool = True
     ) -> List[Dict]:
         """
-        Search for similar content patterns.
+        HYBRID SEARCH für Content Patterns.
+        
+        Gleiche Logik wie search_hooks:
+        1. Over-Fetching (5x)
+        2. Reranking mit NVI-Boost
+        3. Sort & Slice
         
         Args:
-            query: Text to search
-            n_results: Number of results
-            min_views: Minimum views filter
+            query: Suchtext
+            n_results: Anzahl Ergebnisse
+            min_views: Minimum Views Filter
+            use_hybrid_ranking: Hybrid-Ranking aktivieren
             
         Returns:
-            List of pattern dicts
+            List of pattern dicts mit hybrid_score
         """
         collection = self._get_collection(self.PATTERNS_COLLECTION)
         
@@ -532,9 +583,12 @@ class VectorStore:
         
         where_filter = {"views": {"$gte": min_views}} if min_views > 0 else None
         
+        # STEP 1: OVER-FETCHING
+        fetch_n = n_results * 5 if use_hybrid_ranking else n_results
+        
         results = collection.query(
             query_texts=[query],
-            n_results=n_results,
+            n_results=fetch_n,
             where=where_filter
         )
         
@@ -544,15 +598,33 @@ class VectorStore:
                 metadata = results["metadatas"][0][i] if results.get("metadatas") else {}
                 distance = results["distances"][0][i] if results.get("distances") else 1
                 
+                similarity = 1 - (distance / 2)
+                nvi = metadata.get("nvi", 1.0)
+                
+                # STEP 2: RERANKING
+                if use_hybrid_ranking:
+                    hybrid_score, nvi_boost = self._calculate_hybrid_score(similarity, nvi)
+                else:
+                    hybrid_score = similarity
+                    nvi_boost = 1.0
+                
                 formatted.append({
                     "id": doc_id,
                     "text": results["documents"][0][i] if results.get("documents") else "",
                     "metadata": metadata,
-                    "similarity": round(1 - (distance / 2), 3),
-                    "views": metadata.get("views", 0)
+                    "similarity": round(similarity, 3),
+                    "nvi": round(nvi, 2),
+                    "nvi_boost": round(nvi_boost, 2),
+                    "hybrid_score": round(hybrid_score, 3),
+                    "views": metadata.get("views", 0),
+                    "account": metadata.get("account", "")
                 })
         
-        return formatted
+        # STEP 3: SORT & SLICE
+        if use_hybrid_ranking:
+            formatted.sort(key=lambda x: x["hybrid_score"], reverse=True)
+        
+        return formatted[:n_results]
     
     # =========================================================================
     # SCAN FOR HOOKS (Main use case)

@@ -1,17 +1,152 @@
 """
-DISCOVER Stage Prompts (V5 - Global Hook Hunting)
+DISCOVER Stage Prompts (V6 - Viral DNA Edition)
 
 3-Phasen-Prozess:
 1. Content Scouting: Finde Content Bodies (Rohdiamanten)
 2. Global Hook Hunting: Suche im GESAMTEN Video nach dem besten Hook
 3. Blueprint Assembly: Setze die Segmente zusammen
 
-KRITISCH: KEINE ZEITGRENZEN! Der Hook kann 20 Minuten später kommen.
+KRITISCH: 
+- KEINE ZEITGRENZEN! Der Hook kann 20 Minuten später kommen.
+- IGNORIERE VISUALS! Wir haben nur Text - fokussiere auf verbale Hooks.
+- VIRAL DNA CRITERIA basierend auf interner SOP.
 """
 
 from typing import List, Dict, Tuple, Optional
 import json
 import re
+
+
+# =============================================================================
+# VIRAL DNA CRITERIA (Text-Based Analysis - Interne SOP)
+# =============================================================================
+
+VIRAL_DNA_CRITERIA = """
+🔍 VIRAL DNA CHECKLIST (Text-Based Analysis):
+
+═══════════════════════════════════════════════════════════════
+1. 🎣 THE VERBAL HOOK (0-5s) - "The Information Gap"
+═══════════════════════════════════════════════════════════════
+   [SOP: Info Gap, Primacy Effect]
+   
+   - Erzeugt der ERSTE Satz eine Frage im Kopf des Zuschauers?
+   - Gibt es einen "Verbal Pattern Interrupt"? 
+     (Kontroverse Aussage, laute Beschreibung, sofortiger Konflikt)
+   
+   ❌ REJECT: "Hallo zusammen, heute möchte ich über..."
+   ✅ ACCEPT: "Du wurdest dein ganzes Leben über Geld belogen."
+   ✅ ACCEPT: "Arbeite niemals für Geld."
+   ✅ ACCEPT: "Das ist der größte Fehler, den alle machen."
+
+═══════════════════════════════════════════════════════════════
+2. 🧬 MASS APPEAL & RELATABILITY
+═══════════════════════════════════════════════════════════════
+   [SOP: Mass Appeal, Simplicity]
+   
+   - Ist das Thema verständlich für einen müden Zuschauer um 23 Uhr?
+   - Berührt es universelle Themen?
+     • Status & Erfolg
+     • Geld & Wohlstand  
+     • Gesundheit & Energie
+     • Beziehungen & Liebe
+     • Sinn & Erfüllung
+   
+   ❌ REJECT: Nischen-Fachjargon, komplexe Konzepte
+   ✅ ACCEPT: Wenn ein 12-Jähriger es verstehen würde
+
+═══════════════════════════════════════════════════════════════
+3. 🎢 STRUCTURAL TENSION (Retention)
+═══════════════════════════════════════════════════════════════
+   [SOP: Open Loops, Watchtime]
+   
+   OPEN LOOP: Verspricht der Sprecher einen Payoff, der erst am Ende kommt?
+   - "Und dann hat er mir etwas gesagt, das alles verändert hat..."
+   - "Der dritte Punkt ist der wichtigste..."
+   
+   STORYTIME: Gibt es einen narrativen Bogen?
+   - Setup → Konflikt → Auflösung
+   - Problem → Spannung → Lösung
+   
+   ❌ REJECT: Lineare Listen ohne Spannung
+   ❌ REJECT: Monotone Erklärungen
+   ✅ ACCEPT: Geschichte mit Wendepunkt
+   ✅ ACCEPT: Aufbau von Spannung zum Fazit
+
+═══════════════════════════════════════════════════════════════
+4. 💎 UTILITY & VALUE (Save-ability)
+═══════════════════════════════════════════════════════════════
+   [SOP: Learning, Aha-Moment]
+   
+   - Gibt es einen klaren "Aha-Moment"?
+   - Gibt es konkrete, umsetzbare Ratschläge?
+   - Würden Leute das SPEICHERN, um später darauf zurückzugreifen?
+   
+   ❌ REJECT: Vage Philosophie ohne Substanz
+   ✅ ACCEPT: "Mach das jeden Morgen und..."
+   ✅ ACCEPT: "Der Trick ist..." + konkrete Anleitung
+
+═══════════════════════════════════════════════════════════════
+5. 🔥 IGNITION (Shareability)
+═══════════════════════════════════════════════════════════════
+   [SOP: Controversy, Humor, Emotion]
+   
+   KONTROVERSE: Gibt es eine polarisierende Meinung?
+   - "Das wird die Hälfte von euch wütend machen..."
+   - "Alle sagen X, aber eigentlich ist Y richtig..."
+   
+   HUMOR: Gibt es eine Punchline oder einen Moment der Erleichterung?
+   
+   EMOTION: Berührt es den Zuschauer emotional?
+   - Würdest du das einem Freund schicken mit "Das bin so ich"?
+   - Würdest du es teilen mit "Das MUSST du sehen"?
+   
+   ❌ REJECT: Neutral, keine Reaktion auslösend
+   ✅ ACCEPT: Löst starke Reaktion aus (Zustimmung ODER Widerspruch)
+"""
+
+
+# =============================================================================
+# DISCOVERY SYSTEM PROMPT (Text-Based, No Visuals!)
+# =============================================================================
+
+DISCOVERY_SYSTEM_PROMPT = f"""
+Du bist ein Experte für virale Content-Analyse. Dein Ziel ist es, Segmente in einem Roh-Transkript zu identifizieren, die hohes virales Potenzial haben.
+
+{VIRAL_DNA_CRITERIA}
+
+═══════════════════════════════════════════════════════════════
+DEINE AUFGABE
+═══════════════════════════════════════════════════════════════
+
+Scanne die Transkript-Segmente und extrahiere "Candidate Moments".
+Für jeden Moment MUSST du ihn gegen die Viral DNA Checklist validieren.
+
+═══════════════════════════════════════════════════════════════
+KRITISCHE REGELN
+═══════════════════════════════════════════════════════════════
+
+1. IGNORIERE VISUALS: 
+   Du hast NUR Text. Fokussiere auf verbale Hooks, Story-Struktur und Pacing.
+   Keine Annahmen über B-Roll, Schnitte oder visuelle Effekte.
+
+2. STRENGES FILTERING: 
+   95% des Contents ist Rauschen. Extrahiere NUR die Top 5% "Gold".
+   Lieber 3 exzellente Momente als 10 mittelmäßige.
+
+3. KONTEXT-BEWUSSTSEIN: 
+   Selbst wenn ein Satz gut ist - hat er ein logisches Ende?
+   Stelle sicher, dass der extrahierte Clip ALLEINE funktioniert.
+
+4. VERBAL HOOK FIRST:
+   Der erste Satz entscheidet. Wenn er langweilig ist, suche einen besseren
+   Hook woanders im Transkript und stelle ihn nach vorne.
+
+═══════════════════════════════════════════════════════════════
+OUTPUT FORMAT (JSON)
+═══════════════════════════════════════════════════════════════
+
+DU ANTWORTEST NUR MIT VALIDEM JSON.
+"""
 
 
 # =============================================================================
@@ -37,36 +172,38 @@ def build_content_scouting_prompt(
     Das kommt in Phase 2 (Global Hook Hunting).
     """
     
-    system = """Du bist ein Senior Video-Editor bei einem viralen Content-Studio.
+    system = f"""Du bist ein Senior Video-Editor bei einem viralen Content-Studio.
 
 DEINE ROLLE: Du bist der "Content Scout" - du siehst das Rohmaterial
 und findest die verborgenen Schätze (Rohdiamanten).
+
+{VIRAL_DNA_CRITERIA}
 
 ═══════════════════════════════════════════════════════════════
 PHASE 1: CONTENT SCOUTING
 ═══════════════════════════════════════════════════════════════
 
-DEINE AUFGABE: Finde zusammenhängende Inhalts-Blöcke.
+DEINE AUFGABE: Finde zusammenhängende Inhalts-Blöcke mit viralem Potenzial.
 
 Ein "Rohdiamant" ist:
-✓ Eine VOLLSTÄNDIGE Geschichte (Anfang → Mitte → Ende)
-✓ Eine zusammenhängende Argumentation mit Schlussfolgerung
-✓ Ein standalone Insight oder zitierbarer Gedanke
-✓ Ein kontroverses Statement mit Begründung
+✓ Eine VOLLSTÄNDIGE Geschichte mit Open Loop und Payoff
+✓ Eine kontroverse These mit Begründung (Ignition!)
+✓ Ein konkreter Insight mit Aha-Moment (Utility!)
+✓ Ein relatable Moment mit Mass Appeal
 
-WICHTIG - WAS DU IGNORIERST:
+WICHTIG - FOKUS AUF TEXT:
+✗ IGNORIERE visuelle Elemente - du hast NUR das Transkript
 ✗ Ob der Anfang gut ist (das prüfen wir später!)
 ✗ Ob ein Hook vorhanden ist (das suchen wir später!)
-✗ Wo im Video der Block steht
 
 Du suchst NUR nach dem KÖRPER (Body) des Contents.
-Der perfekte Hook kann woanders im Video sein - das ist Phase 2.
+Der perfekte verbale Hook kann woanders im Video sein - das ist Phase 2.
 
-QUALITÄTSKRITERIEN:
-• Der Block muss in sich geschlossen sein
-• Er muss einen klaren Archetyp haben (Story, Rant, Listicle, Insight)
-• Er muss mindestens 20 Sekunden dauern
-• Bei Stories: Die GANZE Geschichte, nicht nur der Anfang
+QUALITÄTSKRITERIEN (basierend auf Viral DNA):
+• Mass Appeal: Universelles Thema, einfach verständlich
+• Structural Tension: Narrative arc, Open Loop zum Payoff
+• Utility: Konkreter Wert, Aha-Moment
+• Ignition: Kontroverse oder emotionale Reaktion
 
 DU ANTWORTEST NUR MIT JSON."""
 
@@ -162,60 +299,64 @@ def build_global_hook_hunting_prompt(
     nach dem perfekten Hook zu suchen.
     """
     
-    system = """Du bist der "Hook Hunter" - der weltbeste Experte für virale Einstiege.
+    system = f"""Du bist der "Hook Hunter" - der weltbeste Experte für virale Einstiege.
 
 ═══════════════════════════════════════════════════════════════
-PHASE 2: GLOBAL HOOK HUNTING
+PHASE 2: GLOBAL HOOK HUNTING (Text-Based!)
 ═══════════════════════════════════════════════════════════════
 
-DEINE MISSION: Finde den EINEN perfekten Hook für den Content Body.
+DEINE MISSION: Finde den EINEN perfekten VERBALEN Hook für den Content Body.
 
-⚠️ KRITISCHE REGEL: IGNORIERE DIE ZEITACHSE! ⚠️
+⚠️ KRITISCHE REGELN ⚠️
 
-Der perfekte Hook kann ÜBERALL im Video sein:
-• 5 Minuten VOR dem Body
-• 20 Minuten NACH dem Body
-• Im Recap am Ende
-• In einer anderen Story, die das gleiche Thema touchiert
-• In einer Q&A wo der Speaker das Thema nochmal zusammenfasst
+1. IGNORIERE DIE ZEITACHSE!
+   Der perfekte Hook kann ÜBERALL im Video sein:
+   • 5 Minuten VOR dem Body
+   • 20 Minuten NACH dem Body
+   • Im Recap am Ende
+   • In einer Q&A
 
-DU SUCHST NICHT LOKAL. DU SUCHST GLOBAL.
+2. IGNORIERE VISUALS!
+   Du hast NUR Text. Fokussiere auf den VERBALEN Hook.
+   Keine Annahmen über Bilder, Schnitte oder B-Roll.
 
-═══════════════════════════════════════════════════════════════
-
-WAS MACHT EINEN PERFEKTEN HOOK?
-
-1. PUNCH: Kurz, prägnant, überraschend
-   ✓ "Arbeite niemals für Geld."
-   ✓ "Ein Eisbergsalat hat so viel Vitamin C wie ein Blatt Papier."
-   ✗ "Ich möchte heute über etwas sprechen..."
-
-2. THEMATISCHE KOHÄRENZ: Er passt zum Body
-   Der Hook muss den GLEICHEN Kern-Gedanken ansprechen.
-   Kein Fake-Zusammenhang!
-
-3. NEUGIER: Er zwingt zum Weiterschauen
-   Der Zuschauer MUSS wissen, warum/wie/was dahinter steckt.
-
-4. TIMING: Er ist ein vollständiger Satz (nicht mitten im Gedanken)
+3. DU SUCHST NICHT LOKAL. DU SUCHST GLOBAL.
 
 ═══════════════════════════════════════════════════════════════
+VIRAL DNA: DER PERFEKTE VERBALE HOOK
+═══════════════════════════════════════════════════════════════
 
-HOOK-TYPEN NACH ARCHETYP:
+🎣 THE VERBAL HOOK muss einen "Information Gap" erzeugen:
 
-• PARADOX_STORY: Suche das FAZIT/die MORAL der Geschichte
+✅ ACCEPT (Gap erzeugt):
+   • "Arbeite niemals für Geld." (Warum?!)
+   • "Ein Eisbergsalat hat so viel Vitamin C wie ein Blatt Papier." (Wirklich?!)
+   • "Du wurdest dein ganzes Leben belogen." (Worüber?!)
+   • "Das ist der größte Fehler, den 99% machen." (Was?!)
+
+❌ REJECT (Kein Gap):
+   • "Hallo zusammen, heute möchte ich..."
+   • "In diesem Video erkläre ich..."
+   • "Lasst uns über X sprechen..."
+
+═══════════════════════════════════════════════════════════════
+HOOK-TYPEN NACH ARCHETYP
+═══════════════════════════════════════════════════════════════
+
+• PARADOX_STORY: Suche das FAZIT/die MORAL
   → Oft am ENDE der Story ("Deswegen sage ich: ...")
   → Dieter Lange Pattern: Moral von Minute 12 an Minute 0
 
 • CONTRARIAN_RANT: Suche die PROVOKANTESTE Aussage
-  → Oft mitten im Rant, wenn der Speaker emotional wird
   → "Das ist kompletter Bullshit" > "Lass mich erklären warum..."
+  → Maximale Ignition!
 
-• LISTICLE: Suche den BESTEN Listenpunkt
-  → Der überraschendste oder kontroverseste
+• LISTICLE: Suche den ÜBERRASCHENDSTEN Listenpunkt
+  → Der kontroverseste oder unerwartete
 
 • INSIGHT: Suche den KERN-SATZ
-  → Oft eine Wiederholung/Zusammenfassung am Ende
+  → Oft eine knackige Zusammenfassung am Ende
+  → Maximal 10 Wörter, maximaler Impact
 
 DU ANTWORTEST NUR MIT JSON."""
 

@@ -31,8 +31,13 @@ PHASE 3: BLUEPRINT ASSEMBLY ("Der Schnitt")
 
 from typing import List, Dict, Optional, Tuple
 from dataclasses import dataclass, field
+from difflib import SequenceMatcher
 import asyncio
 import time
+import logging
+
+# Setup logging
+logger = logging.getLogger(__name__)
 
 from models.base import get_model
 from models.schemas import (
@@ -125,6 +130,172 @@ def get_video_duration(segments: List[Dict]) -> float:
     if not segments:
         return 0.0
     return max(seg.get('end', seg.get('start', 0)) for seg in segments)
+
+
+# =============================================================================
+# FUZZY MATCHING für Text → Timestamp
+# =============================================================================
+
+def find_text_timestamp_fuzzy(
+    search_text: str,
+    segments: List[Dict],
+    min_similarity: float = 0.85
+) -> Optional[Tuple[float, float, str, bool]]:
+    """
+    Findet den Timestamp für einen Text mit Fuzzy Matching.
+    
+    PROBLEM: Die KI identifiziert Hook-Text, aber Whisper-Transkript
+    hat kleine Fehler oder die KI halluziniert leicht.
+    
+    LÖSUNG: 
+    1. Versuche exakten Match
+    2. Bei Fehlschlag: Fuzzy Match mit >85% Ähnlichkeit
+    3. Logge Warnung bei Fuzzy Match
+    
+    Args:
+        search_text: Der zu suchende Text (von KI identifiziert)
+        segments: Die Transkript-Segmente
+        min_similarity: Minimale Ähnlichkeit für Fuzzy Match (default 85%)
+        
+    Returns:
+        Tuple von (start_time, end_time, matched_text, was_fuzzy)
+        oder None wenn kein Match gefunden
+    """
+    if not search_text or not segments:
+        return None
+    
+    # Normalisiere Suchtext
+    search_normalized = search_text.lower().strip()
+    
+    # STEP 1: Exakter Match
+    for seg in segments:
+        seg_text = seg.get('text', '').lower().strip()
+        
+        if search_normalized in seg_text or seg_text in search_normalized:
+            # Exakter Match gefunden
+            return (
+                seg.get('start', 0),
+                seg.get('end', seg.get('start', 0) + 5),
+                seg.get('text', ''),
+                False  # was_fuzzy = False
+            )
+    
+    # STEP 2: Fuzzy Match - Suche besten Match
+    best_match = None
+    best_similarity = 0.0
+    
+    # Baue vollständigen Text für Sliding Window
+    full_text_segments = []
+    for seg in segments:
+        full_text_segments.append({
+            'start': seg.get('start', 0),
+            'end': seg.get('end', seg.get('start', 0) + 1),
+            'text': seg.get('text', '')
+        })
+    
+    # Sliding Window über Segmente (1-3 Segmente kombiniert)
+    for window_size in [1, 2, 3]:
+        for i in range(len(full_text_segments) - window_size + 1):
+            window_segs = full_text_segments[i:i + window_size]
+            window_text = " ".join(s['text'] for s in window_segs).lower().strip()
+            
+            # Berechne Ähnlichkeit
+            similarity = SequenceMatcher(
+                None, 
+                search_normalized, 
+                window_text
+            ).ratio()
+            
+            if similarity > best_similarity:
+                best_similarity = similarity
+                best_match = {
+                    'start': window_segs[0]['start'],
+                    'end': window_segs[-1]['end'],
+                    'text': " ".join(s['text'] for s in window_segs),
+                    'similarity': similarity
+                }
+            
+            # Auch Substring-Match prüfen
+            if len(search_normalized) > 20:
+                # Suche kürzeren Text im längeren
+                if len(window_text) > len(search_normalized):
+                    # Sliding window im Window
+                    for j in range(len(window_text) - len(search_normalized) + 1):
+                        substr = window_text[j:j + len(search_normalized)]
+                        sub_sim = SequenceMatcher(None, search_normalized, substr).ratio()
+                        if sub_sim > best_similarity:
+                            best_similarity = sub_sim
+                            best_match = {
+                                'start': window_segs[0]['start'],
+                                'end': window_segs[-1]['end'],
+                                'text': " ".join(s['text'] for s in window_segs),
+                                'similarity': sub_sim
+                            }
+    
+    # Prüfe ob bester Match über Schwelle liegt
+    if best_match and best_similarity >= min_similarity:
+        logger.warning(
+            f"⚠️ FUZZY MATCH verwendet ({best_similarity:.0%} Ähnlichkeit): "
+            f"Gesucht: '{search_text[:50]}...' → "
+            f"Gefunden: '{best_match['text'][:50]}...' @ {best_match['start']:.1f}s"
+        )
+        print(
+            f"      ⚠️ Fuzzy Match ({best_similarity:.0%}): "
+            f"'{search_text[:30]}...' → '{best_match['text'][:30]}...' @ {best_match['start']:.1f}s"
+        )
+        
+        return (
+            best_match['start'],
+            best_match['end'],
+            best_match['text'],
+            True  # was_fuzzy = True
+        )
+    
+    # Kein Match gefunden
+    if best_match:
+        logger.warning(
+            f"❌ Kein Match gefunden (beste Ähnlichkeit: {best_similarity:.0%}): "
+            f"'{search_text[:50]}...'"
+        )
+    
+    return None
+
+
+def find_hook_timestamp(
+    hook_text: str,
+    segments: List[Dict],
+    fallback_timestamp: Optional[float] = None
+) -> Tuple[float, float]:
+    """
+    Findet den Timestamp für einen Hook-Text.
+    
+    Wrapper um find_text_timestamp_fuzzy mit Fallback-Logik.
+    
+    Args:
+        hook_text: Der Hook-Text
+        segments: Die Transkript-Segmente
+        fallback_timestamp: Fallback-Timestamp wenn kein Match
+        
+    Returns:
+        Tuple von (start_time, end_time)
+    """
+    result = find_text_timestamp_fuzzy(hook_text, segments)
+    
+    if result:
+        start, end, matched_text, was_fuzzy = result
+        return start, end
+    
+    # Fallback
+    if fallback_timestamp is not None:
+        logger.warning(
+            f"❌ Hook-Text nicht gefunden, verwende Fallback @ {fallback_timestamp:.1f}s: "
+            f"'{hook_text[:50]}...'"
+        )
+        return fallback_timestamp, fallback_timestamp + 5.0
+    
+    # Letzter Fallback: Anfang des Videos
+    logger.error(f"❌ Hook-Text nicht gefunden und kein Fallback: '{hook_text[:50]}...'")
+    return 0.0, 5.0
 
 
 # =============================================================================
@@ -355,7 +526,35 @@ async def phase2_global_hook_hunting(
     hook_data = parse_global_hook_response(response.content)
     
     if hook_data and hook_data.get('hook_text'):
-        distance = hook_data.get('hook_timestamp', 0) - body.start
+        hook_text = hook_data.get('hook_text', '')
+        llm_timestamp = hook_data.get('hook_timestamp', 0)
+        
+        # FUZZY MATCHING: Finde den exakten Timestamp für den Hook-Text
+        # Die KI gibt einen Text zurück, aber Whisper-Transkript kann leicht abweichen
+        fuzzy_result = find_text_timestamp_fuzzy(hook_text, transcript_segments)
+        
+        if fuzzy_result:
+            # Fuzzy Match gefunden
+            actual_start, actual_end, matched_text, was_fuzzy = fuzzy_result
+            
+            if was_fuzzy:
+                print(f"         📍 Timestamp korrigiert: {llm_timestamp:.0f}s → {actual_start:.0f}s")
+            
+            hook_start = actual_start
+            hook_end = actual_end
+            final_hook_text = matched_text[:200]
+        else:
+            # Kein Match - verwende LLM Timestamp als Fallback
+            logger.warning(
+                f"Hook-Text nicht im Transkript gefunden, verwende LLM-Timestamp: "
+                f"'{hook_text[:50]}...' @ {llm_timestamp:.0f}s"
+            )
+            print(f"         ⚠️ Hook-Text nicht gefunden, verwende LLM-Timestamp @ {llm_timestamp:.0f}s")
+            hook_start = llm_timestamp
+            hook_end = hook_data.get('hook_end_timestamp', llm_timestamp + 5)
+            final_hook_text = hook_text[:200]
+        
+        distance = hook_start - body.start
         
         # Bestimme Source basierend auf Distanz
         if abs(distance) < 30:
@@ -365,13 +564,13 @@ async def phase2_global_hook_hunting(
         else:
             source = "from_earlier"  # Hook kommt vor dem Body
         
-        print(f"         ✅ Found hook: \"{hook_data['hook_text'][:50]}...\"")
-        print(f"            @ {hook_data['hook_timestamp']:.0f}s | Distance: {distance:.0f}s | Type: {hook_data.get('hook_type', 'unknown')}")
+        print(f"         ✅ Found hook: \"{final_hook_text[:50]}...\"")
+        print(f"            @ {hook_start:.0f}s | Distance: {distance:.0f}s | Type: {hook_data.get('hook_type', 'unknown')}")
         
         return FoundHook(
-            start=hook_data.get('hook_timestamp', body.end),
-            end=hook_data.get('hook_end_timestamp', hook_data.get('hook_timestamp', body.end) + 5),
-            text=hook_data.get('hook_text', '')[:200],
+            start=hook_start,
+            end=hook_end,
+            text=final_hook_text,
             source=source,
             distance_from_body=distance
         )

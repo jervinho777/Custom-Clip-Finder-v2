@@ -143,19 +143,24 @@ def calculate_engagement_multiplier(
     saves: int = 0
 ) -> float:
     """
-    Berechnet den Engagement-Multiplier.
+    Berechnet den Engagement-Multiplier mit gewichteten Interaktionen.
     
-    Belohnt echte Resonanz über reinen Clickbait.
+    GEWICHTUNG (echtes Engagement > Clickbait):
+    - Likes:  Faktor 1   (Basis, niedrige Hürde)
+    - Saves:  Faktor 10  (User will Content behalten → wertvoll)
+    - Shares: Faktor 20  (User empfiehlt aktiv → Königsdisziplin)
     
-    Formel:
-        engagement_rate = (shares + saves) / views
-        
-        - < 1%: 1.0 (normal)
-        - 1-5%: 1.0 + (rate - 0.01) * 5 → max 1.2
-        - > 5%: 1.2 + min(0.3, (rate - 0.05) * 2) → max 1.5
+    BENCHMARKS:
+    - >= 15% Weighted Engagement: GOD TIER  → 1.5x
+    - >= 10% Weighted Engagement: ELITE     → 1.3x
+    - >= 5%  Weighted Engagement: HIGH      → 1.15x
+    - >= 1%  Weighted Engagement: NORMAL    → 1.0x
+    - < 1%   Weighted Engagement: CLICKBAIT → 0.85x (Penalty!)
     
-    Shares + Saves sind wertvoller als Likes, weil sie
-    echte Weiterempfehlung bedeuten.
+    Beispiel:
+        100k Views, 5k Likes, 500 Saves, 100 Shares
+        weighted_score = 5000*1 + 500*10 + 100*20 = 12,000
+        engagement_rate = 12,000 / 100,000 = 12% → ELITE (1.3x)
     
     Args:
         views: Anzahl Views
@@ -164,27 +169,34 @@ def calculate_engagement_multiplier(
         saves: Anzahl Saves
         
     Returns:
-        Engagement-Multiplier (1.0 bis 1.5)
+        Engagement-Multiplier (0.85 bis 1.5)
     """
-    if views <= 0:
+    # Minimum Views für sinnvolle Berechnung
+    if views < 100:
         return 1.0
     
-    # Shares + Saves sind der Schlüssel für echte Resonanz
-    engagement_actions = shares + saves
-    engagement_rate = engagement_actions / views
+    # Weighted Interaction Score
+    # Shares & Saves treiben Viralität exponentiell mehr als Likes
+    weighted_score = (likes * 1.0) + (saves * 10.0) + (shares * 20.0)
+    engagement_rate = weighted_score / views
     
-    if engagement_rate < 0.01:
-        # < 1% - Normal
+    # Benchmarks für Multiplier
+    if engagement_rate >= 0.15:
+        # GOD TIER: 15%+ Weighted Engagement
+        return 1.5
+    elif engagement_rate >= 0.10:
+        # ELITE: 10-15% Weighted Engagement
+        return 1.3
+    elif engagement_rate >= 0.05:
+        # HIGH: 5-10% Weighted Engagement
+        return 1.15
+    elif engagement_rate >= 0.01:
+        # NORMAL: 1-5% Weighted Engagement
         return 1.0
-    elif engagement_rate < 0.05:
-        # 1-5% - Leichter Boost (bis 1.2)
-        # Linear von 1.0 bei 1% bis 1.2 bei 5%
-        return 1.0 + (engagement_rate - 0.01) * 5.0  # 0.01→1.0, 0.05→1.2
     else:
-        # > 5% - Starker Boost (bis 1.5)
-        # 1.2 + weiterer Bonus, aber gekappt bei 1.5
-        additional = min(0.3, (engagement_rate - 0.05) * 2.0)
-        return 1.2 + additional
+        # LOW QUALITY / CLICKBAIT: < 1% Weighted Engagement
+        # Penalty für Content der nur Views aber kein Engagement hat
+        return 0.85
 
 
 def calculate_viral_quality(
@@ -198,9 +210,12 @@ def calculate_viral_quality(
     """
     Berechnet die vollständige virale Qualität eines Clips.
     
+    FORMEL:
+        final_score = base_nvi * engagement_multiplier
+    
     Kombiniert:
     - NVI (Normalized Viral Index): Relative Performance zum Account
-    - Engagement-Multiplier: Belohnt echte Resonanz (Shares + Saves)
+    - Engagement-Multiplier: Gewichtetes Engagement (Shares > Saves > Likes)
     
     Args:
         views: Anzahl Views
@@ -218,23 +233,40 @@ def calculate_viral_quality(
     nvi = calculate_nvi(views, baseline)
     nvi_multiplier = calculate_nvi_multiplier(nvi)
     
-    # Engagement
+    # Weighted Engagement Rate (Likes*1 + Saves*10 + Shares*20)
+    weighted_score = (likes * 1.0) + (saves * 10.0) + (shares * 20.0)
+    weighted_engagement_rate = weighted_score / max(views, 1)
+    
+    # Engagement Multiplier
     engagement_multiplier = calculate_engagement_multiplier(views, likes, shares, saves)
-    engagement_rate = (shares + saves) / max(views, 1)
+    
+    # Engagement Tier
+    if weighted_engagement_rate >= 0.15:
+        engagement_tier = "GOD_TIER"
+    elif weighted_engagement_rate >= 0.10:
+        engagement_tier = "ELITE"
+    elif weighted_engagement_rate >= 0.05:
+        engagement_tier = "HIGH"
+    elif weighted_engagement_rate >= 0.01:
+        engagement_tier = "NORMAL"
+    else:
+        engagement_tier = "CLICKBAIT"
     
     # Kombinierter Score
-    # NVI-Multiplier * Engagement-Multiplier * Base Score
+    # final_score = base_nvi * engagement_multiplier
     final_score = base_score * nvi_multiplier * engagement_multiplier
     
     return {
         "final_score": round(final_score, 2),
         "nvi": round(nvi, 2),
         "nvi_multiplier": round(nvi_multiplier, 2),
-        "engagement_rate": round(engagement_rate, 4),
+        "weighted_engagement_rate": round(weighted_engagement_rate, 4),
         "engagement_multiplier": round(engagement_multiplier, 2),
+        "engagement_tier": engagement_tier,
         "baseline": round(baseline, 2),
         "is_elite": nvi > 10,
-        "has_high_engagement": engagement_rate > 0.05
+        "is_god_tier": engagement_tier == "GOD_TIER",
+        "is_clickbait": engagement_tier == "CLICKBAIT"
     }
 
 
