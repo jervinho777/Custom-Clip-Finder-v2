@@ -1,0 +1,573 @@
+{
+  "version": "3.0-robust",
+  "model": "claude-opus-4-5-20251101",
+  "generated_at": "2026-01-11T22:44:02.586125",
+  "statistics": {
+    "total_pairs_analyzed": 9,
+    "avg_match_ratio": "69.6%",
+    "hook_move_rate": "33.3%",
+    "avg_compression": "60.0%",
+    "pattern_distribution": {
+      "clean_cut": 3,
+      "compression": 4,
+      "hook_restructure": 2
+    },
+    "micro_edit_distribution": {
+      "preamble_removal": 2,
+      "sentence_start_cleanup": 1,
+      "filler_adjustment": 1,
+      "intro_addition": 1,
+      "name_correction": 1,
+      "massive_cut": 1,
+      "jump_cut": 1,
+      "ending_extension": 1,
+      "removal": 5,
+      "sentence_completion": 1,
+      "intro_removal": 1,
+      "transition_cut": 1,
+      "filler_removal": 2,
+      "tangent_removal": 2,
+      "personal_opinion_cut": 1,
+      "outro_trim": 1,
+      "context_removal": 3,
+      "filler_cut": 2,
+      "word_tightening": 1,
+      "redundancy_removal": 1,
+      "trailing_cut": 1,
+      "intro_trim": 1,
+      "redundancy_cut": 1,
+      "compression": 1,
+      "ending_trim": 2,
+      "meta_cut": 1,
+      "attribution_trim": 1,
+      "minor_cleanup": 1,
+      "smoothing": 1,
+      "cleanup": 1,
+      "hook_extraction": 1,
+      "question_compression": 1,
+      "tail_cut": 1
+    }
+  },
+  "top_rules": [
+    {
+      "rule": "RULE 1: Cut directly to the joke setup - remove all preamble and context-setting",
+      "occurrences": 1
+    },
+    {
+      "rule": "RULE 2: Preserve the complete punchline structure (setup + delivery + reaction)",
+      "occurrences": 1
+    },
+    {
+      "rule": "RULE 3: Keep the interviewer's reaction to show social proof of humor landing",
+      "occurrences": 1
+    },
+    {
+      "rule": "RULE 1: Add context/intro that wasn't in the source segment to establish topic clearly",
+      "occurrences": 1
+    },
+    {
+      "rule": "RULE 2: Cut personal anecdotes and tangential stories (VIP tours, museum visits) that don't add value",
+      "occurrences": 1
+    },
+    {
+      "rule": "RULE 3: Jump-cut between related examples, skipping conversational back-and-forth",
+      "occurrences": 1
+    },
+    {
+      "rule": "RULE 4: Remove host questions and reactions entirely",
+      "occurrences": 1
+    },
+    {
+      "rule": "RULE 5: Keep only the 'hook' examples (LVMH club + Lindt chocolate) and cut middle fluff",
+      "occurrences": 1
+    },
+    {
+      "rule": "RULE 1: Start with the most surprising/provocative statistic comparison to hook viewers immediately",
+      "occurrences": 1
+    },
+    {
+      "rule": "RULE 2: Cut introductory context and 'soft' lead-ins that delay the punch",
+      "occurrences": 1
+    },
+    {
+      "rule": "RULE 3: Remove self-deprecating humor and tangential commentary that dilutes the message",
+      "occurrences": 1
+    },
+    {
+      "rule": "RULE 4: Restructure to create a clear narrative arc: shocking facts → critique → solution/theory",
+      "occurrences": 1
+    },
+    {
+      "rule": "RULE 5: Complete interrupted sentences by pulling content from later in the source",
+      "occurrences": 1
+    },
+    {
+      "rule": "RULE 1: Remove transitional phrases and topic introductions ('Kommen wir zum nächsten Punkt und das sind unbenutzte Premium Kreditkarten')",
+      "occurrences": 1
+    },
+    {
+      "rule": "RULE 2: Cut tangential personal opinions and side commentary that don't add to the core argument",
+      "occurrences": 1
+    },
+    {
+      "rule": "RULE 3: Remove promotional/self-referential content (link mentions, comparison tool plugs)",
+      "occurrences": 1
+    },
+    {
+      "rule": "RULE 4: Eliminate redundant insurance discussion that dilutes the main point",
+      "occurrences": 1
+    },
+    {
+      "rule": "RULE 5: Keep the call-to-action that drives engagement (comment request)",
+      "occurrences": 1
+    },
+    {
+      "rule": "RULE 1: Start with a strong attribution/quote - 'Dann hat Richard Nixon gesagt' creates immediate authority and context",
+      "occurrences": 1
+    },
+    {
+      "rule": "RULE 2: Remove historical setup/context that delays the main point",
+      "occurrences": 1
+    }
+  ],
+  "patterns": [
+    {
+      "pair_id": "fuzzy_Gerhard Schröder - Fachkräftemangel Joke_transcript",
+      "pattern_type": "clean_cut",
+      "source_text": "so. Und das müssen wir verteidigen auf jeden Fall. Und gegen jedwede Sparmaßnahme, gar keine Frage. Aber mein Eindruck bin kein Experte auf dem Gebiet. Das ist so. Ich wollte dir jetzt sage ich etwas, wozu du gar nichts sagen musst. Die Regierung, unsere jetzige Regierung sagt ja immer, dass wir einen Fachkräftemangel haben. Und das stimmt, das fängt schon in der Regierung an. Aber was musst du mit? Das muss ich mit Empörung zurückweisen. Aber nur, weil angeblich hier das auch übertragen wird.",
+      "result_text": "Unsere jetzige Regierung sagt ja immer, dass wir einen Fachkräftemangel haben. Und das stimmt, das fängt schon in der Regierung an. Aber was musst du nicht sagen? Das muss ich mit Empörung zurück. Aber nur weil angeblich hier das auch übertragen wird.",
+      "match_ratio": 0.6190476190476191,
+      "compression_ratio": 0.5,
+      "hook_was_moved": false,
+      "sentences_removed": 6,
+      "ai_reasoning": "Editor identified a self-contained political joke (Fachkräftemangel/skilled worker shortage starts in government itself) and extracted it cleanly. The punchline was already in optimal position - no restructuring needed. The edit simply removes the meandering lead-up to let the joke land immediately. The reaction is kept to validate the humor.",
+      "editing_rules": [
+        "RULE 1: Cut directly to the joke setup - remove all preamble and context-setting",
+        "RULE 2: Preserve the complete punchline structure (setup + delivery + reaction)",
+        "RULE 3: Keep the interviewer's reaction to show social proof of humor landing"
+      ],
+      "micro_edits": [
+        {
+          "edit_type": "preamble_removal",
+          "description": "Cut 'so. Und das müssen wir verteidigen auf jeden Fall. Und gegen jedwede Sparmaßnahme, gar keine Frage. Aber mein Eindruck bin kein Experte auf dem Gebiet. Das ist so. Ich wollte dir jetzt sage ich etwas, wozu du gar nichts sagen musst.'",
+          "impact": "Removes 8 seconds of unrelated context, jumps straight to joke"
+        },
+        {
+          "edit_type": "sentence_start_cleanup",
+          "description": "Changed 'Die Regierung' to 'Unsere jetzige Regierung' - likely different transcription or minor audio edit",
+          "impact": "Cleaner sentence start for clip"
+        },
+        {
+          "edit_type": "filler_adjustment",
+          "description": "Minor word change from 'mit' to 'nicht sagen' in interviewer response",
+          "impact": "Transcription variance, core joke preserved"
+        }
+      ],
+      "confidence": 0.6190476190476191,
+      "longform_source": "/Users/jervinquisada/custom-clip-finder v2/data/cache/transcripts/Gregor Gysi im Gespräch mit Gerhard Schröder_transcript.json",
+      "clip_source": "/Users/jervinquisada/custom-clip-finder v2/data/cache/transcripts/Gerhard Schröder - Fachkräftemangel Joke_transcript.json"
+    },
+    {
+      "pair_id": "fuzzy_Einzelaktien LOOP_transcript",
+      "pattern_type": "compression",
+      "source_text": "Luxusmarken. Der CEO, der das Konglomerat quasi zusammengestellt hat, ist der reichste Mann der Welt mittlerweile. Das ist ein Franzose, Bernard Arnault. Genau. Und da habe ich eine Aktie, um in den Aktionärsclub reinzukommen. Die habe ich mir damals gekauft für eine Recherche für sogenannte. Wie heißt das nochmal? Sachdividenden. Und Teil der Sachdividende bei LVMH ist halt, dass du eine Aktie hast und in den Aktionärsclub reinkommst und dir dann Champagnerschlösser anschauen kannst in Frankreich und so weiter. Das ist halt ganz cool und dafür brauchst du nur eine Aktie. Da bin ich mittlerweile, ich glaube, 55 Prozent im Plus. Wusste ich gar nicht, Aber halt nur auf einen kleinen Betrag. Aber lohnt sich. Das ist dein Wester Club. Ist das cool oder warst du schon mal da? Ja, ich habe immer eine vergünstigte Tour in der Louis Vuitton Stiftung in Paris gemacht. Das ist so ein riesen Gebäude, aber tatsächlich die Champagnerkeller und so haben wir noch nicht besucht, aber wir haben uns das fest vorgenommen. Aber du kannst dann so eine VIP Tour machen oder sowas. Das ist so ein riesenkulturelles und auch ein Museum, aber hochmodern und nein, also es lohnt sich, also rein finanziell lohnt sich nicht. Es gibt andere Sachdividenden. In der Schweiz kannst du in so eine Pyjamahersteller investieren, wo du einmal im Jahr ein Pyjama kriegst. Oder wenn du sehr viel Geld hast, kannst du eine Lindt Aktie investieren, kriegst du Splat drei Kilo. Genau, oder dreieinhalb Kilo",
+      "result_text": "Ich habe eine Einzelaktie, LVMH, über 70 Marken haben die, glaube ich, also Luxusmarken. Der CEO, der das Konglomerat quasi zusammengestellt hat, ist der reichste Mann der Welt mittlerweile, ist ein Franzose, Ber Arnault, Bernard Arnault, genau. Und da habe ich eine Aktie, um in den Aktionärsclub reinzukommen. Die habe ich mir damals gekauft für eine Recherche für sogenannte Sachdividenden. Und Teil der Sachdividende bei LVMH ist halt, dass du eine Aktie hast und in den Aktionärsclub reinkommst und dir dann Champagnerschlösser anschauen kannst in Frankreich und so weiter. Das ist halt ganz cool, dafür brauchst du nur eine Aktie oder wenn du sehr viel Geld hast, kannst du eine Lind Aktie investieren, kriegst du Splat 3 Kilo, genau, oder dreieinhalb Kilo sogar jedes Jahr zugeschickt. Da brauchst du aber mindestens, ich glaube, kostet so eine Aktie eine einzige, ein bisschen Kleingeld, was man da braucht.",
+      "match_ratio": 0.5357142857142857,
+      "compression_ratio": 0.5934959349593496,
+      "hook_was_moved": true,
+      "sentences_removed": 15,
+      "ai_reasoning": "Editor created a tight 'two memorable examples' structure: LVMH champagne castles + Lindt chocolate. All personal stories and middle examples were cut to maintain focus on the most shareable/surprising Sachdividenden examples. The clip was bookended with content from outside the source segment to create proper intro and outro.",
+      "editing_rules": [
+        "RULE 1: Add context/intro that wasn't in the source segment to establish topic clearly",
+        "RULE 2: Cut personal anecdotes and tangential stories (VIP tours, museum visits) that don't add value",
+        "RULE 3: Jump-cut between related examples, skipping conversational back-and-forth",
+        "RULE 4: Remove host questions and reactions entirely",
+        "RULE 5: Keep only the 'hook' examples (LVMH club + Lindt chocolate) and cut middle fluff"
+      ],
+      "micro_edits": [
+        {
+          "edit_type": "intro_addition",
+          "description": "Added 'Ich habe eine Einzelaktie, LVMH, über 70 Marken haben die' - context from earlier in conversation",
+          "impact": "Establishes topic immediately for new viewers"
+        },
+        {
+          "edit_type": "name_correction",
+          "description": "Added stumble 'Ber Arnault, Bernard Arnault' for authenticity",
+          "impact": "Keeps natural speech pattern"
+        },
+        {
+          "edit_type": "massive_cut",
+          "description": "Removed entire section about being 55% up, VIP tours, Louis Vuitton foundation, pyjama manufacturer",
+          "impact": "Eliminates tangents, keeps focus on memorable examples"
+        },
+        {
+          "edit_type": "jump_cut",
+          "description": "Jumped from LVMH champagne example directly to Lindt chocolate example",
+          "impact": "Creates punchy comparison of two memorable Sachdividenden"
+        },
+        {
+          "edit_type": "ending_extension",
+          "description": "Added 'sogar jedes Jahr zugeschickt. Da brauchst du aber mindestens...' from later segment",
+          "impact": "Completes the Lindt example with price hook"
+        }
+      ],
+      "confidence": 0.5357142857142857,
+      "longform_source": "/Users/jervinquisada/custom-clip-finder v2/data/cache/transcripts/utomp3.com - Sein bestes Investment Finanzfluss über Aktien Startups und Privatleben  Tomary Podcast 003_1080p_transcript.json",
+      "clip_source": "/Users/jervinquisada/custom-clip-finder v2/data/cache/transcripts/Einzelaktien LOOP_transcript.json"
+    },
+    {
+      "pair_id": "fuzzy_viral_clip_transcript",
+      "pattern_type": "hook_restructure",
+      "source_text": "der wichtigste und nicht der einzige. Auch ein wichtiger Punkt. Okay, Vor allem ist es billig. 3 Cent pro Tag, das macht 11 Euro pro Jahr. Was hören wir? Oh, die Nahrungsergänzungsbranche, die stößt sich reich. 1,4 Milliarden Euro Umsatz im Jahr. Ich muss zugeben, 1,4 Milliarden, das hört sich echt viel an. Also wenn ich das auf dem Kontoauszug sehe, würde, müsste ich auch die Nullen erstmal zählen. Auf 80 Millionen Deutsche runtergerechnet sind es ungefähr 17,50 pro Jahr. Das sind nicht ganz ein 50 pro Monat. Hört sich jetzt nicht mal ganz so viel an. Überhaupt fehlt immer die Relation. Wusstet ihr, dass alleine McDonald nur in Deutschland 2020 einen Umsatz von 3,2 Milliarden gemacht hat? Das ist deutlich mehr als das Doppelte wie die ganze Nahrungsergänzungsbranche. Tabakindustrie 23 Milliarden, Alkoholindustrie 39 Milliarden, Pharmazie fast 50 Milliarden. Und es war noch bevor es mit der Impferei losging, mal drüber nachdenken. Aber auf der Nahrungsergänzung, da wird rumgehackt. Ich habe eine Vermutung, Ist nur eine Vermutung. Hier ist meine Vermutung. Mit einer gesunden Basisernährung und gezielt eingesetzten Nahrungsergänzung haben wir die Möglichkeit, Krankheiten in der Umwelt Ursache zu bekämpfen. Medikamente, die haben hauptsächlich das Ziel, erstmal Symptome zu lindern und damit wird aus einem",
+      "result_text": "Wusstet ihr, dass alleine McDonald nur in Deutschland 2020 einen Umsatz von 3,2 Milliarden gemacht hat? Das ist deutlich mehr als das Doppelte wie die ganze Nahrungsergänzungsbranche. Tabakindustrie 23 Milliarden, Alkoholindustrie 39 Milliarden, Pharmazie fast 50 Milliarden. Und es war noch bevor es mit der Impferei losging, mal drüber nachdenken. Aber auf der Nahrungsergänzung, da wird rumgehackt. Medikamente, die haben hauptsächlich das Ziel, erstmal Symptome zu lindern und damit wird aus einem Patienten Dauerkonsument. Ich habe eine Vermutung, ist nur eine Vermutung. Hier ist meine Vermutung. Mit einer gesunden Basisernährung und gezielt eingesetzten Nahrungsergänzung haben wir die Möglichkeit, Krankheiten in der Ursache zu bekämpfen.",
+      "match_ratio": 0.567741935483871,
+      "compression_ratio": 0.5121951219512195,
+      "hook_was_moved": true,
+      "sentences_removed": 12,
+      "ai_reasoning": "Editor identified the McDonald's comparison as the strongest hook and moved it to the start. Removed all defensive/justifying content about supplement costs being reasonable. The clip was restructured to flow: shocking industry comparisons → 'they attack supplements' → medication critique → conspiracy theory conclusion. A sentence fragment was completed using content that appears to come from beyond the source excerpt.",
+      "editing_rules": [
+        "RULE 1: Start with the most surprising/provocative statistic comparison to hook viewers immediately",
+        "RULE 2: Cut introductory context and 'soft' lead-ins that delay the punch",
+        "RULE 3: Remove self-deprecating humor and tangential commentary that dilutes the message",
+        "RULE 4: Restructure to create a clear narrative arc: shocking facts → critique → solution/theory",
+        "RULE 5: Complete interrupted sentences by pulling content from later in the source"
+      ],
+      "micro_edits": [
+        {
+          "edit_type": "removal",
+          "description": "Cut opening about '3 Cent pro Tag' and '11 Euro pro Jahr' cost breakdown",
+          "impact": "Removes defensive framing, jumps straight to attack"
+        },
+        {
+          "edit_type": "removal",
+          "description": "Removed 'Ich muss zugeben' self-deprecating commentary about counting zeros",
+          "impact": "Maintains authoritative tone"
+        },
+        {
+          "edit_type": "removal",
+          "description": "Cut '17,50 pro Jahr' and 'nicht ganz ein 50 pro Monat' calculations",
+          "impact": "Eliminates redundant math that slows pacing"
+        },
+        {
+          "edit_type": "removal",
+          "description": "Removed 'Überhaupt fehlt immer die Relation' transition phrase",
+          "impact": "Tighter cut to the McDonald's hook"
+        },
+        {
+          "edit_type": "sentence_completion",
+          "description": "Added 'Patienten Dauerkonsument' to complete the interrupted medication critique",
+          "impact": "Delivers the full provocative claim"
+        },
+        {
+          "edit_type": "removal",
+          "description": "Cut 'in der Umwelt' from 'Krankheiten in der Umwelt Ursache'",
+          "impact": "Cleaner phrasing: 'Krankheiten in der Ursache zu bekämpfen'"
+        }
+      ],
+      "confidence": 0.567741935483871,
+      "longform_source": "/Users/jervinquisada/custom-clip-finder v2/data/cache/transcripts/Patric Heizmann RN2021_transcript.json",
+      "clip_source": "/Users/jervinquisada/custom-clip-finder v2/data/cache/transcripts/viral_clip_transcript.json"
+    },
+    {
+      "pair_id": "fuzzy_AMEX (1)_transcript",
+      "pattern_type": "clean_cut",
+      "source_text": "Vergleich findet ihr alle relevanten Gebühren, um ein faires und transparentes Bankangebot für euch zu finden. Link in der Videobeschreibung. Kommen wir zum nächsten Punkt und das sind unbenutzte Premium Kreditkarten. Zugegebenermaßen, es gibt kaum eine Kreditkarte, die sich so angenehm in der Hand anfühlt wie eine Amex Platinum. Der Nachteil dieser Karte mit extrem vielen Features ist Nur, dass sie 720 im Jahr kostet. Deswegen sollte man sich bei dieser Karte repräsentativ natürlich für alle Premium Kreditkarten hier die Frage stellen, ob sich das Ganze für einen lohnt. Auf dem Papier bekommt man natürlich mit dieser Kreditkarte extrem viele Leistungen, beispielsweise 150 Restaurant Guthaben, 200 Reiseguthaben, 120 Entertainment Guthaben, wie beispielsweise für Netflix, Amazon Prime und Co. 200,006 Ride Gutschein und Zugang zu verschiedenen Flughafen Lounges. Allein diese Vorteile summieren sich auf auf 670 allerdings ist das immer noch weniger als die 720 und dazu muss man diese Budgettöpfe auch voll ausnutzen, sonst verfallen die nämlich wertlos auf Null. Viele nutzen diese Karten natürlich, weil es einen gewissen Komfort mit sich bringt und natürlich auch ein Prestige. Wirklich lohnen tun sich diese Angebote allerdings in den seltensten Fällen. Das gilt übrigens auch mit den damit verbundenen Versicherungsangeboten. Häufig sind diese nämlich implizit deutlich teurer, als wenn ihr die Versicherungen einzeln abschließen würdet. Ich persönlich besitze gar keine Kreditkarte, bin aber auch schon häufig am Vergleichen, ob es vielleicht nicht doch ein Angebot gibt, was sich für mich lohnen würde. Schreibt mir mal unten in die Kommentare, ob ihr solche Premiumkarten Angebote nutzt und ob ihr wollt, dass wir die mal miteinander vergleichen. Kommen wir zum nächsten Punkt und dieses sollte eigentlich ein Relikt aus der Vergangenheit sein und das",
+      "result_text": "Es gibt kaum eine Kreditkarte, die sich so angenehm in der Hand anfühlt wie eine Amex Platinum. Der Nachteil dieser Karte mit extrem vielen Featuren ist Nur, dass sie 720 im Jahr kostet. Deswegen sollte man sich bei dieser Karte repräsentativ natürlich für alle Premium Kreditkarten hier die Frage stellen, ob sich das Ganze für einen lohnt. Auf dem Papier bekommt man natürlich mit dieser Kreditkarte extrem viele Leistungen, beispielsweise 150 Restaurantguthaben, 200 Reiseguthaben, 120 Entertainment Guthaben, wie beispielsweise für Netflix, Amazon Prime und Co. 206 Ride Gutschein und Zugan zu verschiedenen Flughafen Lounges. Allein diese Vorteile summieren sich auf auf 670, allerdings ist das immer noch weniger als die 720 und dazu muss man diese Budgettöpfe auch voll ausnutzen, sonst verfallen die nämlich wertlos auf 0 Euro. Viele nutzen diese Karten natürlich, weil es einen gewissen Komfort mit sich bringt und natürlich auch ein Prestige. Wirklich lohnen tun sich diese Angebote allerdings in den seltensten Fällen. Schreibt mir mal unten in die Kommentare, ob ihr solche Premiumkarten Angebote nutzt und ob ihr wollt, dass wir die mal miteinander vergleichen.",
+      "match_ratio": 0.7565217391304347,
+      "compression_ratio": 0.6428571428571429,
+      "hook_was_moved": false,
+      "sentences_removed": 6,
+      "ai_reasoning": "Editor extracted a self-contained argument about premium credit cards. Removed all meta-content (transitions, promotions, personal asides) while preserving the complete logical flow: hook (feels good) → problem (costs 720€) → analysis (benefits only sum to 670€) → conclusion (rarely worth it) → CTA. The insurance tangent was cut as it diluted the focused credit card critique.",
+      "editing_rules": [
+        "RULE 1: Remove transitional phrases and topic introductions ('Kommen wir zum nächsten Punkt und das sind unbenutzte Premium Kreditkarten')",
+        "RULE 2: Cut tangential personal opinions and side commentary that don't add to the core argument",
+        "RULE 3: Remove promotional/self-referential content (link mentions, comparison tool plugs)",
+        "RULE 4: Eliminate redundant insurance discussion that dilutes the main point",
+        "RULE 5: Keep the call-to-action that drives engagement (comment request)"
+      ],
+      "micro_edits": [
+        {
+          "edit_type": "intro_removal",
+          "description": "Cut 'Vergleich findet ihr alle relevanten Gebühren...' promotional intro",
+          "impact": "Starts directly with compelling hook about the card"
+        },
+        {
+          "edit_type": "transition_cut",
+          "description": "Removed 'Kommen wir zum nächsten Punkt und das sind unbenutzte Premium Kreditkarten'",
+          "impact": "Cleaner entry into topic"
+        },
+        {
+          "edit_type": "filler_removal",
+          "description": "Changed 'Zugegebenermaßen' to direct statement",
+          "impact": "More assertive opening"
+        },
+        {
+          "edit_type": "tangent_removal",
+          "description": "Cut insurance comparison paragraph ('Das gilt übrigens auch...')",
+          "impact": "Keeps focus on main credit card argument"
+        },
+        {
+          "edit_type": "personal_opinion_cut",
+          "description": "Removed 'Ich persönlich besitze gar keine Kreditkarte...' section",
+          "impact": "Removes distraction, maintains authority"
+        },
+        {
+          "edit_type": "outro_trim",
+          "description": "Cut before next topic transition ('Kommen wir zum nächsten Punkt und dieses sollte...')",
+          "impact": "Clean ending"
+        }
+      ],
+      "confidence": 0.7565217391304347,
+      "longform_source": "/Users/jervinquisada/custom-clip-finder v2/data/cache/transcripts/y2mate.com - 13 Dinge für die du NIE wieder Geld verschwenden solltest_1440p (1)_transcript.json",
+      "clip_source": "/Users/jervinquisada/custom-clip-finder v2/data/cache/transcripts/AMEX (1)_transcript.json"
+    },
+    {
+      "pair_id": "fuzzy_War on drugs_REALITY_transcript",
+      "pattern_type": "compression",
+      "source_text": "dass wir uns das mittlerweile, dass man uns das verboten hat. Und das passierte Ende der ER Jahre. Man muss da in diese ganz spezielle Zeitbubble nochmal zurückgehen. Damals gab es auf der einen Seite die streng Konservativen in Amerika und dann gab es so diese kulturelle Gegenreaktion, die Hippies, die plötzlich sagten Love and Peace und wir sind alle eins und seid nicht so streng. Und dann gab es da gleichzeitig damals einen Vietnamkrieg und hat Richard Nixon Es kann ja irgendwie nicht sein, dass die jungen Leute jetzt alle einen auf Love and Peace machen, während wir doch in Vietnam gehen müssen und die Leute totschießen, weil eine Sache kannst du unter LSD oder unter solchen Substanzen nicht wirklich so richtig böse sein. Das geht nicht, weil du plötzlich spürst, wir sind doch alle irgendwie zusammen. Was muss ich denn die Michaela erschießen oder den Helmut, wenn mir das jemand sagt? Das ist doch völlig bescheuert. Und dann gab es diesen großen War on Drugs, den Krieg gegen die Drogen, der dann losging. Und da hat man erstmal einfach alles verboten. Man hat alles erstmal verteufelt und man hat gesagt, die Leute werden da verrückt und die spinnen und die sind nicht mehr lebensfähig und das Gehirn wird verbrezelt. Und also es gab eine richtige Medien, die über Jahrzehnte hinweg lief. Und perverserweise hat bis Ende der ER Jahre war LSD auch in der Psychiatrie, Psychiatrie und Psychotherapie ein total angewandtes Medikament. Man hat unendlich viele Studien gemacht dazu, hat deren Wirksamkeit und hat die Wirksamkeit nachvollzogen. Und dann war das von einem Tag auf den anderen vorbei. Ich habe Medizin studiert, ich habe in der",
+      "result_text": "Dann hat Richard Nixon gesagt, es kann ja irgendwie nicht sein, dass die jungen Leute jetzt alle einen auf Love and Peace machen, während wir doch in Vietnam gehen müssen und die Leute totschießen, Weil eine Sache kannst du unter LSD oder unter solchen Substanzen nicht wirklich so richtig böse sein. Das geht nicht, weil du plötzlich spürst, wir sind doch alle irgendwie zusammen. Wann muss ich denn die Michaela erschießen oder den Helmut? Und dann gab es diesen großen War on Drugs, den Krieg gegen die Drogen, der dann losging. Und da hat man erstmal einfach alles verboten, man alles erstmal verteufelt und man hat gesagt, die Leute werden da verrückt und die spinnen und die sind nicht mehr lebensfähig und das Gehirn wird verbrezelt. Es gab eine richtige Medienkampagne, die über Jahrzehnte hinweg lief. Und perverserweise hat bis Ende der er Jahre war LSD auch in der Psychiatrie und Psychotherapie ein total angewandtes Medikament. Man hat unendlich viele Studien gemacht dazu, hat die Wirksamkeit nachvollzogen und dann war das von einem Tag auf den anderen vorbei.",
+      "match_ratio": 0.7675438596491229,
+      "compression_ratio": 0.6402877697841727,
+      "hook_was_moved": false,
+      "sentences_removed": 7,
+      "ai_reasoning": "Editor preserved the core narrative arc (Nixon's logic → LSD effects → War on Drugs → ironic medical history) while stripping away contextual padding. The clip now starts with a provocative political statement and ends on dramatic irony, creating a complete story without the meandering setup or personal asides.",
+      "editing_rules": [
+        "RULE 1: Start with a strong attribution/quote - 'Dann hat Richard Nixon gesagt' creates immediate authority and context",
+        "RULE 2: Remove historical setup/context that delays the main point",
+        "RULE 3: Cut rhetorical questions that dilute the impact ('wenn mir das jemand sagt? Das ist doch völlig bescheuert')",
+        "RULE 4: Tighten sentence structures by removing redundant phrases",
+        "RULE 5: End on a dramatic contrast/irony ('von einem Tag auf den anderen vorbei')"
+      ],
+      "micro_edits": [
+        {
+          "edit_type": "context_removal",
+          "description": "Cut entire opening about 'Zeitbubble', Hippies vs Conservatives setup",
+          "impact": "Jumps straight to Nixon's perspective - more direct"
+        },
+        {
+          "edit_type": "filler_cut",
+          "description": "Removed 'wenn mir das jemand sagt? Das ist doch völlig bescheuert' after rhetorical question",
+          "impact": "Keeps emotional punch without over-explaining"
+        },
+        {
+          "edit_type": "word_tightening",
+          "description": "Changed 'Was muss ich denn' to 'Wann muss ich denn'",
+          "impact": "Cleaner phrasing"
+        },
+        {
+          "edit_type": "redundancy_removal",
+          "description": "Cut 'hat deren Wirksamkeit und' - kept only 'hat die Wirksamkeit nachvollzogen'",
+          "impact": "Removes stuttering/repetition"
+        },
+        {
+          "edit_type": "trailing_cut",
+          "description": "Removed 'Ich habe Medizin studiert, ich habe in der'",
+          "impact": "Ends on powerful irony instead of personal tangent"
+        }
+      ],
+      "confidence": 0.7675438596491229,
+      "longform_source": "/Users/jervinquisada/custom-clip-finder v2/data/cache/transcripts/TEIL 1 - Befrüßung, Coaching & Workshops_transcript.json",
+      "clip_source": "/Users/jervinquisada/custom-clip-finder v2/data/cache/transcripts/War on drugs_REALITY_transcript.json"
+    },
+    {
+      "pair_id": "fuzzy_Lebenslinie V2_NOCTA_transcript",
+      "pattern_type": "compression",
+      "source_text": "und Seminare. Der ist mir extrem wichtig. Angenommen, das ist dein Leben. Dein Leben findet statt auf einer Lebenslinie. Hier ist die Geburt, da drüben ist das Ende. Dann ist es bei sehr vielen Menschen so, dass die meisten relevanten Lebensereignisse in Kindheit und Jugend stattfinden. Die kommen auf die Welt, die lernen, die Eltern kennen, die Geschwister kennen sie, dann krabbeln, laufen, Kindergarten, Schule, lesen, schreiben, rechnen, Lehrer ärgern, knutschen, machen einen Tanzkurs. Für das Kind sind zwei Wochen ein nicht überschaubar langer Zeitraum. Problem ist, bei vielen Menschen fängt direkt danach der Anfang vom Ende an. Ausbildung, wir lernen unseren Partner kennen, wir lernen den richtigen Partner kennen. Kind kommt auf die Welt oder Beförderung, Selbstständigkeit, Rente. Und jetzt kommt kommen schon die Sternensinger ins Altersheim. Und jetzt sagen wir mal ganz ehrlich, ist das nicht dramatisch? Das heißt nichts anderes, dass du dein Leben nur noch verwaltest. Du kennst deinen Job, du kennst den Weg in die Arbeit, du kennst die Projekte, du kennst die Menschen. Langweilig, Du kennst deine Pizzeria. In deiner Pizzeria, da bestellst du deine Pizza Nummer 8 oder die 13, die bringt dir deine Kellnerin Und dann heißt Boah, ist schon wieder Weihnachten. An den Kindern sieht man, wie die Zeit vergeht. Und jetzt Achtung, ich glaube, das ist ein Zeichen, dass du irgendwo gestrandet bist und deswegen ruckel dein Boot los. Da draußen gibt es ein Leben für dich. Los raus. Mein Tipp für heute. Der letzte Tipp, den ich es heute geben Bitte ruckel los und dann los. Mach weitere Erfahrungen. Nimm anderen Weg in die Arbeit. Lies Bücher zu denen, die dich berühren. Triff Menschen, die du nie vorher gesehen hast. Geh an Orte, wo du noch niemals warst. Follow deinem Flow, OK, follow the flow. Und ab und zu machst du mal ein bisschen Pause. Genießt einfach die Spur, wo du gerade im Fluss bist und Boah, ist das Ganze geil. Und mach auch mal richtig verrückte Dinge. Also in ",
+      "result_text": "Dein Leben findet statt auf einer Lebenslinie. Hier ist die Geburt, da drüben ist das Ende. Die kommen auf die Welt, die lernen die Eltern kennen, die Geschwister kennen sie. Dann krabbeln, laufen, Kindergarten, Schule, lesen, schreiben, rechnen, Lehre, ärgern, knutschen, machen, Tanzkurs. Für das Kind sind zwei Wochen ein nicht überschaubar langer Zeitraum. Problem ist, bei vielen Menschen fängt direkt danach der Anfang vom Ende an. Ausbildung, Wir lernen unseren Partner kennen, wir lernen den richtigen Partner. Kind kommt auf die Welt oder Beförderung, Selbstständigkeit, Rente Und jetzt kommen schon die Sternensinger ins Altersheim. Das heißt nichts anderes, dass du dein Leben nur noch verwaltest. Du kennst deinen Job, du kennst den Weg in die Arbeit, du kennst die Projekte, du kennst die Menschen, du kennst deine Pizzeria. In deiner Pizzeria, da bestellst du deine Pizza Nummer 8 oder die 13, die bringt dir deine Kellnerin und dann heißt Boah, ist schon wieder Weihnachten. Ich glaube, das ist ein Zeichen, dass du irgendwo gestrandet bist. Und deswegen mein Tipp für heute, der letzte Mach weitere Erfahrungen. Nimm anderen Weg in die Arbeit. Lies Bücher zu denen, die dich berühren. Triff Menschen, die du nie vorher gesehen hast. Geh an Orte, wo du noch niemals warst. Follow deinem Flow und ab und zu mal machst du mal ein bisschen Pause. Genießt einfach die Spur, wo du gerade im Fluss bist und boah, ist das Ganze geil. Und mach auch mal richtig verrückte Dinge. Also in der Pizzeria bestellst du mal die 15 oder probierst mal oder du probierst mal die Kellnerin aus.",
+      "match_ratio": 0.8333333333333334,
+      "compression_ratio": 0.7237569060773481,
+      "hook_was_moved": false,
+      "sentences_removed": 14,
+      "ai_reasoning": "Editor performed surgical compression to maintain the powerful life-timeline metaphor while removing all meta-commentary, rhetorical padding, and repetitive motivational phrases. The core narrative arc (birth-to-death timeline → life becomes routine → call to action → specific tips → comedic ending) is preserved but streamlined. The edit ends on the provocative 'probierst mal die Kellnerin aus' joke rather than trailing into an unrelated personal anecdote.",
+      "editing_rules": [
+        "RULE 1: Remove meta-commentary and setup phrases ('Der ist mir extrem wichtig', 'Angenommen')",
+        "RULE 2: Cut rhetorical questions and emotional interjections that slow pacing ('Und jetzt sagen wir mal ganz ehrlich, ist das nicht dramatisch?')",
+        "RULE 3: Remove repetitive call-to-action phrases, keep only the actionable advice",
+        "RULE 4: Eliminate filler transitions ('Und jetzt Achtung', 'OK', 'Mein. Erklärtes')",
+        "RULE 5: Cut incomplete or trailing sentences at the end"
+      ],
+      "micro_edits": [
+        {
+          "edit_type": "intro_trim",
+          "description": "Removed 'und Seminare. Der ist mir extrem wichtig. Angenommen, das ist dein Leben.'",
+          "impact": "Jumps directly into the concept without preamble"
+        },
+        {
+          "edit_type": "filler_removal",
+          "description": "Cut 'Langweilig' standalone interjection",
+          "impact": "Maintains flow without interruption"
+        },
+        {
+          "edit_type": "redundancy_cut",
+          "description": "Removed 'An den Kindern sieht man, wie die Zeit vergeht'",
+          "impact": "Avoids restating the obvious point"
+        },
+        {
+          "edit_type": "compression",
+          "description": "Condensed 'ruckel dein Boot los. Da draußen gibt es ein Leben für dich. Los raus. Mein Tipp für heute. Der letzte Tipp, den ich es heute geben Bitte ruckel los und dann los' into 'mein Tipp für heute, der letzte'",
+          "impact": "Removes repetitive motivational padding"
+        },
+        {
+          "edit_type": "ending_trim",
+          "description": "Cut 'Ich möchte kerngesund im Alter von 104 Jahren beim Joggen. Vom Auto' incomplete sentence",
+          "impact": "Ends on strong comedic punchline about the waitress"
+        }
+      ],
+      "confidence": 0.8333333333333334,
+      "longform_source": "/Users/jervinquisada/custom-clip-finder v2/data/cache/transcripts/Dr_Stefan_Frädrich_transcript.json",
+      "clip_source": "/Users/jervinquisada/custom-clip-finder v2/data/cache/transcripts/Lebenslinie V2_NOCTA_transcript.json"
+    },
+    {
+      "pair_id": "fuzzy_Katharina Thalbach - Altern_transcript",
+      "pattern_type": "clean_cut",
+      "source_text": "Stunden geredet und eine Stunde gedreht. Das war der Unterschied. Das Geld spielte so scheinbar keine Rolle. Ja, scheinbar nicht. Später haben wir natürlich gemerkt, dass es eine große Rolle spielt, klar, aber zunächst nicht. Wir waren gerade bei dem Wechsel in den Westen. Ging das schnell. Wir waren in der Pause jetzt beim Älterwerden. Das war doch in der Pause. Das war doch privat. Hier werden wir doch nur persönlich so ich und nicht älter. Das fand ich so spannend. Nein, ich habe ihr bloß erklärt, dass die meisten Leute falsch alt werden. Die werden einfach so alt, dann tut ihnen Fuß weh, dann hören sie nicht mehr richtig. Und das geht so nicht. Ich habe gesagt, man muss beschließen, das Alter zu genießen. Dazu gehören drei Sachen. Als ich 60 wurde, erlebte ich wirklich das erste Mal, dass ein junger Mann auf mich zukam und sagte, Darf ich ihn in die Tasche tragen? Da habe ich gesagt, nun werden Sie mal nicht komisch, kann ich schon noch alleine. Großer Fehler, habe ich ihr gesagt. Ich hätte sagen müssen, selbstverständlich. Und da steht noch ein Koffer. Das heißt, man muss die Privilegien des Alters annehmen. Der zweite Irrtum bei den Alten besteht darin, dass sie immer denken, sie müssen alles vererben. Nein, nein, nein, nein. Wenn man einen Herzenswunsch hatte und man kann sich die Erfüllung leisten, dann soll man sich die Erfüllung auch leisten, selbst wenn die Tochter. Einen Moment schief guckt. Und das dritte das Man darf im Alter nicht den ganzen Tag über Krankheiten quatschen. Davon wird man nicht gesund, Glauben Sie mir das. Aber sie redet gerne über Krankheiten.",
+      "result_text": "Ich hab ihr bloß erklärt, dass die meisten Leute falsch alt werden. Die werden einfach so alt, dann tut ihnen Fuß weh, dann hören sie nicht mehr richtig und das geht so nicht. Ich hab gesagt, man muss beschließen, das Alter zu genießen. Dazu gehören drei Sachen. Als ich 60 wurde, erlebte ich wirklich das erste Mal, dass ein junger Mann auf mich zukam und darf ich Ihnen in die Tasche tragen? Da habe ich gesagt, nun wären Sie mal nicht komisch, kann ich schon noch alleine. Großer Fehler, habe ich ihr gesagt. Ich hätte sagen müssen, selbstverständlich. Und da steht noch ein Koffer. Das heißt, man muss die Privilegien des Alters annehmen. Der zweite Irrtum bei den Alten besteht darin, dass sie immer denken, sie müssen alles vererben. Nein, nein, nein, nein. Wenn man einen Herzenswunsch hatte und man kann sich die Erfüllung leisten, dann soll man sich die Erfüllung auch leisten. Das dritte das Man darf im Alter nicht den ganzen Tag über Krankheiten quatschen. Davon wird man nicht gesund. Glauben Sie.",
+      "match_ratio": 0.7589285714285714,
+      "compression_ratio": 0.635036496350365,
+      "hook_was_moved": false,
+      "sentences_removed": 14,
+      "ai_reasoning": "Editor extracted a complete, self-contained wisdom segment about aging well. The source had this gem buried after irrelevant production talk and interrupted by meta-discussion. By cutting straight to 'Ich hab ihr bloß erklärt' and removing all framing, the clip becomes a punchy 3-point life advice monologue. The structure (hook + 3 rules) was preserved intact while trimming personal asides that would confuse viewers unfamiliar with the speaker.",
+      "editing_rules": [
+        "RULE 1: Cut all meta-conversation and context-setting dialogue before the main content begins",
+        "RULE 2: Remove host interjections and side comments that interrupt the speaker's flow",
+        "RULE 3: Trim softening phrases and qualifiers that dilute the message",
+        "RULE 4: End clip slightly before natural conclusion to maintain engagement"
+      ],
+      "micro_edits": [
+        {
+          "edit_type": "context_removal",
+          "description": "Removed entire opening about filming differences, money, and transition to West",
+          "impact": "Eliminates 30+ seconds of irrelevant backstory"
+        },
+        {
+          "edit_type": "meta_cut",
+          "description": "Cut host's interjection about 'Älterwerden' and 'privat/persönlich' discussion",
+          "impact": "Removes confusion about what was on/off camera"
+        },
+        {
+          "edit_type": "attribution_trim",
+          "description": "Removed 'selbst wenn die Tochter einen Moment schief guckt'",
+          "impact": "Keeps advice universal, removes personal family detail"
+        },
+        {
+          "edit_type": "ending_trim",
+          "description": "Cut final line 'Aber sie redet gerne über Krankheiten'",
+          "impact": "Ends on wisdom rather than deflecting joke"
+        },
+        {
+          "edit_type": "minor_cleanup",
+          "description": "Slight trim of 'Glauben Sie mir das' to 'Glauben Sie'",
+          "impact": "Tighter ending"
+        }
+      ],
+      "confidence": 0.7589285714285714,
+      "longform_source": "/Users/jervinquisada/custom-clip-finder v2/data/cache/transcripts/Gregor Gysi & Katharina Thalbach_transcript.json",
+      "clip_source": "/Users/jervinquisada/custom-clip-finder v2/data/cache/transcripts/Katharina Thalbach - Altern_transcript.json"
+    },
+    {
+      "pair_id": "fuzzy_Jan Böhmermann - Gysi Doppelgänger_transcript",
+      "pattern_type": "compression",
+      "source_text": "erzählt. Umgekehrt Nein, nein, nein, nein. Das ist psychologisch falsch beobachtet. Wenn es mich getroffen hätte, hätte ich das nie erzählt. Dann würde ich das verschweigen. Nein, es trifft einen und man macht mit Humor das Beste draus. Nein. Und das Zweite, was mir passiert ist, war, das müssen Sie sich auch anhören. Also aus dem gleichen Grund erzähle ich das, dass ein Österreicher zu mir gesagt hat, dass ich aussehe wie der Gysi. Und da habe ich Ja, das stimmt, das wird mir immer wieder gesagt. Das ist furchtbar. Und dann sind wir beide so über Gysi hergezogen. Das hat mir aber genügend Bereich. Wissen Sie was? Ohne Witz, ich bin letztens in Köln in der Spichernstrasse in einem Restaurant gewesen und da denke ich am Nebentisch Mensch, mein Gott, der Gysi, der sieht aber schlecht aus. Bis ich dann festgestellt habe, es ist zwar Alfred B. Ne, und ich hab da Nein. So, die Veranstaltung ist beendet. Ich",
+      "result_text": "Dass ein Österreicher zu mir gesagt hat, dass ich aussehe wie der Gysi. Da habe ich gesagt, ja, das stimmt, das wird mir immer wieder gesagt, das ist furchtbar. Und dann sind wir beide so über Gysi hergezogen. Ich bin letztens in Köln in der Spichernstrasse in einem Restaurant gewesen und da denke am Nebentisch, Mensch, mein Gott, der Gysi, der sieht aber schlecht aus. Bis ich dann festgestellt habe, es ist zwar Alfred Bieble. So, die Veranstaltung ist beendet.",
+      "match_ratio": 0.65,
+      "compression_ratio": 0.5,
+      "hook_was_moved": false,
+      "sentences_removed": 12,
+      "ai_reasoning": "Editor extracted a clean two-part joke structure (Gysi lookalike + restaurant mirror gag) by removing all conversational debris. The source had meta-discussion about why stories are told, which kills comedic momentum. The clip preserves the setup-punchline-callback structure while eliminating ~45% of filler that diluted the humor.",
+      "editing_rules": [
+        "RULE 1: Remove all meta-commentary and self-referential explanations ('Also aus dem gleichen Grund erzähle ich das')",
+        "RULE 2: Cut filler phrases and hesitations ('Und da habe ich Ja' → 'Da habe ich gesagt, ja')",
+        "RULE 3: Remove interruptions and tangential setup ('Das hat mir aber genügend Bereich. Wissen Sie was? Ohne Witz')",
+        "RULE 4: Keep the punchline structure intact but trim the trailing reaction ('Ich' at end removed)",
+        "RULE 5: Eliminate redundant context that doesn't serve the joke ('Nein, nein, nein' debate removed)"
+      ],
+      "micro_edits": [
+        {
+          "edit_type": "context_removal",
+          "description": "Removed entire psychological debate about why he tells stories",
+          "impact": "Jumps straight into the anecdote"
+        },
+        {
+          "edit_type": "filler_cut",
+          "description": "Cut 'Also aus dem gleichen Grund erzähle ich das'",
+          "impact": "Cleaner story entry"
+        },
+        {
+          "edit_type": "smoothing",
+          "description": "Changed 'Und da habe ich Ja' to 'Da habe ich gesagt, ja'",
+          "impact": "More natural flow"
+        },
+        {
+          "edit_type": "tangent_removal",
+          "description": "Removed 'Das hat mir aber genügend Bereich. Wissen Sie was? Ohne Witz'",
+          "impact": "Direct transition to second joke"
+        },
+        {
+          "edit_type": "cleanup",
+          "description": "Removed 'Ne, und ich hab da Nein' before punchline",
+          "impact": "Clean comedic landing"
+        }
+      ],
+      "confidence": 0.65,
+      "longform_source": "/Users/jervinquisada/custom-clip-finder v2/data/cache/transcripts/Gregor Gysi & Jan Böhmermann (2017)_transcript.json",
+      "clip_source": "/Users/jervinquisada/custom-clip-finder v2/data/cache/transcripts/Jan Böhmermann - Gysi Doppelgänger_transcript.json"
+    },
+    {
+      "pair_id": "fuzzy_Dieter Lange Viral Clip_transcript",
+      "pattern_type": "hook_restructure",
+      "source_text": "nicht werden. Maler musst du sein, das kannst du nicht werden. Van Gogh ist Maler, malt daraufhin und hat posthum riesigen Erfolg. Was nicht gegeben ist, versuch es niemals zu erjagen. Das ist vergebliche Liebesmühe. In Schillers Noch keinen sah ich glücklich enden, der mit einem goldenen Löffel im Mund geboren wurde. Das heiß Allein die Tatsache, dass man dich in einem reichen Elternhaus geboren hat, heißt noch nicht, dass in dir Talente schlummern, die nicht in jedem anderen auch ohne Geld vorhanden sind. Was ist passiert in der Erziehung? Horde Kinder sitzt am Straßenrand, gelangweilt, wie Kinder manchmal sind. Ein alter Mann kommt die Straße entlang und sie beschließen ihn zu ärgern. Wenn Kinder etwas entschieden haben, dann Vollgas. Als sie von ihm ablassen, sagt der alte Mann Ich komme auch morgen hier vorbei. Ich muss jeden Tag hier durch. Wer mich morgen so schön ärgert, bekommt von mir einen Euro. Super, kriegen wir noch Geld dafür. Nächster Der Alte kommt. Sie ärgern ihn. Jedes Kind bekommt einen Euro. Als er geht, sagt Wer mich morgen wieder so schön ärgert, bekommt von mir 50 Cent. Moment, 50 Cent ist ja nur die Hälfte, ist ja Betrug. Immerhin. Als der Alte am nächsten Tag kommt, ärgern sie ihn aber sehr halbherzig Und es gibt 50 Cent. Als der Mann diesmal geht, verspricht er 10 Cent für jeden, der mich morgen ärgert. Für 10 Cent ärgert ihn kaum noch ein Kind. Und als er diesmal geht, verspricht er gar nichts mehr. Das Die Kinder ärgern ihn nicht mehr. Was ist hier passiert? Was passiert ist? Die Freude am Tun an sich ist ersetzt worden durch Belohnung und dann hast du verloren. Arbeite niemals für Geld. Achtung,",
+      "result_text": "Arbeite niemals für Geld. Horde Kinder sitzt am Straßenrand gelangweilt, wie Kinder manchmal sind. Ein alter Mann kommt die Straße entlang und sie beschließen ihn zu ärgern. Wenn Kinder etwas entschieden haben, dann Vollgas. Als sie von ihm ablassen, sagt der Alte Ich komme auch morgen hier vorbei. Ich muss jeden Tag hier durch. Wer mich morgen so schön ärgert, bekommt von mir einen Euro. Super, kriegen wir noch Geld dafür. Nächster Der Alte kommt. Sie ärgern ihn. Jedes Kind bekommt einen Euro. Als er geht, sagt Wer mich morgen wieder so schön ärgert, bekommt von mir 50 Cent. Moment, 50 Cent ist ja nur die Hälfte, ist ja Betrug. Immerhin. Als der Alte am nächsten Tag kommt, ärgern sie ihn aber sehr halbherzig Und es gibt 50 Cent. Als der Mann diesmal geht, verspricht er 10 Cent für jeden, der mich morgen ärgert. Für 10 Cent ärgert ihn kaum noch ein Kind und als er diesmal geht, verspricht er gar nichts mehr. Das Die Kinder ärgern ihn nicht mehr. Was ist hier passiert? Die Freude am Tun an sich ist ersetzt worden durch Belohnung.",
+      "match_ratio": 0.7787234042553192,
+      "compression_ratio": 0.6491228070175439,
+      "hook_was_moved": true,
+      "sentences_removed": 10,
+      "ai_reasoning": "The editor identified that the powerful hook ('Arbeite niemals für Geld') was buried near the end. By front-loading this provocative statement, they create instant engagement. The parable about the children is kept intact as it's the 'story proof' that makes the hook memorable. All abstract philosophical context was cut because the story itself delivers the lesson more effectively than explanation.",
+      "editing_rules": [
+        "RULE 1: Extract the provocative conclusion ('Arbeite niemals für Geld') and move it to the very beginning as the hook",
+        "RULE 2: Remove all philosophical/contextual preamble that dilutes the story's impact",
+        "RULE 3: Keep the narrative story intact - it's the 'proof' for the hook statement",
+        "RULE 4: Cut the rhetorical question repetition ('Was passiert ist?') - keep only one",
+        "RULE 5: End on the moral lesson, remove any trailing content after the payoff"
+      ],
+      "micro_edits": [
+        {
+          "edit_type": "hook_extraction",
+          "description": "Moved 'Arbeite niemals für Geld' from near the end to the opening line",
+          "impact": "Creates immediate curiosity - viewer wants to know WHY"
+        },
+        {
+          "edit_type": "preamble_removal",
+          "description": "Cut entire Van Gogh/Schiller philosophical intro about talent and wealth",
+          "impact": "Removes 'lecture' feel, jumps straight to engaging story"
+        },
+        {
+          "edit_type": "question_compression",
+          "description": "Removed 'Was passiert ist?' echo after 'Was ist hier passiert?'",
+          "impact": "Tighter pacing, avoids redundancy"
+        },
+        {
+          "edit_type": "tail_cut",
+          "description": "Removed 'und dann hast du verloren. Achtung...' after the moral",
+          "impact": "Ends cleanly on the insight without trailing off"
+        }
+      ],
+      "confidence": 0.7787234042553192,
+      "longform_source": "/Users/jervinquisada/custom-clip-finder v2/data/cache/transcripts/Dieter Lange_transcript.json",
+      "clip_source": "/Users/jervinquisada/custom-clip-finder v2/data/cache/transcripts/Dieter Lange Viral Clip_transcript.json"
+    }
+  ],
+  "actionable_insights": [
+    {
+      "insight": "Hook Restructuring is Critical",
+      "detail": "3 of 9 clips (33%) moved the hook.",
+      "action": "ALWAYS check if the ending contains a better hook.",
+      "priority": "HIGH"
+    },
+    {
+      "insight": "Heavy Compression Applied",
+      "detail": "Average: 60% of original kept.",
+      "action": "Be aggressive in cutting filler words and context.",
+      "priority": "HIGH"
+    }
+  ]
+}

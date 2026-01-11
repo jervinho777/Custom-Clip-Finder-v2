@@ -1,11 +1,20 @@
 # Custom Clip Finder v2 Configuration
 # API Keys are loaded from .env file
 
+# =============================================================================
+# LLM Configuration (Strikte Vorgabe)
+# =============================================================================
+llm:
+  provider: "anthropic"
+  model: "claude-opus-4-5-20251101"  # Strikte ID Vorgabe - Opus 4.5 Latest
+  temperature: 0.0
+  max_tokens: 4096  # Opus 4.5 Output Capacity nutzen
+
 models:
   # Stage 1: DISCOVER - 5 AI Ensemble (verified working models from V1)
   discovery:
     - provider: anthropic
-      model: claude-opus-4-20250514  # Opus 4.5 💎
+      model: claude-opus-4-5-20251101  # Opus 4.5 Latest 💎
       role: synthesis
     - provider: openai
       model: gpt-5.2  # GPT-5.2 🔥
@@ -22,13 +31,13 @@ models:
 
   # Stage 2: COMPOSE - Debate
   compose:
-    primary: claude-opus-4-20250514  # Opus for quality
+    primary: claude-opus-4-5-20251101  # Opus 4.5 for quality
     fallback: claude-sonnet-4-5-20250929  # Sonnet as fallback
     rounds: 3
 
   # Stage 3: VALIDATE - Final Decision  
   validate:
-    model: claude-opus-4-20250514  # Opus for final decisions
+    model: claude-opus-4-5-20251101  # Opus 4.5 for final decisions
     # Sonnet für schnellere Validierung wenn Budget knapp
     fast_model: claude-sonnet-4-5-20250929
 

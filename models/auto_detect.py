@@ -52,10 +52,10 @@ def _detect_anthropic_models() -> Dict[str, str]:
     """Detect latest Anthropic models."""
     # Anthropic doesn't have a list_models endpoint
     # Use known latest models (updated manually when new versions release)
-    # These are the latest verified working models as of 2026-01-02
+    # STRIKTE VORGABE: claude-opus-4-5-20251101 als Hauptmodell
     
     models = {
-        "opus": "claude-opus-4-20250514",  # Opus 4.5 (latest)
+        "opus": "claude-opus-4-5-20251101",  # Opus 4.5 Latest (STRIKTE VORGABE)
         "sonnet": "claude-sonnet-4-5-20250929",  # Sonnet 4.5 (latest)
         "haiku": "claude-3-5-haiku-20241022",  # Haiku 3.5 (latest)
     }
@@ -66,6 +66,58 @@ def _detect_anthropic_models() -> Dict[str, str]:
         print("⚠️ ANTHROPIC_API_KEY not found, using defaults")
     
     return models
+
+
+# =============================================================================
+# KNOWN MODELS - Capability Scores für Priorisierung
+# =============================================================================
+
+KNOWN_MODELS = {
+    # Anthropic - Höchste Capability Scores
+    "claude-opus-4-5-20251101": {"provider": "anthropic", "capability_score": 100},  # TOP PRIORITY
+    "claude-opus-4-20250514": {"provider": "anthropic", "capability_score": 95},
+    "claude-sonnet-4-5-20250929": {"provider": "anthropic", "capability_score": 85},
+    "claude-3-5-haiku-20241022": {"provider": "anthropic", "capability_score": 70},
+    
+    # OpenAI
+    "gpt-5.2": {"provider": "openai", "capability_score": 90},
+    "gpt-4o": {"provider": "openai", "capability_score": 80},
+    "gpt-4o-mini": {"provider": "openai", "capability_score": 60},
+    
+    # Google
+    "gemini-3.0-pro": {"provider": "google", "capability_score": 85},
+    "gemini-2.0-flash-exp": {"provider": "google", "capability_score": 75},
+    
+    # xAI
+    "grok-4-1-fast-reasoning": {"provider": "xai", "capability_score": 88},
+    "grok-3": {"provider": "xai", "capability_score": 75},
+    
+    # DeepSeek
+    "deepseek-reasoner": {"provider": "deepseek", "capability_score": 80},
+    "deepseek-chat": {"provider": "deepseek", "capability_score": 70},
+}
+
+
+def get_best_model(provider: Optional[str] = None) -> str:
+    """
+    Gibt das beste verfügbare Modell zurück.
+    
+    Args:
+        provider: Optional - Filter nach Provider
+        
+    Returns:
+        Model ID mit höchstem capability_score
+    """
+    candidates = KNOWN_MODELS
+    
+    if provider:
+        candidates = {k: v for k, v in KNOWN_MODELS.items() if v["provider"] == provider}
+    
+    if not candidates:
+        return "claude-opus-4-5-20251101"  # Fallback
+    
+    best = max(candidates.items(), key=lambda x: x[1]["capability_score"])
+    return best[0]
 
 
 def _detect_openai_models() -> Dict[str, str]:

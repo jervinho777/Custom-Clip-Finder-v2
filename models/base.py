@@ -4,6 +4,8 @@ Base AI Model Interface
 Unified interface for all AI providers.
 Based on V1 create_clips_v3_ensemble.py with verified working models.
 
+CACHE-FIRST: Uses Cache class to avoid unnecessary API calls.
+
 Team:
 - GPT-5.2 (OpenAI) - Reasoning, Speed, Quality
 - Opus 4.5 (Anthropic) - MAXIMUM QUALITY! 💎
@@ -13,12 +15,48 @@ Team:
 """
 
 import os
+import hashlib
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 from typing import Optional, Any
 from dotenv import load_dotenv
 
 load_dotenv()
+
+# Import Cache system
+from utils.cache import Cache
+
+# Global cache instance
+_ai_cache: Optional[Cache] = None
+
+
+def _get_ai_cache() -> Cache:
+    """Get or initialize AI cache instance."""
+    global _ai_cache
+    if _ai_cache is None:
+        _ai_cache = Cache()
+    return _ai_cache
+
+
+def _generate_prompt_key(
+    model: str,
+    prompt: str,
+    system: Optional[str],
+    temperature: float
+) -> str:
+    """
+    Generate unique cache key for AI request.
+    
+    Key is based on: model + prompt + system + temperature
+    """
+    key_parts = [
+        model,
+        prompt[:1000],  # Limit prompt length in key
+        system[:500] if system else "",
+        str(temperature)
+    ]
+    key_string = "||".join(key_parts)
+    return hashlib.sha256(key_string.encode()).hexdigest()[:32]
 
 
 @dataclass
@@ -37,21 +75,108 @@ class AIResponse:
 
 
 class AIModel(ABC):
-    """Abstract base class for AI models."""
+    """Abstract base class for AI models with caching support."""
     
     provider: str = "unknown"
     model: str = "unknown"
     
+    # Enable/disable caching at class level
+    use_cache: bool = True
+    
     @abstractmethod
+    async def _generate_impl(
+        self,
+        prompt: str,
+        system: Optional[str] = None,
+        temperature: float = 0.7,
+        max_tokens: int = 4096,
+        **kwargs
+    ) -> AIResponse:
+        """Internal generate implementation. Override in subclasses."""
+        pass
+    
     async def generate(
         self,
         prompt: str,
         system: Optional[str] = None,
         temperature: float = 0.7,
-        max_tokens: int = 4096
+        max_tokens: int = 4096,
+        use_cache: Optional[bool] = None,
+        **kwargs
     ) -> AIResponse:
-        """Generate a response from the model."""
-        pass
+        """
+        Generate a response from the model with caching.
+        
+        CACHE-FIRST ARCHITECTURE:
+        1. Generate unique prompt_key
+        2. Check cache for existing response
+        3. If found: return cached (saves API cost!)
+        4. If not: call API, then cache the result
+        
+        Args:
+            prompt: User prompt
+            system: System prompt
+            temperature: Sampling temperature
+            max_tokens: Max output tokens
+            use_cache: Override class-level cache setting
+            **kwargs: Additional arguments for specific models
+            
+        Returns:
+            AIResponse with content and metadata
+        """
+        # Determine if we should use cache
+        should_cache = use_cache if use_cache is not None else self.use_cache
+        
+        # Non-deterministic responses (temp > 0) should not be cached by default
+        # unless explicitly requested
+        if temperature > 0.1 and use_cache is None:
+            should_cache = False
+        
+        if should_cache:
+            cache = _get_ai_cache()
+            prompt_key = _generate_prompt_key(self.model, prompt, system, temperature)
+            
+            # Check cache
+            cached = cache.get_ai_response(prompt_key)
+            if cached:
+                response_data = cached.get("response", {})
+                print(f"   ✅ Loaded AI response from cache ({self.model[:20]}...)")
+                
+                # Reconstruct AIResponse from cached data
+                return AIResponse(
+                    content=response_data.get("content", ""),
+                    model=response_data.get("model", self.model),
+                    provider=response_data.get("provider", self.provider),
+                    tokens_used=response_data.get("tokens_used", 0),
+                    cost=0.0,  # No cost for cached response!
+                    latency_ms=0,
+                    cache_read_tokens=response_data.get("tokens_used", 0)
+                )
+        
+        # Call actual API
+        response = await self._generate_impl(
+            prompt=prompt,
+            system=system,
+            temperature=temperature,
+            max_tokens=max_tokens,
+            **kwargs
+        )
+        
+        # Cache successful response
+        if should_cache and response.content:
+            cache = _get_ai_cache()
+            prompt_key = _generate_prompt_key(self.model, prompt, system, temperature)
+            
+            # Store essential response data
+            cache.set_ai_response(prompt_key, {
+                "content": response.content,
+                "model": response.model,
+                "provider": response.provider,
+                "tokens_used": response.tokens_used
+            })
+            print(f"   💾 Cached AI response ({self.model[:20]}...)")
+        
+        return response
     
     def _calculate_cost(self, input_tokens: int, output_tokens: int) -> float:
         """Calculate cost based on token usage. Override in subclasses."""
@@ -89,14 +214,15 @@ class ClaudeModel(AIModel):
         if not self.api_key:
             raise ValueError("ANTHROPIC_API_KEY not found")
     
-    async def generate(
+    async def _generate_impl(
         self,
         prompt: str,
         system: Optional[str] = None,
         temperature: float = 0.7,
         max_tokens: int = 4096,
         cache_system: bool = False,
-        response_model: Optional[type] = None
+        response_model: Optional[type] = None,
+        **kwargs
     ) -> AIResponse:
         """
         Generate response from Claude.
@@ -212,12 +338,13 @@ class OpenAIModel(AIModel):
         if not self.api_key:
             raise ValueError("OPENAI_API_KEY not found")
     
-    async def generate(
+    async def _generate_impl(
         self,
         prompt: str,
         system: Optional[str] = None,
         temperature: float = 0.7,
-        max_tokens: int = 4096
+        max_tokens: int = 4096,
+        **kwargs
     ) -> AIResponse:
         from openai import AsyncOpenAI
         import time
@@ -304,12 +431,13 @@ class GeminiModel(AIModel):
         if not self.api_key:
             raise ValueError("GOOGLE_API_KEY or GEMINI_API_KEY not found")
     
-    async def generate(
+    async def _generate_impl(
         self,
         prompt: str,
         system: Optional[str] = None,
         temperature: float = 0.7,
-        max_tokens: int = 4096
+        max_tokens: int = 4096,
+        **kwargs
     ) -> AIResponse:
         from google import genai
         from google.genai import types
@@ -388,12 +516,13 @@ class GrokModel(AIModel):
         if not self.api_key:
             raise ValueError("XAI_API_KEY not found")
     
-    async def generate(
+    async def _generate_impl(
         self,
         prompt: str,
         system: Optional[str] = None,
         temperature: float = 0.7,
-        max_tokens: int = 4096
+        max_tokens: int = 4096,
+        **kwargs
     ) -> AIResponse:
         from openai import AsyncOpenAI
         import time
@@ -473,12 +602,13 @@ class DeepSeekModel(AIModel):
         if not self.api_key:
             raise ValueError("DEEPSEEK_API_KEY not found")
     
-    async def generate(
+    async def _generate_impl(
         self,
         prompt: str,
         system: Optional[str] = None,
         temperature: float = 0.7,
-        max_tokens: int = 4096
+        max_tokens: int = 4096,
+        **kwargs
     ) -> AIResponse:
         from openai import AsyncOpenAI
         import time
