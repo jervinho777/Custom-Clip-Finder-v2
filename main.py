@@ -126,22 +126,29 @@ async def _process_video(
     
     console.print(f"  Found: {len(moments)} potential moments\n")
     
-    # Step 3: Compose
-    console.print("[bold]STEP 3: COMPOSE[/bold]")
+    # Step 3: Compose (VIRAL FACTORY MODE - Process ALL moments)
+    console.print("[bold]STEP 3: COMPOSE (VIRAL FACTORY MODE)[/bold]")
     
     from pipeline.compose import compose_batch
     
-    top_moments = moments[:min(num_clips + 5, len(moments))]  # Extra for filtering
+    # VIRAL FACTORY: No hard limit! Process all moments, let validation filter.
+    # num_clips is now the MINIMUM, not the maximum.
+    console.print(f"  🏭 Processing ALL {len(moments)} moments (no artificial limits)")
+    
     moment_dicts = [
         {
             "start": m.start,
             "end": m.end,
-            "content_type": m.content_type,
+            "archetype": m.archetype.value,
             "hook_strength": m.hook_strength,
             "viral_potential": m.viral_potential,
-            "reasoning": m.reasoning
+            "reasoning": m.reasoning,
+            "hook_text": m.hook_text if hasattr(m, 'hook_text') else "",
+            "viral_headline": getattr(m, 'viral_headline', ""),
+            "segments": [s.model_dump() for s in m.segments] if m.segments else [],
+            "editing_instruction": m.editing_instruction if hasattr(m, 'editing_instruction') else ""
         }
-        for m in top_moments
+        for m in moments
     ]
     
     composed = await compose_batch(moment_dicts, segments)
@@ -199,8 +206,11 @@ async def _process_video(
         
         console.print(f"  Passed Godmode: {len(approved)}/{len(godmode_clips)}\n")
     
-    # Rank and select top N
-    ranked = await rank_clips(approved if godmode else validated, target_count=num_clips)
+    # VIRAL FACTORY: Rank but export ALL approved clips (num_clips is minimum)
+    clips_to_rank = approved if godmode else validated
+    actual_count = max(num_clips, len(clips_to_rank))  # At least num_clips, but all if more
+    console.print(f"  🏭 Viral Factory: Exporting {len(clips_to_rank)} clips (min requested: {num_clips})")
+    ranked = await rank_clips(clips_to_rank, target_count=actual_count)
     
     # Step 5: Export
     console.print("[bold]STEP 5: EXPORT[/bold]")
@@ -373,6 +383,57 @@ def cache_stats():
         table.add_row(cat, str(data["count"]), f"{data['size_mb']:.2f} MB")
     
     console.print(table)
+
+
+@app.command()
+def train_headlines(
+    csv_path: str = typer.Argument(
+        "data/training/headline_training.csv",
+        help="Path to CSV with headlines"
+    )
+):
+    """
+    Train the BRAIN to generate viral headlines.
+    
+    Analyzes a CSV with manual headline examples and extracts patterns.
+    The CSV must have a 'HEADLINE' column.
+    
+    Example:
+        python main.py train-headlines data/training/goat_clips.csv
+    """
+    from brain.train_headlines import train_headlines as run_training
+    asyncio.run(run_training(csv_path))
+
+
+@app.command()
+def generate_headline(
+    text: str = typer.Argument(..., help="Transcript excerpt or clip text"),
+    archetype: str = typer.Option("unknown", help="Clip archetype (paradox_story, contrarian_rant, etc.)")
+):
+    """
+    Generate a viral headline for a clip.
+    
+    Uses learned patterns from headline training.
+    
+    Example:
+        python main.py generate-headline "Arbeite niemals für Geld..." --archetype paradox_story
+    """
+    from brain.headlines import generate_viral_headline
+    
+    async def _run():
+        result = await generate_viral_headline(text, archetype=archetype)
+        console.print("\n[bold green]🎯 Generated Headlines:[/bold green]")
+        console.print(f"   Best: [bold cyan]{result.get('viral_headline', 'N/A')}[/bold cyan]")
+        console.print(f"   Type: {result.get('headline_type', 'N/A')}")
+        console.print(f"   Reasoning: {result.get('reasoning', 'N/A')}")
+        
+        variants = result.get('headline_variants', [])
+        if variants:
+            console.print("\n   All Variants:")
+            for v in variants:
+                console.print(f"      - {v.get('text', '')} ({v.get('type', '')}, score: {v.get('score', 0)})")
+    
+    asyncio.run(_run())
 
 
 @app.command()

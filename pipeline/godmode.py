@@ -4,20 +4,17 @@ GODMODE Evaluation
 Premium-Tier finale Evaluation mit Opus 4.5.
 Wird am Ende von VALIDATE verwendet für finale Entscheidungen.
 
-Logik aus V1 übernommen - funktioniert gut als finaler Quality Gate.
-
-Wann einsetzen (laut PRD):
-- Nach VALIDATE Stage
-- Für finale "Approve/Reject" Entscheidung
-- Nur auf Clips die VALIDATE bestanden haben
-- Batched für Kosteneffizienz
+UPGRADE: Jetzt Brain-Infused (nutzt learned_patterns für Bewertung).
 """
 
 from typing import List, Dict
 from dataclasses import dataclass
+import json
+import re
 
 from models.base import ClaudeModel
 from prompts.identities import QUALITY_ORACLE, ALGORITHM_CONTEXT
+from brain import load_principles
 
 
 @dataclass
@@ -39,21 +36,31 @@ async def godmode_evaluate(
     Premium Godmode Evaluation mit Opus 4.5.
     
     Bewertet Clips final und gibt Score 0-50.
+    Nutzt PROJEKT-BRAIN für kontextbezogene Bewertung.
     
     Args:
         clips: List of validated clips
-        batch_size: Clips per batch (für Kosteneffizienz)
+        batch_size: Clips per batch
         
     Returns:
         List of GodmodeResult
     """
     print(f"\n{'='*70}")
-    print("💎 GODMODE EVALUATION (Opus 4.5)")
+    print("💎 GODMODE EVALUATION (Opus 4.5 + Brain Infused)")
     print(f"{'='*70}")
     print(f"   Clips to evaluate: {len(clips)}")
-    print(f"   Batch size: {batch_size}")
     
-    # Use Opus for premium evaluation (dynamic detection)
+    # 1. Load Brain Knowledge
+    principles = load_principles()
+    viral_patterns = principles.get("viral_patterns", [])  # Archetypes
+    learned_rules = principles.get("editing_patterns", {}).get("rules", [])
+    
+    brain_context = {
+        "top_archetypes": viral_patterns[:3],  # Top 3 archetypes
+        "critical_rules": learned_rules[:5]    # Top 5 rules
+    }
+    
+    # Use Opus (dynamic detection)
     from models.base import get_model
     model = get_model("anthropic", tier="opus")
     
@@ -67,7 +74,7 @@ async def godmode_evaluate(
         
         print(f"\n   Batch {batch_num}/{total_batches}...")
         
-        batch_results = await _evaluate_batch(model, batch)
+        batch_results = await _evaluate_batch(model, batch, brain_context)
         results.extend(batch_results)
     
     # Summary
@@ -87,77 +94,79 @@ async def godmode_evaluate(
 
 async def _evaluate_batch(
     model: ClaudeModel,
-    clips: List[Dict]
+    clips: List[Dict],
+    brain_context: Dict
 ) -> List[GodmodeResult]:
-    """Evaluate a batch of clips."""
+    """Evaluate a batch of clips using Brain context."""
     
-    # Build batch prompt
-    clips_text = ""
+    # Build batch prompt with simplified structure
+    clips_data = []
     for i, clip in enumerate(clips, 1):
-        clips_text += f"""
-═══════════════════════════════════════════════════════════
-CLIP {i}
-═══════════════════════════════════════════════════════════
-Hook: "{clip.get('hook_text', 'N/A')[:150]}"
-Dauer: {clip.get('total_duration', 0):.1f}s
-Struktur: {clip.get('structure_type', 'unknown')}
-Reasoning: {clip.get('reasoning', 'N/A')[:200]}
-"""
+        clips_data.append({
+            "index": i,
+            "hook": clip.get('hook_text', 'N/A'),
+            "duration": f"{clip.get('total_duration', 0):.1f}s",
+            "structure": clip.get('structure_type', 'unknown'),
+            "creator_reasoning": clip.get('reasoning', 'N/A')
+        })
     
     system = f"""{ALGORITHM_CONTEXT}
 
 {QUALITY_ORACLE}
 
+<brain_knowledge>
+Das sind die gelernten Erfolgsmuster dieses Creators (BRAIN):
+{json.dumps(brain_context, ensure_ascii=False, indent=2)}
+</brain_knowledge>
+
 DU BIST DER FINALE RICHTER.
-Dein Urteil entscheidet ob ein Clip veröffentlicht wird oder nicht.
-Sei STRENG aber FAIR. Nutze deine 50.000+ Clip Erfahrung."""
+Dein Urteil entscheidet ob ein Clip veröffentlicht wird.
+Nutze dein allgemeines Wissen UND die <brain_knowledge> oben.
+"""
 
     prompt = f"""
 FINALE GODMODE EVALUATION
 
-Bewerte jeden Clip auf einer Skala von 0-50:
-- 45-50: 🔥 VIRAL - Wird definitiv viral gehen
-- 35-44: ✅ GOOD - Solide Performance erwartet
-- 25-34: ⚠️ WEAK - Braucht Verbesserung
-- 0-24: ❌ REJECT - Nicht veröffentlichen
+Bewerte diese Clips auf Skala 0-50.
+Prüfe besonders, ob sie gegen die "critical_rules" aus dem Brain verstoßen.
 
-{clips_text}
+<candidates>
+{json.dumps(clips_data, ensure_ascii=False, indent=2)}
+</candidates>
 
-BEWERTUNGSKRITERIEN:
-1. Hook Power (0-15): Stoppt der Hook den Scroll in 3 Sekunden?
-2. Content Quality (0-15): Gibt jede Sekunde Grund weiterzuschauen?
-3. Completion Potential (0-10): Werden Viewer bis zum Ende schauen?
-4. Viral Factors (0-10): Wird geteilt/gespeichert werden?
+<scoring_guide>
+- 45-50: 🔥 VIRAL (Perfekter Hook + Brain Match)
+- 35-44: ✅ GOOD (Stark, kleine Schwächen)
+- 25-34: ⚠️ WEAK (Refinement nötig)
+- 0-24: ❌ REJECT
+</scoring_guide>
 
-Für jeden Clip, antworte mit:
+Antworte strikt mit JSON:
 ```json
 [
   {{
     "clip_index": 1,
     "score": 42,
     "verdict": "good",
-    "reasoning": "Starker paradoxer Hook, aber Mittelteil könnte straffer sein",
-    "strengths": ["Hook öffnet sofort Loop", "Emotionale Payoff"],
-    "weaknesses": ["Transition bei 0:15 etwas langsam"]
+    "reasoning": "Hook ist stark, passt zum Archetyp X...",
+    "strengths": ["..."],
+    "weaknesses": ["..."]
   }}
 ]
 ```
-
-WICHTIG: Sei EHRLICH. Lieber ein Clip weniger als ein schlechter Clip draußen.
 """
 
     response = await model.generate(
         prompt=prompt,
         system=system,
         temperature=0.3,
-        max_tokens=4096
+        max_tokens=4096,
+        cache_system=True  # Enable caching for the heavy system prompt
     )
-    
+
     # Parse response
     results = []
     try:
-        import json
-        import re
         json_match = re.search(r'\[[\s\S]*\]', response.content)
         if json_match:
             evaluations = json.loads(json_match.group())
@@ -175,8 +184,8 @@ WICHTIG: Sei EHRLICH. Lieber ein Clip weniger als ein schlechter Clip draußen.
                     ))
     except Exception as e:
         print(f"   ⚠️ Parse error: {e}")
-    
-    # Fill in missing results
+
+    # Fill missing
     for i, clip in enumerate(clips):
         if not any(r.clip_id == clip.get("clip_id", f"clip_{i+1}") for r in results):
             results.append(GodmodeResult(
@@ -187,7 +196,7 @@ WICHTIG: Sei EHRLICH. Lieber ein Clip weniger als ein schlechter Clip draußen.
                 strengths=[],
                 weaknesses=["Could not evaluate"]
             ))
-    
+
     return results
 
 
@@ -196,17 +205,7 @@ def filter_by_godmode(
     results: List[GodmodeResult],
     min_score: int = 35
 ) -> List[Dict]:
-    """
-    Filter clips based on Godmode scores.
-    
-    Args:
-        clips: Original clips
-        results: Godmode results
-        min_score: Minimum score to pass (default 35 = "good")
-        
-    Returns:
-        Filtered clips that passed
-    """
+    """Filter clips based on Godmode scores."""
     passed = []
     
     for clip in clips:
@@ -220,4 +219,3 @@ def filter_by_godmode(
             passed.append(clip)
     
     return passed
-

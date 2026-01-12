@@ -63,6 +63,14 @@ from .vector_store import (
     initialize_brain,
 )
 
+from .headlines import (
+    # V5 Viral Headlines
+    load_headline_patterns,
+    get_relevant_patterns,
+    generate_viral_headline,
+    generate_headline_sync,
+)
+
 __all__ = [
     # V5 Global Hook Hunting
     "VectorStore",
@@ -103,4 +111,10 @@ __all__ = [
     "scan_for_hooks",
     "get_similar_clips",
     "get_similar_hooks",
+    
+    # V5 Viral Headlines
+    "load_headline_patterns",
+    "get_relevant_patterns",
+    "generate_viral_headline",
+    "generate_headline_sync",
 ]

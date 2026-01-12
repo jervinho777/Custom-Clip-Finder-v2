@@ -214,25 +214,28 @@ class ClaudeModel(AIModel):
         if not self.api_key:
             raise ValueError("ANTHROPIC_API_KEY not found")
     
+    # Threshold for automatic prompt caching (characters)
+    AUTO_CACHE_THRESHOLD = 4000  # ~1024 tokens
+    
     async def _generate_impl(
         self,
         prompt: str,
         system: Optional[str] = None,
         temperature: float = 0.7,
         max_tokens: int = 4096,
-        cache_system: bool = False,
+        cache_system: bool = None,  # None = auto-detect
         response_model: Optional[type] = None,
         **kwargs
     ) -> AIResponse:
         """
-        Generate response from Claude.
+        Generate response from Claude with AUTO PROMPT CACHING.
         
         Args:
             prompt: User message
             system: System prompt
             temperature: Sampling temperature
             max_tokens: Max output tokens
-            cache_system: Enable prompt caching for system prompt (90% cost savings!)
+            cache_system: Enable prompt caching (None = auto for long prompts, 90% savings!)
             response_model: Optional Pydantic model for structured output
         """
         from anthropic import AsyncAnthropic
@@ -240,15 +243,37 @@ class ClaudeModel(AIModel):
         
         client = AsyncAnthropic(api_key=self.api_key)
         
-        # Build system message with optional caching
-        if cache_system and system:
+        # =================================================================
+        # AUTO PROMPT CACHING (GOD SPEED!)
+        # =================================================================
+        # Automatically enable caching for long system prompts or user prompts
+        # This saves 90% on input token costs for repeated calls!
+        
+        total_input_length = len(prompt) + (len(system) if system else 0)
+        should_cache = cache_system if cache_system is not None else (total_input_length > self.AUTO_CACHE_THRESHOLD)
+        
+        # Build system message with caching
+        if should_cache and system and len(system) > 1000:
+            # Cache the system prompt (usually contains transcript/context)
             system_content = [{
                 "type": "text",
                 "text": system,
-                "cache_control": {"type": "ephemeral"}  # Enable prompt caching
+                "cache_control": {"type": "ephemeral"}  # 🚀 90% cost savings!
             }]
+            print(f"   ⚡ Anthropic Prompt Caching ENABLED (system: {len(system)} chars)")
         else:
             system_content = system or "You are a helpful assistant."
+        
+        # Build user message with caching for very long prompts
+        if should_cache and len(prompt) > self.AUTO_CACHE_THRESHOLD:
+            user_content = [{
+                "type": "text",
+                "text": prompt,
+                "cache_control": {"type": "ephemeral"}  # 🚀 Cache user message too!
+            }]
+            print(f"   ⚡ Anthropic Prompt Caching ENABLED (user: {len(prompt)} chars)")
+        else:
+            user_content = prompt
         
         start = time.time()
         
@@ -258,7 +283,7 @@ class ClaudeModel(AIModel):
             "max_tokens": max_tokens,
             "temperature": temperature,
             "system": system_content,
-            "messages": [{"role": "user", "content": prompt}]
+            "messages": [{"role": "user", "content": user_content}]
         }
         
         response = await client.messages.create(**request_kwargs)

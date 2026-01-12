@@ -73,11 +73,22 @@ from utils import Cache
 # Alte Konstante entfernt:
 # HOOK_SEARCH_RADIUS = 180  # ❌ GELÖSCHT - Keine Zeitgrenzen!
 
-# Mindest-/Maximaldauer für Content Bodies
-MIN_BODY_DURATION = 20
-MAX_BODY_DURATION = 180
+# =============================================================================
+# DISCOVERY DURATION PARAMETERS (V6 - "Raw Narrative Arcs")
+# =============================================================================
+# 
+# Wir fangen jetzt GANZE Geschichten (Brutto), nicht finale Clips (Netto).
+# Der AI Editor (Stage 3 / Fusion Engine) komprimiert später.
+#
+# Reasoning:
+# - Stories (Tobi Beck, Ruth, Dieter Lange) brauchen Zeit zum Aufbauen
+# - Besser zu viel Kontext als zu wenig
+# - 60-90s war zu eng → Clips wurden nach Compression zu kurz
+#
+MIN_BODY_DURATION = 45   # Erhöht von 20 → 45 (fängt noch kurze Rants)
+MAX_BODY_DURATION = 300  # Erhöht von 180 → 300 (5 min für vollständige Stories)
 
-# Mindestdauer für finalen Clip
+# Mindestdauer für finalen Clip (nach Compression)
 MIN_CLIP_DURATION = 15
 MAX_CLIP_DURATION = 120
 
@@ -789,37 +800,96 @@ async def discover_moments(
         return []
     
     # ===================
-    # PHASE 2: Global Hook Hunting
+    # PHASE 2: Global Hook Hunting (PARALLELIZED - GOD SPEED!)
     # ===================
     print("\n" + "─"*50)
-    print("🌍 PHASE 2: Global Hook Hunting")
+    print("🌍 PHASE 2: Global Hook Hunting (⚡ PARALLEL)")
     print("─"*50)
     print("   🔓 NO TIME LIMITS - Searching entire transcript!")
+    print(f"   🚀 Processing {len(bodies)} bodies in parallel (max 10 concurrent)")
     
+    # Concurrency control - max 10 parallel API calls
+    semaphore = asyncio.Semaphore(10)
+    
+    async def process_single_body(idx: int, body: ContentBody) -> List[Moment]:
+        """
+        Process a single body with hook hunting and assembly.
+        
+        VIRAL FACTORY MODE: Returns MULTIPLE Moments per body (variants for split-testing).
+        """
+        async with semaphore:
+            try:
+                print(f"\n   [{idx+1}/{len(bodies)}] {body.archetype.value}: {body.topic_summary[:40]}...")
+                
+                # Global Hook Hunting (may return variants)
+                hook_result = await phase2_global_hook_hunting(
+                    body, 
+                    transcript_segments, 
+                    learned_patterns
+                )
+                
+                # VIRAL FACTORY: Create multiple moments from hook variants
+                moments_for_body = []
+                
+                # Primary moment
+                moment = phase3_blueprint_assembly(body, hook_result, transcript_segments, learned_patterns)
+                moments_for_body.append(moment)
+                
+                # Check if hook has variants (from the new prompt structure)
+                hook_variants = getattr(hook_result, 'variants', None)
+                if hook_variants and len(hook_variants) > 1:
+                    print(f"      🔀 Found {len(hook_variants)} headline variants (Split-Test Mode)")
+                    # Create variant moments with different headlines
+                    for i, variant in enumerate(hook_variants[1:], 2):  # Skip first (already used)
+                        variant_moment = phase3_blueprint_assembly(
+                            body, hook_result, transcript_segments, learned_patterns
+                        )
+                        # Override headline for variant
+                        if hasattr(variant_moment, 'viral_headline'):
+                            variant_moment.viral_headline = variant.get('viral_headline', '')
+                        variant_moment.reasoning = f"[Variant {i}] {variant.get('reasoning', '')}"
+                        moments_for_body.append(variant_moment)
+                
+                return moments_for_body
+                
+            except Exception as e:
+                logger.error(f"Failed to process body {idx}: {e}")
+                print(f"   ⚠️ [{idx+1}] FAILED: {e}")
+                return []
+    
+    # Execute all in parallel
+    phase2_start = time.time()
+    tasks = [process_single_body(i, body) for i, body in enumerate(bodies)]
+    results = await asyncio.gather(*tasks, return_exceptions=True)
+    phase2_elapsed = time.time() - phase2_start
+    
+    # Collect successful moments (VIRAL FACTORY: Flatten lists)
     moments = []
     hooks_hunted = 0
     global_hooks_found = 0
+    total_variants = 0
     
-    for i, body in enumerate(bodies):
-        print(f"\n   [{i+1}/{len(bodies)}] {body.archetype.value}: {body.topic_summary[:40]}...")
-        
-        # Global Hook Hunting
-        hook = await phase2_global_hook_hunting(
-            body, 
-            transcript_segments, 
-            learned_patterns
-        )
-        
-        if hook.source != "native":
-            hooks_hunted += 1
-            if abs(hook.distance_from_body) > 60:  # > 1 Minute
-                global_hooks_found += 1
-        
-        # ===================
-        # PHASE 3: Blueprint Assembly
-        # ===================
-        moment = phase3_blueprint_assembly(body, hook, transcript_segments, learned_patterns)
-        moments.append(moment)
+    for result in results:
+        if isinstance(result, list):
+            for moment in result:
+                if isinstance(moment, Moment):
+                    moments.append(moment)
+                    total_variants += 1
+                    # Track statistics from the assembled moment
+                    if moment.requires_remix:
+                        hooks_hunted += 1
+                        # Check if hook came from far away
+                        if moment.segments and len(moment.segments) >= 2:
+                            hook_seg = next((s for s in moment.segments if s.role == SegmentRole.HOOK), None)
+                            body_seg = next((s for s in moment.segments if s.role == SegmentRole.BODY), None)
+                            if hook_seg and body_seg:
+                                distance = abs(hook_seg.start - body_seg.start)
+                                if distance > 60:  # > 1 Minute
+                                    global_hooks_found += 1
+        elif isinstance(result, Exception):
+            logger.error(f"Parallel task exception: {result}")
+    
+    print(f"\n   ⚡ Phase 2 completed in {phase2_elapsed:.1f}s ({len(bodies)} bodies parallel)")
     
     # Sortiere nach Viral Potential
     moments.sort(key=lambda m: m.viral_potential, reverse=True)
@@ -831,9 +901,11 @@ async def discover_moments(
     remixed_count = sum(1 for m in moments if m.requires_remix)
     
     print("\n" + "═"*60)
-    print("✅ DISCOVERY COMPLETE")
+    print("✅ DISCOVERY COMPLETE (VIRAL FACTORY MODE)")
     print("═"*60)
     print(f"   📊 Total Moments: {len(moments)}")
+    print(f"   🎯 Content Bodies: {len(bodies)}")
+    print(f"   🔀 Variants Generated: {total_variants} (Split-Tests)")
     print(f"   🔍 Hooks Hunted: {hooks_hunted}")
     print(f"   🌍 Global Hooks (>1min distance): {global_hooks_found}")
     print(f"   🔀 Requires Remix: {remixed_count}")

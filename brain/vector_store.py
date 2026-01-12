@@ -962,7 +962,7 @@ class VectorStore:
             return []
         
         # Create temporary collection for matching
-        collection = self._get_collection("_temp_semantic_match")
+        collection = self._get_collection("temp_semantic_match")
         
         try:
             # Add body topic
@@ -991,7 +991,7 @@ class VectorStore:
         finally:
             # Cleanup temp collection
             try:
-                self._get_client().delete_collection("_temp_semantic_match")
+                self._get_client().delete_collection("temp_semantic_match")
             except Exception:
                 pass
     

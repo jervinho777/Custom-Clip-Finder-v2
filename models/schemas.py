@@ -76,8 +76,8 @@ class FoundHook(BaseModel):
     start: float
     end: float
     text: str
-    source: Literal["native", "from_body_end", "from_context", "from_later"] = Field(
-        description="Woher der Hook kommt"
+    source: Literal["native", "from_body_end", "from_context", "from_later", "from_earlier"] = Field(
+        description="Woher der Hook kommt (from_earlier = Hook ist VOR dem Body im Video)"
     )
     distance_from_body: float = Field(
         default=0,
