@@ -29,6 +29,27 @@ from utils.cache import Cache
 # Global cache instance
 _ai_cache: Optional[Cache] = None
 
+# =============================================================================
+# 🎯 GLOBAL MODEL CONSTANTS (Import these for consistent usage!)
+# =============================================================================
+
+# 👑 VIRAL COUNCIL - The 5 AI Judges
+OPUS_MODEL_ID = "claude-opus-4-5-20251101"       # Anthropic Opus 4.5 💎 (JUDGE)
+SONNET_MODEL_ID = "claude-sonnet-4-5-20250929"   # Anthropic Sonnet 4.5 (Speed)
+GPT_MODEL_ID = "gpt-4o"                           # OpenAI GPT-4o (GPT-5.2 not yet available)
+GEMINI_MODEL_ID = "gemini-3-pro-preview"         # Google Gemini 3 Pro 🌟
+GROK_MODEL_ID = "grok-4-1-fast-reasoning"        # xAI Grok 4.1 🚀
+DEEPSEEK_MODEL_ID = "deepseek-reasoner"          # DeepSeek Reasoner 🧠
+
+# Council Members (for iteration)
+COUNCIL_MODEL_IDS = {
+    "anthropic": OPUS_MODEL_ID,
+    "openai": GPT_MODEL_ID,
+    "google": GEMINI_MODEL_ID,
+    "xai": GROK_MODEL_ID,
+    "deepseek": DEEPSEEK_MODEL_ID,
+}
+
 
 def _get_ai_cache() -> Cache:
     """Get or initialize AI cache instance."""
@@ -189,23 +210,42 @@ class ClaudeModel(AIModel):
     
     Primary: Opus 4.5 - MAXIMUM QUALITY! 💎
     Fallback: Sonnet 4.5
+    
+    HIGH-LEVERAGE HYBRID STRATEGY:
+    - Sonnet: Scouting, Masse, Speed (Phase 1)
+    - Opus: Magic, Hooks, Editing (Phase 2, Compose)
     """
     
     provider = "anthropic"
     
-    # Pricing per 1M tokens (verified from V1)
+    # ==========================================================================
+    # 🎯 OFFICIAL MODEL IDS (Use these constants everywhere!)
+    # ==========================================================================
+    OPUS_MODEL_ID = "claude-opus-4-5-20251101"      # Latest Opus 4.5 💎
+    SONNET_MODEL_ID = "claude-sonnet-4-5-20250929"  # Latest Sonnet 4.5
+    
+    # Pricing per 1M tokens
     PRICING = {
-        "claude-opus-4-20250514": {"input": 15.0, "output": 75.0},  # Opus 4.5 💎
-        "claude-sonnet-4-5-20250929": {"input": 3.0, "output": 15.0},  # Sonnet 4.5
-        "claude-sonnet-4-20250514": {"input": 3.0, "output": 15.0},  # Alt name
+        "claude-opus-4-5-20251101": {"input": 15.0, "output": 75.0},   # Opus 4.5 💎 (NEW)
+        "claude-opus-4-20250514": {"input": 15.0, "output": 75.0},    # Opus (old ID)
+        "claude-sonnet-4-5-20250929": {"input": 3.0, "output": 15.0}, # Sonnet 4.5
+        "claude-sonnet-4-20250514": {"input": 3.0, "output": 15.0},   # Alt name
+    }
+    
+    # Caching-supported models (90% cost reduction on cached tokens!)
+    CACHE_SUPPORTED_MODELS = {
+        "claude-opus-4-5-20251101",   # ✅ NEW Opus
+        "claude-opus-4-20250514",     # ✅ Old Opus
+        "claude-sonnet-4-5-20250929", # ✅ Sonnet
+        "claude-sonnet-4-20250514",   # ✅ Alt Sonnet
     }
     
     MODELS = {
-        "opus": "claude-opus-4-20250514",
+        "opus": "claude-opus-4-5-20251101",     # Updated to new ID
         "sonnet": "claude-sonnet-4-5-20250929",
     }
     
-    def __init__(self, model: str = "claude-opus-4-20250514"):
+    def __init__(self, model: str = "claude-opus-4-5-20251101"):
         # Accept short names
         if model in self.MODELS:
             model = self.MODELS[model]
@@ -250,7 +290,16 @@ class ClaudeModel(AIModel):
         # This saves 90% on input token costs for repeated calls!
         
         total_input_length = len(prompt) + (len(system) if system else 0)
-        should_cache = cache_system if cache_system is not None else (total_input_length > self.AUTO_CACHE_THRESHOLD)
+        
+        # Check if model supports caching
+        model_supports_cache = self.model in self.CACHE_SUPPORTED_MODELS
+        should_cache = cache_system if cache_system is not None else (
+            model_supports_cache and total_input_length > self.AUTO_CACHE_THRESHOLD
+        )
+        
+        if should_cache and not model_supports_cache:
+            print(f"   ⚠️ Warning: Model {self.model} does not support caching. Caching disabled.")
+            should_cache = False
         
         # Build system message with caching
         if should_cache and system and len(system) > 1000:
@@ -344,20 +393,32 @@ class OpenAIModel(AIModel):
     """
     OpenAI GPT models.
     
-    Primary: GPT-5.2 🔥
-    Fallback: GPT-4o
+    Primary: GPT-4o (GPT-5.2 not yet available via chat API)
+    Fallback: GPT-4o-mini
     """
     
     provider = "openai"
     
+    # 🎯 OFFICIAL MODEL IDS (GPT-5.2 not available as chat model yet)
+    GPT_PRO_MODEL_ID = "gpt-4o"                    # Best available for chat 🔥
+    GPT_FAST_MODEL_ID = "gpt-4o-mini"              # Fast/cheap fallback
+    
     PRICING = {
-        "gpt-5.2": {"input": 10.0, "output": 30.0},  # GPT-5.2 🔥
-        "gpt-4o": {"input": 2.5, "output": 10.0},  # Fallback
+        "gpt-4o": {"input": 2.5, "output": 10.0},  # GPT-4o (COUNCIL)
         "gpt-4o-mini": {"input": 0.15, "output": 0.6},
+        "gpt-4-turbo": {"input": 10.0, "output": 30.0},
         "o1": {"input": 15.0, "output": 60.0},
+        "o1-mini": {"input": 3.0, "output": 12.0},
     }
     
-    def __init__(self, model: str = "gpt-5.2"):
+    MODELS = {
+        "flagship": "gpt-4o",
+        "pro": "gpt-4o",
+        "fast": "gpt-4o-mini",
+        "mini": "gpt-4o-mini",
+    }
+    
+    def __init__(self, model: str = "gpt-4o"):
         self.model = model
         self.api_key = os.getenv("OPENAI_API_KEY")
         if not self.api_key:
@@ -399,18 +460,16 @@ class OpenAIModel(AIModel):
         try:
             response = await client.chat.completions.create(**api_params)
         except Exception as e:
-            # Fallback to GPT-4o if GPT-5.2 fails
-            if self.model == "gpt-5.2" or self.model.startswith("gpt-5"):
-                print(f"   ⚠️ {self.model} failed, falling back to GPT-4o: {e}")
-                fallback_params = {
-                    "model": "gpt-4o",
-                    "messages": messages,
-                    "temperature": temperature,
-                    "max_tokens": max_tokens
-                }
-                response = await client.chat.completions.create(**fallback_params)
-            else:
-                raise
+            # Fallback to GPT-4o-mini if primary model fails
+            fallback_model = "gpt-4o-mini" if self.model == "gpt-4o" else "gpt-4o"
+            print(f"   ⚠️ {self.model} failed, falling back to {fallback_model}: {e}")
+            fallback_params = {
+                "model": fallback_model,
+                "messages": messages,
+                "temperature": temperature,
+                "max_tokens": max_tokens
+            }
+            response = await client.chat.completions.create(**fallback_params)
         
         latency = int((time.time() - start) * 1000)
         
@@ -437,20 +496,31 @@ class GeminiModel(AIModel):
     """
     Google Gemini models.
     
-    Primary: Gemini 3.0 Pro
+    Primary: Gemini 3 Pro Preview 🌟
     Fallback: Gemini 2.0 Flash
     """
     
     provider = "google"
     
+    # 🎯 OFFICIAL MODEL IDS
+    GEMINI_PRO_MODEL_ID = "gemini-3-pro-preview"   # Latest flagship 🌟 (COUNCIL)
+    GEMINI_FAST_MODEL_ID = "gemini-2.0-flash"       # Fast/cheap fallback
+    
     PRICING = {
+        "gemini-3-pro-preview": {"input": 1.75, "output": 7.0},  # Gemini 3 Pro Preview (COUNCIL)
         "gemini-3.0-pro": {"input": 1.50, "output": 6.0},  # Gemini 3.0 Pro
         "gemini-2.5-pro": {"input": 1.25, "output": 5.0},  # Gemini 2.5 Pro
         "gemini-2.0-flash": {"input": 0.075, "output": 0.3},  # Flash fallback
         "gemini-2.0-flash-exp": {"input": 0.075, "output": 0.3},
     }
     
-    def __init__(self, model: str = "gemini-3.0-pro"):
+    MODELS = {
+        "flagship": "gemini-3-pro-preview",
+        "pro": "gemini-3-pro-preview",
+        "fast": "gemini-2.0-flash",
+    }
+    
+    def __init__(self, model: str = "gemini-3-pro-preview"):
         self.model = model
         self.api_key = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
         if not self.api_key:
@@ -464,49 +534,107 @@ class GeminiModel(AIModel):
         max_tokens: int = 4096,
         **kwargs
     ) -> AIResponse:
-        from google import genai
-        from google.genai import types
         import time
         
-        client = genai.Client(api_key=self.api_key)
+        # Try new SDK first, fallback to old SDK
+        try:
+            import google.generativeai as genai
+            genai.configure(api_key=self.api_key)
+            use_new_sdk = False
+        except ImportError:
+            try:
+                from google import genai as new_genai
+                use_new_sdk = True
+            except ImportError:
+                raise ImportError(
+                    "Neither google-generativeai nor google-genai is installed. "
+                    "Install with: pip install google-generativeai"
+                )
         
         start = time.time()
         
+        # Build the full prompt with system instruction
+        full_prompt = prompt
+        if system:
+            full_prompt = f"{system}\n\n{prompt}"
+        
         try:
-            response = await client.aio.models.generate_content(
-                model=self.model,
-                contents=prompt,
-                config=types.GenerateContentConfig(
-                    system_instruction=system,
-                    temperature=temperature,
-                    max_output_tokens=max_tokens
-                )
-            )
-        except Exception as e:
-            # Fallback to 2.0 Flash if 3.0 fails
-            if "3.0" in self.model or "2.5" in self.model:
-                print(f"   ⚠️ {self.model} failed, falling back to gemini-2.0-flash: {e}")
+            if use_new_sdk:
+                # New google-genai SDK
+                from google.genai import types
+                client = new_genai.Client(api_key=self.api_key)
                 response = await client.aio.models.generate_content(
-                    model="gemini-2.0-flash-exp",
-                    contents=prompt,
+                    model=self.model,
+                    contents=full_prompt,
                     config=types.GenerateContentConfig(
-                        system_instruction=system,
                         temperature=temperature,
                         max_output_tokens=max_tokens
                     )
                 )
+                content = response.text
+                usage = getattr(response, 'usage_metadata', None)
+                input_tokens = getattr(usage, 'prompt_token_count', 0) if usage else 0
+                output_tokens = getattr(usage, 'candidates_token_count', 0) if usage else 0
             else:
-                raise
+                # Old google-generativeai SDK (synchronous with asyncio wrapper)
+                import asyncio
+                model = genai.GenerativeModel(
+                    model_name=self.model,
+                    generation_config={
+                        "temperature": temperature,
+                        "max_output_tokens": max_tokens
+                    }
+                )
+                
+                # Run in executor since old SDK is synchronous
+                loop = asyncio.get_event_loop()
+                response = await loop.run_in_executor(
+                    None, 
+                    lambda: model.generate_content(full_prompt)
+                )
+                content = response.text
+                # Old SDK token counting
+                input_tokens = len(full_prompt) // 4  # Rough estimate
+                output_tokens = len(content) // 4
+                
+        except Exception as e:
+            # Fallback to gemini-2.0-flash if primary fails
+            fallback_model = "gemini-2.0-flash"
+            print(f"   ⚠️ {self.model} failed, falling back to {fallback_model}: {str(e)[:100]}")
+            
+            if use_new_sdk:
+                response = await client.aio.models.generate_content(
+                    model=fallback_model,
+                    contents=full_prompt,
+                    config=types.GenerateContentConfig(
+                        temperature=temperature,
+                        max_output_tokens=max_tokens
+                    )
+                )
+                content = response.text
+                usage = getattr(response, 'usage_metadata', None)
+                input_tokens = getattr(usage, 'prompt_token_count', 0) if usage else 0
+                output_tokens = getattr(usage, 'candidates_token_count', 0) if usage else 0
+            else:
+                model = genai.GenerativeModel(
+                    model_name=fallback_model,
+                    generation_config={
+                        "temperature": temperature,
+                        "max_output_tokens": max_tokens
+                    }
+                )
+                response = await loop.run_in_executor(
+                    None, 
+                    lambda: model.generate_content(full_prompt)
+                )
+                content = response.text
+                input_tokens = len(full_prompt) // 4
+                output_tokens = len(content) // 4
         
         latency = int((time.time() - start) * 1000)
         
-        # Get token counts
-        usage = getattr(response, 'usage_metadata', None)
-        input_tokens = getattr(usage, 'prompt_token_count', 0) if usage else 0
-        output_tokens = getattr(usage, 'candidates_token_count', 0) if usage else 0
-        
         return AIResponse(
-            content=response.text,
+            content=content,
             model=self.model,
             provider=self.provider,
             tokens_used=input_tokens + output_tokens,
@@ -524,15 +652,23 @@ class GrokModel(AIModel):
     """
     xAI Grok models.
     
-    Primary: Grok 4.1 Fast Reasoning 🚀
+    Primary: Grok 4.1 Fast Reasoning 🚀 (COUNCIL MEMBER)
     """
     
     provider = "xai"
     
+    # 🎯 OFFICIAL MODEL IDS
+    GROK_MODEL_ID = "grok-4-1-fast-reasoning"  # Latest flagship 🚀 (COUNCIL)
+    
     PRICING = {
-        "grok-4-1-fast-reasoning": {"input": 0.20, "output": 0.50},  # Best model
+        "grok-4-1-fast-reasoning": {"input": 0.20, "output": 0.50},  # Best model (COUNCIL)
         "grok-4-fast-reasoning": {"input": 0.20, "output": 0.50},  # Backup
         "grok-3": {"input": 3.0, "output": 15.0},
+    }
+    
+    MODELS = {
+        "flagship": "grok-4-1-fast-reasoning",
+        "fast": "grok-4-1-fast-reasoning",
     }
     
     def __init__(self, model: str = "grok-4-1-fast-reasoning"):
@@ -610,22 +746,55 @@ class DeepSeekModel(AIModel):
     """
     DeepSeek models.
     
-    Primary: DeepSeek V3.2 (deepseek-chat)
-    Cost-efficient verification model.
+    Primary: DeepSeek Reasoner 🧠 (COUNCIL MEMBER)
+    Chain-of-Thought reasoning model.
+    
+    NOTE: DeepSeek Reasoner returns reasoning in <think> tags.
+          We extract the final answer after </think>.
     """
     
     provider = "deepseek"
     
+    # 🎯 OFFICIAL MODEL IDS
+    DEEPSEEK_REASONER_ID = "deepseek-reasoner"  # Best reasoning 🧠 (COUNCIL)
+    DEEPSEEK_CHAT_ID = "deepseek-chat"          # Fast/cheap
+    
     PRICING = {
-        "deepseek-chat": {"input": 0.27, "output": 1.10},  # V3.2
-        "deepseek-reasoner": {"input": 0.55, "output": 2.19},
+        "deepseek-reasoner": {"input": 0.55, "output": 2.19},  # Reasoner (COUNCIL)
+        "deepseek-chat": {"input": 0.27, "output": 1.10},      # V3.2
     }
     
-    def __init__(self, model: str = "deepseek-chat"):
+    MODELS = {
+        "flagship": "deepseek-reasoner",
+        "reasoner": "deepseek-reasoner",
+        "chat": "deepseek-chat",
+        "fast": "deepseek-chat",
+    }
+    
+    def __init__(self, model: str = "deepseek-reasoner"):
         self.model = model
         self.api_key = os.getenv("DEEPSEEK_API_KEY")
         if not self.api_key:
             raise ValueError("DEEPSEEK_API_KEY not found")
+    
+    def _extract_final_answer(self, content: str) -> str:
+        """
+        Extract final answer from DeepSeek Reasoner response.
+        
+        DeepSeek Reasoner wraps reasoning in <think>...</think> tags.
+        We want only the final answer AFTER the closing </think> tag.
+        """
+        import re
+        
+        # Check if response contains <think> tags
+        if "</think>" in content:
+            # Extract everything after </think>
+            parts = content.split("</think>")
+            if len(parts) > 1:
+                final_answer = parts[-1].strip()
+                return final_answer if final_answer else content
+        
+        return content
     
     async def _generate_impl(
         self,
@@ -658,12 +827,19 @@ class DeepSeekModel(AIModel):
         )
         latency = int((time.time() - start) * 1000)
         
+        # Extract content and handle Chain-of-Thought for Reasoner
+        raw_content = response.choices[0].message.content or ""
+        if self.model == "deepseek-reasoner":
+            content = self._extract_final_answer(raw_content)
+        else:
+            content = raw_content
+        
         usage = response.usage
         input_tokens = usage.prompt_tokens if usage else 0
         output_tokens = usage.completion_tokens if usage else 0
         
         return AIResponse(
-            content=response.choices[0].message.content or "",
+            content=content,  # Already processed for Chain-of-Thought
             model=self.model,
             provider=self.provider,
             tokens_used=input_tokens + output_tokens,
@@ -673,7 +849,7 @@ class DeepSeekModel(AIModel):
         )
     
     def _calculate_cost(self, input_tokens: int, output_tokens: int) -> float:
-        pricing = self.PRICING.get(self.model, {"input": 0.27, "output": 1.10})
+        pricing = self.PRICING.get(self.model, {"input": 0.55, "output": 2.19})
         return (input_tokens * pricing["input"] + output_tokens * pricing["output"]) / 1_000_000
 
 

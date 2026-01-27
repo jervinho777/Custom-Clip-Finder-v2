@@ -1,8 +1,8 @@
 {
-  "cached_at": "2026-01-03T00:09:24.838250",
+  "cached_at": "2026-01-15T15:02:20.172020",
   "models": {
     "anthropic": {
-      "opus": "claude-opus-4-20250514",
+      "opus": "claude-opus-4-5-20251101",
       "sonnet": "claude-sonnet-4-5-20250929",
       "haiku": "claude-3-5-haiku-20241022"
     },

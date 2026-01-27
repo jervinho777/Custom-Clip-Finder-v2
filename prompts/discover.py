@@ -142,77 +142,121 @@ DEFAULT_FEW_SHOT_EXAMPLES = [
 
 
 # =============================================================================
-# VIRAL DNA CRITERIA (Universelle Prinzipien)
+# VIRAL DNA CRITERIA V8 - ADAPTIVE PACING ENGINE
 # =============================================================================
 
 VIRAL_DNA_CRITERIA = """
-🔍 VIRAL DNA CHECKLIST (Universal Principles):
+🔍 VIRAL DNA & PACING PROTOCOL (V8 - Adaptive Engine):
 
 ═══════════════════════════════════════════════════════════════
-0. ⚡ ZERO LATENCY (Nicht verhandelbar!)
+📌 FUNDAMENTALE UNTERSCHEIDUNG - Wähle EINEN Modus pro Clip:
 ═══════════════════════════════════════════════════════════════
-   - Keine Stille am Anfang. Kein "Ähm". Kein Räuspern.
-   - Der erste Frame muss Energie haben.
+
+┌─────────────────────────────────────────────────────────────┐
+│ ⚡️ MODE A: HIGH DENSITY (The Insight)                       │
+├─────────────────────────────────────────────────────────────┤
+│ Content: Tipps, Fakten, Meinungen, "Rants", Analysen,       │
+│          Listicles, How-Tos, Hot Takes                      │
+│                                                             │
+│ Ziel: Respektiere die Zeit des Zuschauers.                  │
+│       Jedes Wort muss "zahlen".                             │
+│                                                             │
+│ Pacing: Schnell, hart, atemlos.                             │
+│                                                             │
+│ ⚠️  HARTE CONSTRAINTS:                                       │
+│   • Hook Max: 5 Sekunden (1-2 Sätze)                        │
+│   • Total Max: 60 Sekunden                                  │
+│   • Context: Nur das absolut Nötigste (max 1 Satz)          │
+│   • KILL YOUR DARLINGS: Wenn ein Satz wiederholt, was       │
+│     schon gesagt wurde -> WEG.                              │
+│   • Keine "Brücken-Sätze" zwischen Punkten                  │
+│                                                             │
+│ Beispiel-Archetypen: insight, contrarian_rant, listicle,    │
+│                      tutorial, hot_take                     │
+└─────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────┐
+│ 🌊 MODE B: DEEP IMMERSION (The Journey)                     │
+├─────────────────────────────────────────────────────────────┤
+│ Content: Persönliche Stories, Parabeln, Witze,              │
+│          emotionale Momente, Metaphern, Anekdoten           │
+│                                                             │
+│ Ziel: Versetze den Zuschauer in eine andere Welt.           │
+│       Erzeuge Kopfkino.                                     │
+│                                                             │
+│ Pacing: Atmosphärisch. Pausen sind erlaubt,                 │
+│         wenn sie Spannung erzeugen.                         │
+│                                                             │
+│ 🎬 FLEXIBLE CONSTRAINTS:                                     │
+│   • Hook: Muss die Szene setzen ("Es war 3 Uhr nachts...")  │
+│   • Total: OPEN END - So lang wie nötig (auch 3 Min+),      │
+│           solange alle 15s eine Wendung/Reveal kommt        │
+│   • Context: WICHTIG für Atmosphäre!                        │
+│           (Gerüche, Orte, Gefühle) NICHT schneiden.         │
+│   • Details sind KEIN Füller: "Ein alter Mann ging die      │
+│           Straße entlang" = Setup, nicht Ballast            │
+│                                                             │
+│ Beispiel-Archetypen: paradox_story, emotional,              │
+│                      emotional_story, parable               │
+└─────────────────────────────────────────────────────────────┘
 
 ═══════════════════════════════════════════════════════════════
-1. 🎣 THE VERBAL HOOK - "The Curiosity Gap"
+⛔️ GLOBAL KILL LIST (Gilt für BEIDE Modi):
 ═══════════════════════════════════════════════════════════════
-   [Principle: Primacy Effect & Cognitive Dissonance]
+
+1. SAFETY BRIDGES (Abschwächungen) - SOFORT LÖSCHEN:
+   ❌ "Versteh mich nicht falsch..."
+   ❌ "Ich meine nicht, dass..."
+   ❌ "Ich sage nicht, dass..."
+   ❌ "Achtung, das ist wichtig..."
+   ❌ "Lass mich erklären..."
+   ❌ "Bevor ihr mich falsch versteht..."
+   ❌ "Um fair zu sein..."
    
-   - Der erste Satz muss eine "Lücke" im Wissen oder Weltbild des Zuschauers öffnen.
+   -> Diese Sätze TÖTEN die Spannung. Die Kontroverse MUSS stehen bleiben.
+   -> Die Auflösung gehört ans ENDE, nicht nach dem Hook.
+
+2. META-TALK (Ankündigungen) - SOFORT LÖSCHEN:
+   ❌ "Ich erzähle euch eine Geschichte..."
+   ❌ "Das ist ein wichtiger Punkt..."
+   ❌ "Ich möchte euch etwas zeigen..."
+   ❌ "Heute geht es um..."
    
-   ⛔️ UNIVERSAL ANTI-PATTERN: "The Safety Bridge"
-   Die KI neigt dazu, kontroverse Aussagen sofort zu relativieren ("Ich meine nicht X, sondern Y").
-   -> DAS IST VERBOTEN.
-   -> Lass die Kontroverse stehen. Die Auflösung gehört ans Ende des Clips, nicht an den Anfang.
-   -> Spannung entsteht durch Ungewissheit.
+   -> STARTE DIREKT. Keine Vorankündigung.
+
+3. ZERO LATENCY (Gilt immer):
+   ❌ Keine Stille am Anfang
+   ❌ Kein "Ähm", "Also", Räuspern
+   ❌ Kein Atmen/Pause vor dem ersten Wort
+   
+   -> Der erste Frame muss Energie haben.
 
 ═══════════════════════════════════════════════════════════════
-2. 📺 VISUAL COMPENSATION (Headline Strategy)
+🎯 HOOK-ZERO RULE (Neu in V8):
 ═══════════════════════════════════════════════════════════════
-   [Principle: Headlines retten fehlenden Kontext]
-   
-   ALTE REGEL (VERALTET): "Verwerfe Clips mit Pronomen-Start ('Er sagte...')."
-   
-   NEUE REGEL: "RETTE den Clip mit einer HEADLINE!"
-   
-   - Wenn der Audio-Start Kontext benötigt (z.B. "Und er sagte...", "Das Problem ist..."):
-     -> Die HEADLINE muss diesen Kontext liefern.
-     -> Beispiel: Audio = "Er sagte: Arbeite niemals für Geld."
-                  Headline = "Was der alte Mann den Kindern sagte"
-   
-   - Jeder Clip bekommt eine Headline für Split-Testing.
-   - Headlines sind < 5 Wörter, KONKRET und SCROLL-STOPPER.
+
+Der akustische Hook darf MAXIMAL 7 Sekunden dauern.
+
+Wenn der Hook-Satz länger ist:
+  → Option A: Kürze ihn auf den Kern ("Arbeite niemals für Geld." statt 
+              "Wisst ihr, was der alte Mann zu den Kindern sagte? 
+               Er sagte: Arbeite niemals für Geld.")
+  → Option B: Ersetze durch Headline + Mid-Story Start
+              (Headline liefert Context, Audio startet in der Action)
 
 ═══════════════════════════════════════════════════════════════
-3. 🧬 MASS APPEAL (Relatability)
+📺 HEADLINE REQUIREMENTS:
 ═══════════════════════════════════════════════════════════════
-   - Ist das Thema verständlich ohne Fachwissen (Universelle Sprache)?
-   - Spricht es menschliche Grundbedürfnisse an (Status, Sicherheit, Liebe, Verstehen)?
 
-═══════════════════════════════════════════════════════════════
-4. 🎢 STRUCTURAL TENSION (Context-Aware Value)
-═══════════════════════════════════════════════════════════════
-   [Principle: Narrative Integrity]
-   
-   Wir unterscheiden zwei Arten von Content:
-   
-   A) INFORMATIONAL CONTENT (Tutorials, Fakten, Listen)
-      -> Hier ist Value = Information pro Minute.
-      -> Kürze Füller, sei präzise.
-      
-   B) NARRATIVE CONTENT (Stories, Parabeln, Metaphern, Witze)
-      -> Hier ist Value = Emotionale Bindung & Kopfkino.
-      -> Schneide KEINE Details weg, die für die Atmosphäre nötig sind.
-      -> Eine Geschichte braucht Zeit zum Atmen. "Effizienz" tötet die Story.
-      -> Beispiel: "Ein alter Mann ging die Straße entlang" ist KEIN Füller, sondern Setup.
-
-═══════════════════════════════════════════════════════════════
-5. 💎 PAYOFF (Utility)
-═══════════════════════════════════════════════════════════════
-   - Der Clip muss das Versprechen des Hooks einlösen.
-   - Bei Stories: Die Moral/Pointe muss glasklar sein.
+Jeder Clip bekommt eine Headline für maximale Watchtime.
+- Max 5 Wörter
+- KONKRET schlägt Abstrakt
+- Wenn Audio-Start Context braucht → Headline MUSS ihn liefern
 """
+
+# Pacing Mode Detection Helper
+DENSITY_ARCHETYPES = {"insight", "contrarian_rant", "listicle", "tutorial", "hot_take", "rant", "analysis"}
+IMMERSION_ARCHETYPES = {"paradox_story", "emotional", "emotional_story", "parable", "story", "metaphor"}
 
 
 # =============================================================================
@@ -345,16 +389,37 @@ def build_global_hook_hunting_prompt(
     headline_patterns = _load_headline_patterns()
     headline_brain_context = _format_headline_patterns_for_prompt(headline_patterns, max_patterns=5)
     
+    # Determine pacing mode based on archetype
+    suggested_pacing = "density" if archetype.lower() in DENSITY_ARCHETYPES else "immersion"
+    
     system = f"""Du bist der "Hook Hunter".
 
 ═══════════════════════════════════════════════════════════════
-PHASE 2: GLOBAL HOOK HUNTING + HEADLINE GENERATION
+PHASE 2: GLOBAL HOOK HUNTING + HEADLINE GENERATION (V8)
 ═══════════════════════════════════════════════════════════════
 
 Finde den perfekten VERBALEN Einstieg für den gefundenen Body.
 PLUS: Generiere eine HEADLINE für jeden Clip (Split-Testing).
 
+═══════════════════════════════════════════════════════════════
+🎯 HOOK-ZERO RULE (NICHT VERHANDELBAR):
+═══════════════════════════════════════════════════════════════
+
+Der akustische Hook darf MAXIMAL 7 SEKUNDEN dauern!
+
+Wenn der beste Satz länger ist:
+  → Option A: KÜRZE ihn auf den Kern
+              "Arbeite niemals für Geld." (4s)
+              NICHT: "Wisst ihr, was der alte Mann zu den Kindern sagte? 
+                      Er sagte: Arbeite niemals für Geld." (12s)
+  
+  → Option B: HEADLINE CARRIES THE HOOK
+              Nutze eine starke Headline als primären Hook.
+              Audio startet mid-sentence/mid-action.
+
+═══════════════════════════════════════════════════════════════
 STRATEGIE: "REVERSE ENGINEERING"
+═══════════════════════════════════════════════════════════════
 
 1. Lies die Kernaussage/Moral des Content-Body.
 2. Suche im Transkript nach dem Satz, der diese Moral am stärksten verkörpert.
@@ -365,6 +430,12 @@ STRATEGIE: "REVERSE ENGINEERING"
    - Schlecht: "Ich glaube, dass wir vielleicht weniger arbeiten sollten."
    - Gut: "Arbeit ist Zeitverschwendung." (Der Body erklärt dann warum).
    - Suche den radikalsten Satz!
+
+═══════════════════════════════════════════════════════════════
+📊 PACING-MODE RECOMMENDATION: {suggested_pacing.upper()}
+═══════════════════════════════════════════════════════════════
+
+{"⚡ DENSITY: Hook < 5s, knackig, auf den Punkt." if suggested_pacing == "density" else "🌊 IMMERSION: Hook setzt Szene, darf atmosphärisch sein."}
 
 {HEADLINE_STRATEGY}
 {headline_brain_context}
@@ -456,34 +527,49 @@ def build_assembly_prompt(
 ) -> Tuple[str, str]:
     """
     Phase 3: Blueprint Assembly + Final Headline Selection.
-    Ziel: Harte Schnitte für maximale Retention + Headline für Watchtime.
+    V8: Mit ADAPTIVE PACING (density vs. immersion).
     """
     
     # Load learned headline patterns from Brain
     headline_patterns = _load_headline_patterns()
     headline_brain_context = _format_headline_patterns_for_prompt(headline_patterns, max_patterns=5)
     
-    system = f"""Du bist ein Schnitt-Experte.
+    # Determine pacing mode based on archetype
+    archetype = body_info.get('archetype', 'unknown').lower()
+    suggested_pacing = "density" if archetype in DENSITY_ARCHETYPES else "immersion"
+    
+    system = f"""Du bist ein Elite-Schnitt-Experte.
 
 ═══════════════════════════════════════════════════════════════
-PHASE 3: BLUEPRINT ASSEMBLY + HEADLINE FINALIZATION
+PHASE 3: BLUEPRINT ASSEMBLY (V8 - ADAPTIVE PACING)
 ═══════════════════════════════════════════════════════════════
 
-Baue den finalen Clip-Plan MIT Headline.
+{VIRAL_DNA_CRITERIA}
 
-PRINZIP "TENSION MAINTENANCE":
-Wir wollen den Zuschauer "in der Luft hängen lassen".
+════════════════════════════════════════════════════════════════
+🎯 DEINE ENTSCHEIDUNG - WÄHLE EINEN MODUS:
+════════════════════════════════════════════════════════════════
 
-1. HOOK (Der Köder): Wirf die These/Frage in den Raum.
-2. HARD CUT (Der Cliff): Schneide SOFORT in den Content/Story-Start.
-3. KEINE ERKLÄRUNG: Schneide alle Sätze weg, die zwischen Hook und Story "vermitteln" oder "relativieren".
-   Der Zuschauer muss denken: "Wie meint er das?" -> Die Story ist die Antwort.
+Basierend auf dem Archetyp "{archetype}" empfehle ich: {suggested_pacing.upper()}
+
+Aber DU entscheidest final. Gib im Output an:
+- pacing_mode: "density" | "immersion"
+
+Wenn DENSITY:
+  → Hook < 5s, Total < 60s, Keine Füllwörter
+  → Schneide aggressiv. Jede Sekunde muss "zahlen".
+
+Wenn IMMERSION:
+  → Hook setzt die Szene. Total: So lang wie nötig.
+  → Atmosphäre-Details BEHALTEN. Pausen erlaubt.
+
+════════════════════════════════════════════════════════════════
 
 {HEADLINE_STRATEGY}
 {headline_brain_context}
-HEADLINE-PFLICHT:
-Jeder Clip bekommt eine Headline für maximale Watchtime.
-Wenn der Audio-Start Kontext braucht, MUSS die Headline ihn liefern.
+
+SAFETY BRIDGE REMOVAL:
+Entferne ALLE Sätze aus der Kill-List vor dem Schnitt!
 
 DU ANTWORTEST NUR MIT JSON."""
 
@@ -499,26 +585,39 @@ DU ANTWORTEST NUR MIT JSON."""
         for v in hook_variants:
             variants_text += f"\n• Variante {v.get('variant', '?')}: \"{v.get('viral_headline', '')}\" ({v.get('strategy', '')})"
 
+    body_duration = body_info.get('end', 0) - body_info.get('start', 0)
+    hook_duration = found_hook.get('hook_end_timestamp', 0) - found_hook.get('hook_timestamp', 0)
+    
     user = f"""
 [BODY]
 Start: {body_info.get('start', 0):.0f}s
 End: {body_info.get('end', 0):.0f}s
-Archetyp: {body_info.get('archetype', 'unknown')}
+Duration: {body_duration:.0f}s
+Archetyp: {archetype}
+Empfohlener Modus: {suggested_pacing.upper()}
 
 [HOOK]
 Start: {found_hook.get('hook_timestamp', 0):.0f}s
-Text: {found_hook.get('hook_text', '')}
+End: {found_hook.get('hook_end_timestamp', 0):.0f}s
+Duration: {hook_duration:.0f}s
+Text: "{found_hook.get('hook_text', '')}"
 {rules_text}
 {variants_text}
 
+[⚠️ CONSTRAINT CHECK]
+- Hook Duration: {hook_duration:.0f}s {"✅ OK" if hook_duration <= 7 else "⚠️ ZU LANG (>7s) - KÜRZEN!"}
+- Body Duration: {body_duration:.0f}s {"✅ OK für DENSITY" if body_duration <= 60 else "⚠️ Zu lang für DENSITY (>60s) - Modus prüfen!"}
+
 [AUFGABE]
-1. Erstelle die Schnittliste.
-2. Wähle die beste Headline (oder erstelle eine bessere).
-3. Prüfe: Braucht der Audio-Start Headline-Kontext?
+1. Wähle den pacing_mode (density oder immersion).
+2. Erstelle die Schnittliste gemäß dem gewählten Modus.
+3. Wähle/erstelle die beste Headline.
+4. Entferne alle Safety Bridges aus dem Text.
 
 [OUTPUT FORMAT]
 ```json
 {{
+  "pacing_mode": "density",
   "segments": [
     {{
       "role": "hook",
@@ -533,10 +632,13 @@ Text: {found_hook.get('hook_text', '')}
       "clip_position": 1
     }}
   ],
+  "total_duration": 45,
+  "hook_duration": 4,
   "viral_headline": "Warum Arbeit Gift ist",
   "headline_type": "problem",
   "headline_is_essential": false,
-  "editing_instruction": "Harter Schnitt. Entferne die Moderation zwischen Hook und Story-Beginn."
+  "removed_safety_bridges": ["Versteh mich nicht falsch..."],
+  "editing_instruction": "Harter Schnitt. DENSITY-Modus: Alles unter 60s. Hook gekürzt."
 }}
 ```
 """

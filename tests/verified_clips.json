@@ -1,0 +1,164 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "last_updated": "2026-01-25",
+    "description": "Ground Truth Daten für Clip Finder Verification (Boris Cherny Workflow)"
+  },
+  "verified_viral_clips": [
+    {
+      "id": "dieter_lange_01",
+      "source": "Dieter Lange.mp4",
+      "name": "Arbeite niemals für Geld",
+      "hook_text": "Arbeite niemals für Geld",
+      "hook_keywords": ["arbeite niemals für geld", "niemals für geld"],
+      "start_range": [560, 580],
+      "end_range": [650, 660],
+      "archetype": "paradox_story",
+      "pattern": "hook_extraction",
+      "client": "Greator",
+      "views": null,
+      "notes": "Hook 'Arbeite niemals für Geld' steht bei 653s, muss nach vorne gezogen werden"
+    },
+    {
+      "id": "dieter_lange_02",
+      "source": "Dieter Lange.mp4",
+      "name": "Ackergaul vs Rennpferd",
+      "hook_text": "Aus einem Ackergaul wird kein Rennpferd",
+      "hook_keywords": ["ackergaul", "rennpferd", "talent"],
+      "start_range": [470, 510],
+      "end_range": [530, 550],
+      "archetype": "metaphor",
+      "pattern": "clean_extraction",
+      "client": "Greator",
+      "views": null,
+      "notes": "Starke Metapher: 'Aus einem Ackergaul wird kein Rennpferd'"
+    },
+    {
+      "id": "dieter_lange_03",
+      "source": "Dieter Lange.mp4",
+      "name": "Was willst du mal werden",
+      "hook_text": "Was willst du eigentlich mal werden?",
+      "hook_keywords": ["was willst du", "mal werden", "impliziert"],
+      "start_range": [310, 330],
+      "end_range": [340, 360],
+      "archetype": "contrarian_rant",
+      "pattern": "beliefbreaker",
+      "client": "Greator",
+      "views": null,
+      "notes": "Challenget die Frage 'Was willst du mal werden?'"
+    },
+    {
+      "id": "dieter_lange_04",
+      "source": "Dieter Lange.mp4",
+      "name": "Erziehung / Mehr ist besser",
+      "hook_text": "Mehr ist besser",
+      "hook_keywords": ["erziehung", "mehr ist besser", "virus"],
+      "start_range": [230, 280],
+      "end_range": [310, 330],
+      "archetype": "insight",
+      "pattern": "clean_extraction",
+      "client": "Greator",
+      "views": null,
+      "notes": "Kritik an Erziehung und 'Mehr ist besser' Mentalität"
+    },
+    {
+      "id": "dieter_lange_05",
+      "source": "Dieter Lange.mp4",
+      "name": "Geburt / 500 Millionen Bewerber",
+      "hook_text": "500 Millionen Bewerber auf eine Stelle",
+      "hook_keywords": ["geburt", "500 millionen", "bewerber", "stelle ausgeschrieben"],
+      "start_range": [20, 40],
+      "end_range": [90, 120],
+      "archetype": "story",
+      "pattern": "story_hook",
+      "client": "Greator",
+      "views": null,
+      "notes": "Starke Opening-Story über die Geburt"
+    },
+    {
+      "id": "dieter_lange_06",
+      "source": "Dieter Lange.mp4",
+      "name": "Glück ist Akzeptanz",
+      "hook_text": "Happiness is a function of acceptance",
+      "hook_keywords": ["glück", "akzeptanz", "happiness is a function"],
+      "start_range": [750, 800],
+      "end_range": [830, 880],
+      "archetype": "insight",
+      "pattern": "insight",
+      "client": "Greator",
+      "views": null,
+      "notes": "Philosophische Einsicht über Glück"
+    },
+    {
+      "id": "dieter_lange_07",
+      "source": "Dieter Lange.mp4",
+      "name": "Erfolg / Der Weg ist das Ziel",
+      "hook_text": "Der Weg ist das Ziel",
+      "hook_keywords": ["erfolg", "weg ist das ziel", "buddha", "road to happiness"],
+      "start_range": [1280, 1320],
+      "end_range": [1390, 1420],
+      "archetype": "insight",
+      "pattern": "clean_extraction",
+      "client": "Greator",
+      "views": null,
+      "notes": "Erfolg-Definition und Buddha-Zitat"
+    },
+    {
+      "id": "dieter_lange_08",
+      "source": "Dieter Lange.mp4",
+      "name": "Lebenslinie / Is that all there is",
+      "hook_text": "Is that all there is?",
+      "hook_keywords": ["armstrong", "mond", "is that all there is"],
+      "start_range": [1595, 1630],
+      "end_range": [1660, 1700],
+      "archetype": "story",
+      "pattern": "story_hook",
+      "client": "Greator",
+      "views": null,
+      "notes": "Armstrong auf dem Mond Geschichte"
+    }
+  ],
+  "known_bad_clips": [
+    {
+      "id": "bad_01",
+      "reason": "no_hook",
+      "description": "Clips die mit 'Ähm' oder langem Intro starten",
+      "example_pattern": "Hallo zusammen, ich möchte euch heute erzählen..."
+    },
+    {
+      "id": "bad_02",
+      "reason": "context_dependent",
+      "description": "Clips die ohne Kontext nicht verständlich sind",
+      "example_pattern": "Und dann hat er gesagt... (ohne zu wissen wer 'er' ist)"
+    },
+    {
+      "id": "bad_03",
+      "reason": "no_payoff",
+      "description": "Clips die mitten in der Story abbrechen",
+      "example_pattern": "Die Geschichte geht so... (aber Ende fehlt)"
+    }
+  ],
+  "client_specific_rules": {
+    "Greator": {
+      "description": "Motivational/Transformation Content",
+      "speakers": ["Dieter Lange", "Tobias Beck", "Vera Birkenbihl", "Bodo Schäfer"],
+      "preferred_archetypes": ["paradox_story", "insight", "contrarian_rant"],
+      "hook_patterns": ["Transformation Stories", "Vorher/Nachher Narrative", "Paradoxe Aussagen"],
+      "avoid": ["Zu technische Erklärungen", "Reine Theorie ohne Story"]
+    },
+    "Robert Marc Lehmann": {
+      "description": "Nature/Adventure Content",
+      "speakers": ["Robert Marc Lehmann"],
+      "preferred_archetypes": ["story", "emotional"],
+      "hook_patterns": ["Tierszenen", "Dramatische Momente", "Gefahr/Rettung", "Fakten-basierte Hooks"],
+      "avoid": ["Talking Head ohne Action", "Abstrakte Konzepte"]
+    },
+    "Liebscher & Bracht": {
+      "description": "Health/Pain Relief Content",
+      "speakers": ["Roland Liebscher-Bracht", "Petra Bracht"],
+      "preferred_archetypes": ["tutorial", "insight"],
+      "hook_patterns": ["Schmerzpunkte als Hook", "Fehler die jeder macht", "Übungsanleitungen"],
+      "avoid": ["Zu lange Erklärungen", "Medizinischer Fachjargon"]
+    }
+  }
+}

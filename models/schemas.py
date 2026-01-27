@@ -125,6 +125,13 @@ class Moment(BaseModel):
         description="True wenn Segmente umgestellt werden müssen"
     )
     
+    # V8: Adaptive Pacing
+    pacing_mode: str = Field(
+        default="density",
+        description="Pacing-Modus: 'density' (schnell, <60s) oder 'immersion' (atmosphärisch)"
+    )
+    viral_headline: str = Field(default="", description="Generierte Headline für den Clip")
+    
     # Reasoning
     reasoning: str = Field(default="", description="Warum dieser Moment viral ist")
     

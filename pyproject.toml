@@ -60,3 +60,7 @@ target-version = "py311"
 select = ["E", "F", "I", "W"]
 ignore = ["E501"]
 
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+]

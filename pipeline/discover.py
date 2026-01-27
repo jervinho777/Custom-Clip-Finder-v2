@@ -39,7 +39,7 @@ import logging
 # Setup logging
 logger = logging.getLogger(__name__)
 
-from models.base import get_model
+from models.base import get_model, OPUS_MODEL_ID, SONNET_MODEL_ID
 from models.schemas import (
     Segment, SegmentRole, ContentBody, FoundHook, 
     Moment, Archetype, DiscoveryResult
@@ -64,6 +64,168 @@ from prompts.discover import (
     DEFAULT_FEW_SHOT_EXAMPLES
 )
 from utils import Cache
+
+
+# =============================================================================
+# 🧠 ACTIVE BRAIN LOOKUP - Find Structural Blueprints
+# =============================================================================
+
+async def find_structural_blueprint(
+    content_text: str,
+    archetype: str = "unknown",
+    top_k: int = 3
+) -> dict:
+    """
+    Find structural blueprints from the Brain for similar content.
+    
+    V2: Returns generic pattern recommendations WITHOUT specific names.
+    
+    This is the "Active Brain Lookup" - we don't just search for keywords,
+    we search for STRUCTURE:
+    - How was a similar hit edited?
+    - Where was the hook in the original material?
+    - What was cut?
+    
+    Args:
+        content_text: The content body text to find matches for
+        archetype: The detected archetype (paradox_story, insight, etc.)
+        top_k: Number of similar clips to return
+        
+    Returns:
+        Dict with pattern_name, recommendation, risk_level, and formatted context
+    """
+    from brain.vector_store import VectorStore
+    from brain.analyze import load_learned_patterns
+    
+    # Default response structure
+    result = {
+        "pattern_name": "Standard Extraction",
+        "recommendation": "Keep the natural flow, optimize for hook placement.",
+        "risk_level": "low",
+        "context_for_prompt": ""
+    }
+    
+    brain_context_parts = []
+    
+    try:
+        # 1. Load learned patterns
+        patterns = load_learned_patterns()
+        
+        if patterns:
+            # Find matching archetype
+            archetype_patterns = [
+                p for p in patterns.get("archetypes", [])
+                if p.get("name", "").lower() == archetype.lower()
+            ]
+            
+            if archetype_patterns:
+                pattern = archetype_patterns[0]
+                
+                # Determine pattern name and recommendation based on archetype
+                if archetype in ["paradox_story", "emotional", "story"]:
+                    result["pattern_name"] = "Inverted Story Loop"
+                    result["recommendation"] = "Try moving the final payoff/moral to the start as a hook. Keep narrative flow intact."
+                    result["risk_level"] = "medium"
+                elif archetype in ["insight", "tutorial"]:
+                    result["pattern_name"] = "Value-First Hook"
+                    result["recommendation"] = "Lead with the core insight/promise. Cut all meta-talk and preambles."
+                    result["risk_level"] = "low"
+                elif archetype == "contrarian_rant":
+                    result["pattern_name"] = "Provocation Opening"
+                    result["recommendation"] = "Start with the most controversial statement. Let tension build naturally."
+                    result["risk_level"] = "low"
+                else:
+                    result["pattern_name"] = "Cold Open"
+                    result["recommendation"] = "Start in media res - skip any 'Hello/Welcome' openers."
+                    result["risk_level"] = "low"
+                
+                brain_context_parts.append(f"""
+🎯 ARCHETYP-MUSTER: {result['pattern_name'].upper()}
+
+Empfehlung: {result['recommendation']}
+Risiko-Level: {result['risk_level']}
+
+Struktur-Template:
+  Hook-Strategie: {pattern.get('hook_type', 'Punchline-First')}
+  Flow: {pattern.get('structure', 'Hook -> Context -> Payoff')}
+  
+Editing-Regel:
+  "{pattern.get('editing_instruction', 'Optimize for first 3 seconds')}"
+""")
+        
+        # 2. Search Vector Store for similar hooks (ANONYMIZED)
+        vs = VectorStore()
+        
+        similar_clips = vs.search_hooks(
+            query=content_text[:500],
+            n_results=top_k
+        )
+        
+        if similar_clips:
+            brain_context_parts.append("\n📊 ÄHNLICHE MUSTER GEFUNDEN:\n")
+            
+            for i, match in enumerate(similar_clips, 1):
+                # Handle both dict and HookMatch dataclass - NO NAMES/ACCOUNTS!
+                if hasattr(match, 'hook_text'):
+                    hook_type = getattr(match, 'hook_type', 'unknown')
+                    views = getattr(match, 'views', 0)
+                else:
+                    hook_type = match.get("hook_type", "unknown")
+                    views = match.get("views", 0)
+                
+                # Anonymized output - no specific hook text or account names
+                brain_context_parts.append(f"""
+  {i}. Muster: "{hook_type}" (Performance: {'High' if views > 1000000 else 'Medium' if views > 100000 else 'Standard'})
+""")
+        
+        # 3. Generic editing recommendations
+        brain_context_parts.append(f"""
+✂️ EDITING-EMPFEHLUNGEN FÜR "{result['pattern_name']}":
+  • Fokus auf die ersten 3 Sekunden
+  • Keine Safety Bridges am Anfang
+  • Punchline = Hook-Kandidat
+""")
+        
+    except Exception as e:
+        logger.warning(f"Active Brain Lookup failed: {e}")
+        brain_context_parts.append(f"\n⚠️ Brain Lookup nicht verfügbar")
+    
+    result["context_for_prompt"] = "\n".join(brain_context_parts) if brain_context_parts else ""
+    
+    return result
+
+
+def get_brain_context_for_council(
+    content_text: str,
+    archetype: str = "unknown"
+) -> dict:
+    """
+    Synchronous wrapper for find_structural_blueprint.
+    
+    Use this when you need brain context outside of async context.
+    
+    Returns:
+        Dict with pattern_name, recommendation, risk_level, context_for_prompt
+    """
+    import asyncio
+    
+    default_result = {
+        "pattern_name": "Standard Extraction",
+        "recommendation": "Keep the natural flow, optimize for hook placement.",
+        "risk_level": "low",
+        "context_for_prompt": ""
+    }
+    
+    try:
+        loop = asyncio.get_event_loop()
+        if loop.is_running():
+            # Already in async context - can't use run_until_complete
+            return default_result
+        return loop.run_until_complete(
+            find_structural_blueprint(content_text, archetype)
+        )
+    except Exception:
+        return default_result
 
 
 # =============================================================================
@@ -360,16 +522,16 @@ async def phase1_content_scouting(
         video_duration_minutes=video_duration / 60 if video_duration else None
     )
     
-    # Schnelles Modell für Phase 1
+    # ⚡ PHASE 1: Sonnet für Scouting (Speed/Cost)
     try:
-        model = get_model("anthropic", tier="sonnet")
+        model = get_model("anthropic", model=SONNET_MODEL_ID)
     except ValueError:
         try:
             model = get_model("openai", tier="flagship")
         except ValueError:
             model = get_model("openai", tier="mini")
     
-    print(f"   🔍 Scanning with {model.provider}...")
+    print(f"   🔍 Scanning with {model.provider} (Sonnet - Speed Mode)...")
     
     response = await model.generate(
         user_prompt,
@@ -517,19 +679,23 @@ async def phase2_global_hook_hunting(
         named_patterns=named_patterns
     )
     
-    # Schnelles aber gutes Modell für Entscheidung
+    # 💎 HIGH-LEVERAGE: Opus für Hook-Magie (höchste Qualität!)
     try:
-        model = get_model("anthropic", tier="sonnet")
+        model = get_model("anthropic", model=OPUS_MODEL_ID)
+        print(f"   💎 Using OPUS for Hook Hunting (High-Quality)")
     except ValueError:
+        # Fallback to Sonnet if Opus unavailable
         try:
-            model = get_model("openai", tier="flagship")
+            model = get_model("anthropic", model=SONNET_MODEL_ID)
+            print(f"   ⚠️ Opus unavailable, using Sonnet")
         except ValueError:
-            model = get_model("openai", tier="mini")
+            model = get_model("openai", tier="flagship")
     
     response = await model.generate(
         user_prompt,
         system=system_prompt,
         temperature=0.3,
+        cache_system=True,  # 🚀 Enable prompt caching for Opus!
         max_tokens=800
     )
     
@@ -711,6 +877,22 @@ def phase3_blueprint_assembly(
     if body.archetype in [Archetype.PARADOX_STORY, Archetype.CONTRARIAN_RANT]:
         viral_potential += 1
     
+    # V8: Determine Pacing Mode based on Archetype
+    DENSITY_ARCHETYPES = {Archetype.INSIGHT, Archetype.CONTRARIAN_RANT, Archetype.LISTICLE, Archetype.TUTORIAL}
+    IMMERSION_ARCHETYPES = {Archetype.PARADOX_STORY, Archetype.EMOTIONAL}
+    
+    if body.archetype in DENSITY_ARCHETYPES:
+        pacing_mode = "density"
+    elif body.archetype in IMMERSION_ARCHETYPES:
+        pacing_mode = "immersion"
+    else:
+        # Default based on duration
+        body_duration = body.end - body.start
+        pacing_mode = "density" if body_duration < 60 else "immersion"
+    
+    # V8: Extract or generate headline
+    viral_headline = getattr(hook, 'viral_headline', '') or ""
+    
     return Moment(
         segments=segments,
         archetype=body.archetype,
@@ -722,7 +904,9 @@ def phase3_blueprint_assembly(
         viral_potential=min(10, viral_potential),
         editing_instruction=editing,
         requires_remix=requires_remix,
-        reasoning=f"Archetyp: {body.archetype.value}. Hook: {hook.source} @ {hook.start:.0f}s (Distance: {hook.distance_from_body:.0f}s)"
+        pacing_mode=pacing_mode,
+        viral_headline=viral_headline,
+        reasoning=f"Archetyp: {body.archetype.value} [{pacing_mode.upper()}]. Hook: {hook.source} @ {hook.start:.0f}s"
     )
 
 

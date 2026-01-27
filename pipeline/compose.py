@@ -12,7 +12,7 @@ FUSION ENGINE INTEGRATION:
 from typing import List, Dict, Optional
 from dataclasses import dataclass, field
 
-from models.base import ClaudeModel
+from models.base import ClaudeModel, get_model, OPUS_MODEL_ID, SONNET_MODEL_ID
 from brain.learn import load_principles, get_principle_context_for_prompt
 from prompts.compose import build_compose_prompt, build_debate_synthesis_prompt
 from prompts.viral_editor import ViralBrainPrompt
@@ -39,7 +39,7 @@ def _get_viral_brain() -> ViralBrainPrompt:
 @dataclass
 class ComposedClip:
     """A composed/restructured clip."""
-    structure_type: str  # clean_extraction, hook_extraction, reordered
+    structure_type: str  # clean_extraction, hook_extraction, reordered, council_remix
     segments: List[Dict]
     total_duration: float
     hook_text: str
@@ -52,6 +52,252 @@ class ComposedClip:
     viral_headline: str = ""
     headline_type: str = ""  # problem, character, provokation
     headline_is_essential: bool = False  # True wenn Audio-Start Kontext braucht
+    # V8: Adaptive Pacing
+    pacing_mode: str = "density"  # density | immersion
+    removed_safety_bridges: List[str] = field(default_factory=list)
+    # V2 Validation: Original archetype für archetype-aware Validation
+    archetype: str = "unknown"  # paradox_story, insight, contrarian_rant, etc.
+
+
+# =============================================================================
+# V8: ADAPTIVE PACING ENGINE - Ruthless Logic
+# =============================================================================
+
+# Safety Bridges Blacklist - Diese Sätze TÖTEN Viralität
+SAFETY_BRIDGE_PATTERNS = [
+    "versteh mich nicht falsch",
+    "ich meine nicht, dass",
+    "ich meine nicht dass",
+    "ich sage nicht, dass",
+    "ich sage nicht dass",
+    "achtung, das ist wichtig",
+    "lass mich erklären",
+    "bevor ihr mich falsch versteht",
+    "um fair zu sein",
+    "das ist wichtig zu verstehen",
+    "kurz zur erklärung",
+    "ich möchte nur sagen",
+    "ich will nur sagen",
+    "das muss ich dazu sagen",
+    "eine wichtige anmerkung",
+    "ich erzähle euch eine geschichte",
+    "ich möchte euch etwas zeigen",
+    "heute geht es um",
+    "in diesem video",
+    "ich möchte heute über",
+]
+
+
+def remove_safety_bridges(text: str) -> tuple[str, list[str]]:
+    """
+    Entfernt Safety Bridges aus dem Text.
+    
+    Returns:
+        Tuple von (cleaned_text, list of removed phrases)
+    """
+    if not text:
+        return text, []
+    
+    cleaned = text
+    removed = []
+    
+    for pattern in SAFETY_BRIDGE_PATTERNS:
+        # Case-insensitive search
+        import re
+        matches = re.findall(rf'[^.!?]*{re.escape(pattern)}[^.!?]*[.!?]?', cleaned, re.IGNORECASE)
+        
+        for match in matches:
+            if match.strip():
+                removed.append(match.strip())
+                cleaned = cleaned.replace(match, ' ')
+    
+    # Clean up multiple spaces
+    cleaned = ' '.join(cleaned.split())
+    
+    return cleaned, removed
+
+
+def apply_pacing_constraints(clip_data: Dict) -> Dict:
+    """
+    Wendet die harten Pacing-Constraints an.
+    
+    V8 Adaptive Pacing Engine:
+    - DENSITY: Hook < 5s, Total < 60s, aggressives Kürzen
+    - IMMERSION: Flexible Länge, atmosphärische Details bleiben
+    
+    Returns:
+        Updated clip_data mit warnings/flags
+    """
+    pacing_mode = clip_data.get('pacing_mode', 'density')
+    total_duration = clip_data.get('total_duration', 0)
+    hook_duration = clip_data.get('hook_duration', 0)
+    
+    warnings = []
+    flags = {
+        'is_bloated': False,
+        'hook_too_long': False,
+        'requires_trim': False,
+        'trim_percentage': 0
+    }
+    
+    # ═══════════════════════════════════════════════════════════════
+    # DENSITY MODE CONSTRAINTS
+    # ═══════════════════════════════════════════════════════════════
+    if pacing_mode == 'density':
+        # Hook max 7 seconds (hard limit) / ideal < 5s
+        if hook_duration > 10:
+            flags['hook_too_long'] = True
+            warnings.append(f"⚠️ HOOK ZU LANG: {hook_duration:.0f}s > 10s (FORCE CUT erforderlich)")
+        elif hook_duration > 7:
+            warnings.append(f"⚠️ Hook grenzwertig: {hook_duration:.0f}s (ideal < 7s)")
+        
+        # Total max 60 seconds
+        if total_duration > 60:
+            flags['is_bloated'] = True
+            flags['requires_trim'] = True
+            # Calculate required trim percentage (30% of middle section)
+            excess = total_duration - 60
+            flags['trim_percentage'] = min(30, int((excess / total_duration) * 100))
+            warnings.append(
+                f"⚠️ BLOATED: {total_duration:.0f}s > 60s (DENSITY Mode). "
+                f"Empfehlung: {flags['trim_percentage']}% Kürzung des Mittelteils."
+            )
+    
+    # ═══════════════════════════════════════════════════════════════
+    # IMMERSION MODE CONSTRAINTS
+    # ═══════════════════════════════════════════════════════════════
+    elif pacing_mode == 'immersion':
+        # Hook can be longer for scene-setting, but still has limits
+        if hook_duration > 15:
+            flags['hook_too_long'] = True
+            warnings.append(f"⚠️ Hook auch für IMMERSION zu lang: {hook_duration:.0f}s > 15s")
+        
+        # Check for "turn" every 15 seconds (story pacing)
+        if total_duration > 180 and not clip_data.get('has_turns', True):
+            warnings.append("⚠️ Story > 3 Min ohne dokumentierte Wendungen. Prüfen!")
+    
+    # ═══════════════════════════════════════════════════════════════
+    # UNIVERSAL CONSTRAINTS
+    # ═══════════════════════════════════════════════════════════════
+    
+    # Remove safety bridges from hook text
+    hook_text = clip_data.get('hook_text', '')
+    if hook_text:
+        cleaned_hook, removed = remove_safety_bridges(hook_text)
+        if removed:
+            clip_data['hook_text'] = cleaned_hook
+            clip_data['removed_safety_bridges'] = removed
+            warnings.append(f"🧹 Entfernt {len(removed)} Safety Bridge(s) aus Hook")
+    
+    # ═══════════════════════════════════════════════════════════════
+    # 🛡️ SANITY CHECK: Validate all segments (prevent FFmpeg crashes)
+    # ═══════════════════════════════════════════════════════════════
+    MIN_SEGMENT_DURATION = 3.0  # Minimum 3 seconds to prevent FFmpeg error -30599999
+    
+    segments = clip_data.get('segments', [])
+    for seg in segments:
+        seg_start = seg.get('start', 0)
+        seg_end = seg.get('end', 0)
+        seg_role = seg.get('role', 'unknown')
+        
+        if seg_end <= seg_start:
+            # Invalid segment - fix it!
+            fixed_end = seg_start + MIN_SEGMENT_DURATION
+            print(f"   🛡️ SANITY CHECK: Fixing invalid segment {seg_role} ({seg_start:.1f}s -> {seg_end:.1f}s) → {fixed_end:.1f}s")
+            seg['end'] = fixed_end
+            warnings.append(f"🛡️ FIXED: Segment {seg_role} had end <= start (set to {MIN_SEGMENT_DURATION}s min)")
+        
+        # Also fix very short segments (< 1s) that might cause issues
+        elif (seg_end - seg_start) < 1.0:
+            fixed_end = seg_start + MIN_SEGMENT_DURATION
+            print(f"   🛡️ SANITY CHECK: Extending too-short segment {seg_role} ({seg_end - seg_start:.1f}s) → {MIN_SEGMENT_DURATION}s")
+            seg['end'] = fixed_end
+            warnings.append(f"🛡️ FIXED: Segment {seg_role} too short (<1s, extended to {MIN_SEGMENT_DURATION}s)")
+    
+    # Add warnings to clip_data
+    clip_data['pacing_warnings'] = warnings
+    clip_data['pacing_flags'] = flags
+    
+    return clip_data
+
+
+def force_hook_trim(hook_text: str, max_seconds: float = 7.0) -> str:
+    """
+    Trimmt einen Hook auf ca. max_seconds (geschätzt 2-3 Wörter/Sekunde).
+    
+    Returns:
+        Gekürzter Hook-Text (erster Satz oder erste ~15 Wörter)
+    """
+    if not hook_text:
+        return hook_text
+    
+    # Schätzung: ~2.5 Wörter pro Sekunde
+    max_words = int(max_seconds * 2.5)
+    
+    # Split in Sätze
+    sentences = hook_text.replace('!', '.').replace('?', '.').split('.')
+    sentences = [s.strip() for s in sentences if s.strip()]
+    
+    if not sentences:
+        return hook_text
+    
+    # Nimm den ersten Satz
+    first_sentence = sentences[0]
+    words = first_sentence.split()
+    
+    if len(words) <= max_words:
+        return first_sentence
+    
+    # Kürze auf max_words
+    return ' '.join(words[:max_words]) + '...'
+
+
+def validate_and_fix_segments(segments: List[Dict], min_duration: float = 3.0) -> List[Dict]:
+    """
+    🛡️ SAFETY VALVE: Validiert und repariert Segmente vor dem Export.
+    
+    Verhindert FFmpeg Fehler -30599999 durch:
+    1. Prüfung auf end <= start
+    2. Prüfung auf zu kurze Segmente
+    3. Automatische Korrektur ungültiger Werte
+    
+    Args:
+        segments: Liste der Clip-Segmente
+        min_duration: Minimale Segment-Dauer (default: 3s)
+        
+    Returns:
+        Bereinigte Segment-Liste
+    """
+    if not segments:
+        return segments
+    
+    fixed_segments = []
+    
+    for seg in segments:
+        seg_copy = seg.copy()  # Don't mutate original
+        seg_start = seg_copy.get('start', 0)
+        seg_end = seg_copy.get('end', 0)
+        seg_role = seg_copy.get('role', 'unknown')
+        
+        # ═══════════════════════════════════════════════════════════════
+        # CRITICAL FIX: end <= start → FFmpeg crash
+        # ═══════════════════════════════════════════════════════════════
+        if seg_end <= seg_start:
+            print(f"   ⚠️ CRITICAL: Invalid segment detected! {seg_role}: end ({seg_end:.1f}s) <= start ({seg_start:.1f}s)")
+            seg_copy['end'] = seg_start + min_duration
+            print(f"   🛡️ FIXED: Resetting to safe duration: {seg_start:.1f}s → {seg_copy['end']:.1f}s")
+        
+        # ═══════════════════════════════════════════════════════════════
+        # FIX: Too short segments (< 1s)
+        # ═══════════════════════════════════════════════════════════════
+        elif (seg_end - seg_start) < 1.0:
+            print(f"   ⚠️ WARNING: Segment {seg_role} too short ({seg_end - seg_start:.2f}s)")
+            seg_copy['end'] = seg_start + min_duration
+            print(f"   🛡️ FIXED: Extended to {min_duration}s minimum")
+        
+        fixed_segments.append(seg_copy)
+    
+    return fixed_segments
 
 
 async def compose_clip(
@@ -89,9 +335,14 @@ async def compose_clip(
     # Get principle context for prompts (if available)
     principle_context = get_principle_context_for_prompt()
     
-    # Use Claude Sonnet for debate (dynamic detection)
-    from models.base import get_model
-    model = get_model("anthropic", tier="sonnet")
+    # 💎 HIGH-LEVERAGE: Opus für Compose/Editing (höchste Qualität!)
+    try:
+        model = get_model("anthropic", model=OPUS_MODEL_ID)
+        print(f"   💎 Using OPUS for Compose (V8 Butcher Mode)")
+    except ValueError:
+        # Fallback to Sonnet if Opus unavailable
+        model = get_model("anthropic", model=SONNET_MODEL_ID)
+        print(f"   ⚠️ Opus unavailable, using Sonnet for Compose")
     
     proposals = []
     
@@ -166,7 +417,8 @@ RULES:
         response = await model.generate(
             prompt=user_prompt,
             system=system_prompt,
-            temperature=0.7 if round_num < debate_rounds else 0.3
+            temperature=0.7 if round_num < debate_rounds else 0.3,
+            cache_system=True  # 🚀 Enable caching for Opus (90% cost savings!)
         )
         
         # Parse proposal
@@ -195,11 +447,50 @@ RULES:
     headline_type = final.get("headline_type", moment.get("headline_type", ""))
     headline_is_essential = final.get("headline_is_essential", moment.get("headline_is_essential", False))
     
+    # V8: Extract pacing mode and apply constraints
+    pacing_mode = final.get("pacing_mode", "density")
+    removed_bridges = final.get("removed_safety_bridges", [])
+    
+    # Apply pacing constraints
+    clip_data = {
+        "pacing_mode": pacing_mode,
+        "total_duration": final.get("total_duration", moment.get("end", 0) - moment.get("start", 0)),
+        "hook_duration": final.get("hook_duration", 5),
+        "hook_text": final.get("hook_text", ""),
+        "has_turns": True  # Assume turns exist for now
+    }
+    clip_data = apply_pacing_constraints(clip_data)
+    
+    # Log warnings if any
+    warnings = clip_data.get("pacing_warnings", [])
+    if warnings:
+        print(f"   ⚠️ Pacing Constraints ({pacing_mode.upper()}):")
+        for w in warnings:
+            print(f"      {w}")
+    
+    # Merge removed safety bridges
+    all_removed = removed_bridges + clip_data.get("removed_safety_bridges", [])
+    
+    # ═══════════════════════════════════════════════════════════════
+    # 🛡️ FINAL SAFETY VALVE: Validate all segments before export
+    # ═══════════════════════════════════════════════════════════════
+    raw_segments = final.get("segments", [])
+    validated_segments = validate_and_fix_segments(raw_segments)
+    
+    # Recalculate total_duration after potential fixes
+    if validated_segments:
+        calculated_duration = sum(
+            seg.get('end', 0) - seg.get('start', 0) 
+            for seg in validated_segments
+        )
+    else:
+        calculated_duration = final.get("total_duration", moment.get("end", 0) - moment.get("start", 0))
+    
     return ComposedClip(
         structure_type=final.get("structure_type", "clean_extraction"),
-        segments=final.get("segments", []),
-        total_duration=final.get("total_duration", moment.get("end", 0) - moment.get("start", 0)),
-        hook_text=final.get("hook_text", ""),
+        segments=validated_segments,
+        total_duration=calculated_duration,
+        hook_text=clip_data.get("hook_text", final.get("hook_text", "")),
         reasoning=final.get("reasoning", ""),
         predicted_completion_rate=final.get("predicted_completion_rate", "25-30%"),
         confidence=final.get("confidence", 0.7),
@@ -207,7 +498,9 @@ RULES:
         debate_rounds=proposals,
         viral_headline=viral_headline,
         headline_type=headline_type,
-        headline_is_essential=headline_is_essential
+        headline_is_essential=headline_is_essential,
+        pacing_mode=pacing_mode,
+        removed_safety_bridges=all_removed
     )
 
 

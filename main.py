@@ -38,15 +38,18 @@ def process(
     num_clips: int = typer.Option(10, help="Number of clips to generate"),
     skip_cache: bool = typer.Option(False, help="Skip cached results"),
     formats: str = typer.Option("mp4,xml,json", help="Export formats (comma-separated)"),
-    godmode: bool = typer.Option(True, help="Enable Godmode final evaluation"),
-    min_score: int = typer.Option(35, help="Minimum Godmode score (0-50)")
+    godmode: bool = typer.Option(False, help="Enable Godmode final evaluation (off by default - quality now in Opus)"),
+    min_score: int = typer.Option(35, help="Minimum Godmode score (0-50)"),
+    council: bool = typer.Option(False, help="🏛️ Enable Viral Council (Multi-AI Remixing) for premium quality")
 ):
     """
     Process a video and extract viral clips.
     
     Supports both local paths and URLs (YouTube, Instagram, TikTok, etc.)
     
-    Full pipeline: DISCOVER → COMPOSE → VALIDATE → (GODMODE) → EXPORT
+    Full pipeline: DISCOVER → COMPOSE/COUNCIL → VALIDATE → (GODMODE) → EXPORT
+    
+    Use --council for Multi-AI Remixing (5 AIs compete, Opus judges).
     """
     asyncio.run(_process_video(
         video_path=video_path,
@@ -55,7 +58,8 @@ def process(
         use_cache=not skip_cache,
         formats=formats.split(","),
         godmode=godmode,
-        min_score=min_score
+        min_score=min_score,
+        use_council=council
     ))
 
 
@@ -66,7 +70,8 @@ async def _process_video(
     use_cache: bool,
     formats: list,
     godmode: bool = True,
-    min_score: int = 35
+    min_score: int = 35,
+    use_council: bool = False
 ):
     """Run the full pipeline."""
     from utils import Cache
@@ -126,15 +131,7 @@ async def _process_video(
     
     console.print(f"  Found: {len(moments)} potential moments\n")
     
-    # Step 3: Compose (VIRAL FACTORY MODE - Process ALL moments)
-    console.print("[bold]STEP 3: COMPOSE (VIRAL FACTORY MODE)[/bold]")
-    
-    from pipeline.compose import compose_batch
-    
-    # VIRAL FACTORY: No hard limit! Process all moments, let validation filter.
-    # num_clips is now the MINIMUM, not the maximum.
-    console.print(f"  🏭 Processing ALL {len(moments)} moments (no artificial limits)")
-    
+    # Step 3: Compose or Council
     moment_dicts = [
         {
             "start": m.start,
@@ -146,12 +143,106 @@ async def _process_video(
             "hook_text": m.hook_text if hasattr(m, 'hook_text') else "",
             "viral_headline": getattr(m, 'viral_headline', ""),
             "segments": [s.model_dump() for s in m.segments] if m.segments else [],
-            "editing_instruction": m.editing_instruction if hasattr(m, 'editing_instruction') else ""
+            "editing_instruction": m.editing_instruction if hasattr(m, 'editing_instruction') else "",
+            "full_text": m.full_text if hasattr(m, 'full_text') else ""
         }
         for m in moments
     ]
     
-    composed = await compose_batch(moment_dicts, segments)
+    if use_council:
+        # ═══════════════════════════════════════════════════════════════
+        # 🏛️ THE VIRAL COUNCIL - Multi-AI Remixing
+        # ═══════════════════════════════════════════════════════════════
+        console.print("[bold]STEP 3: 🏛️ VIRAL COUNCIL (Multi-AI Remixing)[/bold]")
+        
+        from pipeline.council import ViralCouncil, CouncilDecision
+        from pipeline.discover import find_structural_blueprint
+        from pipeline.compose import ComposedClip
+        
+        console.print(f"  🎯 Processing TOP {min(5, len(moment_dicts))} moments with Council")
+        console.print("  👥 Council: Opus, GPT-5.2, Gemini 3, Grok 4.1, DeepSeek Reasoner")
+        
+        composed = []
+        
+        # Process top moments with Council (limit to 5 for cost)
+        top_moments = sorted(moment_dicts, key=lambda m: m.get('viral_potential', 0), reverse=True)[:5]
+        
+        for i, moment in enumerate(top_moments, 1):
+            console.print(f"\n  [{i}/{len(top_moments)}] Convening Council for moment @ {moment['start']:.0f}s...")
+            
+            # Get transcript text for this moment
+            moment_text = moment.get('full_text', '')
+            if not moment_text:
+                # Extract from segments
+                start_time = moment.get('start', 0)
+                end_time = moment.get('end', 0)
+                moment_text = ' '.join([
+                    s.get('text', '') for s in segments
+                    if s.get('start', 0) >= start_time and s.get('end', 0) <= end_time
+                ])
+            
+            # 🧠 Active Brain Lookup (returns dict with pattern info)
+            blueprint = await find_structural_blueprint(
+                moment_text,
+                moment.get('archetype', 'unknown')
+            )
+            brain_context = blueprint.get('context_for_prompt', '')
+            pattern_name = blueprint.get('pattern_name', 'Standard')
+            risk_level = blueprint.get('risk_level', 'low')
+            
+            console.print(f"    📋 Pattern: {pattern_name} (Risk: {risk_level})")
+            
+            # Get original segments for this moment (for robust remapping)
+            start_time = moment.get('start', 0)
+            end_time = moment.get('end', 0)
+            moment_segments = [
+                s for s in segments
+                if s.get('start', 0) >= start_time and s.get('end', 0) <= end_time
+            ]
+            
+            # 🏛️ Convene the Council
+            council = ViralCouncil()
+            await council.convene_council(
+                moment_text, 
+                brain_context,
+                original_segments=moment_segments  # For robust timestamp remapping
+            )
+            
+            # ⚖️ Executive Decision
+            decision = await council.executive_decision()
+            
+            # Convert to ComposedClip
+            original_archetype = moment.get('archetype', 'unknown')
+            composed_clip = ComposedClip(
+                structure_type="council_remix",
+                archetype=original_archetype,  # Pass original archetype for validation
+                segments=decision.final_segments,
+                total_duration=sum(
+                    s.get('end', 0) - s.get('start', 0) 
+                    for s in decision.final_segments
+                ),
+                hook_text=moment.get('hook_text', ''),
+                reasoning=decision.judge_reasoning,
+                viral_headline=moment.get('viral_headline', ''),
+                pacing_mode="density" if original_archetype in ['insight', 'tutorial'] else "immersion"
+            )
+            
+            composed.append(composed_clip)
+        
+        console.print(f"\n  🏛️ Council completed: {len(composed)} clips\n")
+        
+    else:
+        # ═══════════════════════════════════════════════════════════════
+        # Standard Compose (VIRAL FACTORY MODE)
+        # ═══════════════════════════════════════════════════════════════
+        console.print("[bold]STEP 3: COMPOSE (VIRAL FACTORY MODE)[/bold]")
+        
+        from pipeline.compose import compose_batch
+        
+        console.print(f"  🏭 Processing ALL {len(moments)} moments (no artificial limits)")
+        
+        composed = await compose_batch(moment_dicts, segments)
+        
     console.print(f"  Composed: {len(composed)} clips\n")
     
     # Step 4: Validate
@@ -160,13 +251,17 @@ async def _process_video(
     from pipeline.validate import validate_batch, rank_clips
     
     # Pass clip data directly (not wrapped in "clip" key)
+    # Include archetype for archetype-aware validation
     clip_dicts = [
         {
             "structure_type": c.structure_type,
+            "archetype": getattr(c, 'archetype', c.structure_type),  # Fallback to structure_type
             "segments": c.segments,
             "total_duration": c.total_duration,
             "hook_text": c.hook_text,
-            "reasoning": c.reasoning
+            "reasoning": c.reasoning,
+            "pacing_mode": getattr(c, 'pacing_mode', 'density'),
+            "viral_headline": getattr(c, 'viral_headline', ''),
         }
         for c in composed
     ]

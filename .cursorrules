@@ -5,12 +5,50 @@
 **CONTEXT.md** → Aktueller Stand, nächste Schritte  
 **PROJECT_HISTORY.md** → Vollständige History, alle Entscheidungen, Learnings
 
+## Business Context
+
+- Agentur: QUIO
+- Volume: 800+ Videos/Monat
+- Kunden: Greator, Robert Marc Lehmann, Liebscher & Bracht, uvm.
+- Ziel: Automatische Identifikation viraler Clip-Momente
+
 ## Tech Stack
 
 - Python 3.x
 - APIs: OpenAI (GPT), Anthropic (Claude), Google (Gemini), DeepSeek, xAI (Grok)
 - FFmpeg für Video-Verarbeitung
 - Google Sheets Integration
+- ChromaDB für Vector Store
+
+## Viral Clip Kriterien (IMMER prüfen!)
+
+1. **Hook in ersten 3 Sekunden** - Kein "Ähm", keine Stille, kein Meta-Talk
+2. **Standalone verständlich** - Clip muss ohne Kontext funktionieren
+3. **Emotionaler Peak vorhanden** - MIND-BLOWN, Überraschung, Humor, Rührung
+4. **Scroll-Stop Faktor** - Würde ICH bei diesem Hook stoppen?
+5. **Circular Loop** - Hook nimmt Ende vorweg = Premium-Muster
+
+## Client-spezifische Regeln
+
+### Greator (Motivational/Transformation)
+- Fokus auf Transformation Stories
+- "Vorher/Nachher" Narrative bevorzugen
+- Sprecher: Dieter Lange, Tobias Beck, Vera Birkenbihl, Bodo Schäfer
+- Paradoxe Aussagen als Hooks ("Arbeite niemals für Geld")
+- Story-Clips dürfen länger sein (60-90s)
+
+### Robert Marc Lehmann (Nature/Adventure)
+- Tierszenen priorisieren
+- Dramatische Momente (Gefahr, Rettung)
+- Fakten-basierte Hooks mit Zahlen
+- Emotionale Tier-Mensch Interaktionen
+- Action-Sequenzen bevorzugen
+
+### Liebscher & Bracht (Health/Pain)
+- Schmerzpunkte als Hook ("Dieser Fehler macht JEDER")
+- "Fehler die jeder macht" Pattern
+- Übungsanleitungen mit klarem Benefit
+- Vermeiden: Zu lange medizinische Erklärungen
 
 ## Code-Regeln
 
@@ -22,12 +60,45 @@
 - Docstrings für Funktionen
 - Error handling mit try/except und logging
 
+## IMMER
+
+- Type hints verwenden
+- Verification Tests nach größeren Änderungen ausführen
+- Ground Truth konsultieren (tests/verified_clips.json)
+- Original-Timestamps verwenden, nie halluzinieren
+- Safety-Bridges (Relativierungen) am Anfang entfernen
+- Satzzeichen prüfen vor Cuts (Punkt = Safe, Komma = Unsafe)
+
+## NIEMALS
+
+- Timestamps erfinden statt Original zu nutzen
+- Clips ohne Hook approven
+- Client-Regeln ignorieren
+- Stories zu kurz schneiden (< 45s für Story-Archetypen)
+- Open Loops am Ende eines Clips lassen
+- Nach Komma oder "und..." schneiden
+
+## Bekannte Claude-Fehler
+
+1. **Timestamp Halluzination** - Erfindet manchmal Timestamps statt Original zu nutzen
+   → Fix: Immer Segment-IDs mit Original-Timestamps verwenden
+   
+2. **Story Zerstörung** - Schneidet Geschichten zu kurz aus "Effizienz"
+   → Fix: Story-Archetypen dürfen 60-90s sein
+   
+3. **Safety-Bridge Ignoranz** - Lässt Relativierungen stehen
+   → Fix: Explizit nach "Versteh mich nicht falsch", "Ich meine nicht..." suchen
+   
+4. **Context-Blindheit** - Startet Clips mit "Er sagte..." ohne zu wissen wer
+   → Fix: Headlines als Visual Compensation nutzen
+
 ## Architektur-Prinzipien
 
 - Principle-based, nicht rigid rules
 - Batch processing wo möglich (80% Kostenersparnis)
 - Conditional processing (nur verarbeiten was nötig ist)
 - Sonnet für Processing, Opus nur für finale Entscheidungen
+- Prompt Caching für lange Transcripts
 
 ## Wichtige Pfade
 
@@ -35,8 +106,9 @@
 - Cache: `data/cache/`
 - Learnings: `data/learnings/`
 - Output: `output/`
+- Ground Truth: `tests/verified_clips.json`
 
-## Pipeline-Stages (V4)
+## Pipeline-Stages
 
 0 → 1 → 1.75 → 2 → 2.5 → 2.6 → 2.7 → 2.8 → Godmode
 
@@ -45,3 +117,11 @@
 1. Lies CONTEXT.md für aktuellen Stand
 2. Check PROJECT_HISTORY.md ob ähnliches schon probiert wurde
 3. Erkläre deinen Plan bevor du codest
+4. Nach Änderung: `pytest tests/test_clip_finder.py -v`
+
+## Verification (Boris Cherny Workflow)
+
+Nach jeder Pipeline-Änderung:
+```bash
+pytest tests/test_clip_finder.py -v
+```Minimum Recall Threshold: 70% der bekannten viralen Clips müssen gefunden werden.
